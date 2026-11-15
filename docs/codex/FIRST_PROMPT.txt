@@ -1,0 +1,14 @@
+Act as the principal full-stack engineer and autonomous implementation agent for AKUS.
+
+FIRST read and inventory the ENTIRE repository-local `docs/spec/AKUS_MASTER_SPEC.txt`, in manageable sections so none is silently skipped. `docs/spec/AKUS_UIUX_BLUEPRINT.md` provides an easily navigable page-by-page source and is already embedded within the master. Obey `AGENTS.md` and `docs/codex/BUILD_PHASES.md`.
+
+The master spec and the later V2.4 override rules are binding. Do not implement superseded HoD/Principal applicant paths, dual HoD/DRC officeholding, per-offering quota pools, fake provider integrations or policy guesses. Preserve POLICY_PENDING for unresolved decisions.
+
+Your ultimate goal is a fully running, tested, professional, light-theme multi-page AKUS React/FastAPI/PostgreSQL web app, not an architecture document or static screenshots.
+
+1. Inspect the filesystem and source files. Create `docs/implementation-plan.md`, `docs/traceability.md`, `POLICY_GAPS.md`, `BUILD_PROGRESS.md`, and `TEST_RESULTS.md`. Inventory the actual 80-page specification and 50 historic policies reconciled with active amendments.
+2. Show a short concrete architecture + execution plan with module boundaries, schema/API/UI work order and test gates.
+3. Proceed to IMPLEMENT Phase 1 in `docs/codex/BUILD_PHASES.md`: create actual project files, dependencies, migrations, local database/dev commands, frontend shell, real backend health and test foundation. Run the services and tests, fix failures, record observed results, and make the frontend reachable in the browser.
+4. Keep instructions and traceability persistent in repository files for later Codex sessions. Report exactly what works, what does not, and the next phase. Never claim complete before tests pass.
+
+Do not request confirmation to create ordinary repo files, install normal dependencies, or run local safe tests. Ask before destructive operations, secrets, external account actions, cloud deployment or unratified institutional policy decisions.

@@ -1,0 +1,21 @@
+# local configuration/secrets
+.env
+.env.*
+!.env.example
+# frontend/backend artifacts
+node_modules/
+dist/
+build/
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+coverage/
+htmlcov/
+playwright-report/
+test-results/
+*.log
+# OS/editor
+.DS_Store
+.idea/
