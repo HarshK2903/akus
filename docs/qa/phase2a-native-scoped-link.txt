@@ -1,0 +1,12 @@
+
+> akus-web@0.1.0 e2e
+> playwright test --grep HoD sees only
+
+
+Running 1 test using 1 worker
+
+(node:708141) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/people.spec.ts:179:1 › HoD sees only the office department, and rehire history retains two episodes (1.3s)
+
+  1 passed (2.0s)

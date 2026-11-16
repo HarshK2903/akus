@@ -1,0 +1,102 @@
+
+> akus-web@0.1.0 e2e
+> playwright test
+
+
+Running 19 tests using 1 worker
+
+(node:691910) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/foundation.spec.ts:5:1 › sign-in, DB-backed navigation, reload, policy search, logout and denied deep link (1.9s)
+  ✓   2 e2e/foundation.spec.ts:47:3 › responsive foundation at 1440px with accessibility (1.1s)
+  ✓   3 e2e/foundation.spec.ts:47:3 › responsive foundation at 1024px with accessibility (1.1s)
+  ✓   4 e2e/foundation.spec.ts:47:3 › responsive foundation at 768px with accessibility (1.1s)
+  ✓   5 e2e/foundation.spec.ts:47:3 › responsive foundation at 390px with accessibility (1.1s)
+  ✓   6 e2e/foundation.spec.ts:47:3 › responsive foundation at 320px with accessibility (1.0s)
+  ✓   7 e2e/foundation.spec.ts:86:3 › drc demo uses appropriate home without academic actions (449ms)
+  ✓   8 e2e/foundation.spec.ts:86:3 › hod demo uses appropriate home without academic actions (457ms)
+  ✓   9 e2e/foundation.spec.ts:86:3 › principal demo uses appropriate home without academic actions (434ms)
+  ✓  10 e2e/foundation.spec.ts:86:3 › admin demo uses appropriate home without academic actions (451ms)
+  ✓  11 e2e/foundation.spec.ts:86:3 › acting-hod demo uses appropriate home without academic actions (440ms)
+  ✓  12 e2e/foundation.spec.ts:103:1 › backend failure and unknown URL are recoverable (2.1s)
+  ✘  13 e2e/people.spec.ts:33:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history (30.2s)
+(node:692981) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 e2e/people.spec.ts:104:1 › overlapping DRC and cross-department acting HoD is visibly rejected without losing inputs (1.0s)
+  ✓  15 e2e/people.spec.ts:134:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards (1.3s)
+  ✘  16 e2e/people.spec.ts:167:1 › HoD sees only the office department, and rehire history retains two episodes (30.1s)
+(node:693657) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 e2e/people.spec.ts:192:3 › people workflows at 1440px with accessible forms and tables (3.5s)
+  ✓  18 e2e/people.spec.ts:192:3 › people workflows at 390px with accessible forms and tables (2.8s)
+  ✓  19 e2e/people.spec.ts:192:3 › people workflows at 320px with accessible forms and tables (2.8s)
+
+
+  1) e2e/people.spec.ts:33:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Display name')
+
+
+      44 |   await page.getByRole("link", { name: "Add staff record" }).click();
+      45 |   await page.getByLabel("Permanent staff key").fill(`E2E-${suffix}`);
+    > 46 |   await page.getByLabel("Display name").fill(name);
+         |                                         ^
+      47 |   await page
+      48 |     .getByLabel("Home department")
+      49 |     .selectOption({ label: "Electronics · DEMO" });
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/people.spec.ts:46:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e/people.spec.ts:167:1 › HoD sees only the office department, and rehire history retains two episodes 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Find staff by name or key')
+
+
+      176 |     page.getByRole("link", { name: "Omar Das (acting HoD)", exact: true }),
+      177 |   ).toHaveCount(0);
+    > 178 |   await page.getByLabel("Find staff by name or key").fill("Tara");
+          |                                                      ^
+      179 |   await page.reload();
+      180 |   await expect(page.getByLabel("Find staff by name or key")).toHaveValue(
+      181 |     "Tara",
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/people.spec.ts:178:54
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/people-HoD-sees-only-the-o-04fda-istory-retains-two-episodes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/people-HoD-sees-only-the-o-04fda-istory-retains-two-episodes/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/people-HoD-sees-only-the-o-04fda-istory-retains-two-episodes/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/people-HoD-sees-only-the-o-04fda-istory-retains-two-episodes/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    e2e/people.spec.ts:33:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history 
+    e2e/people.spec.ts:167:1 › HoD sees only the office department, and rehire history retains two episodes 
+  17 passed (1.4m)

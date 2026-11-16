@@ -1,0 +1,31 @@
+
+> akus-web@0.1.0 e2e
+> playwright test
+
+
+Running 20 tests using 1 worker
+
+(node:702997) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/foundation.spec.ts:5:1 › sign-in, DB-backed navigation, reload, policy search, logout and denied deep link (963ms)
+  ✓   2 e2e/foundation.spec.ts:47:3 › responsive foundation at 1440px with accessibility (986ms)
+  ✓   3 e2e/foundation.spec.ts:47:3 › responsive foundation at 1024px with accessibility (921ms)
+  ✓   4 e2e/foundation.spec.ts:47:3 › responsive foundation at 768px with accessibility (915ms)
+  ✓   5 e2e/foundation.spec.ts:47:3 › responsive foundation at 390px with accessibility (847ms)
+  ✓   6 e2e/foundation.spec.ts:47:3 › responsive foundation at 320px with accessibility (921ms)
+  ✓   7 e2e/foundation.spec.ts:86:3 › drc demo uses appropriate home without academic actions (275ms)
+  ✓   8 e2e/foundation.spec.ts:86:3 › hod demo uses appropriate home without academic actions (291ms)
+  ✓   9 e2e/foundation.spec.ts:86:3 › principal demo uses appropriate home without academic actions (311ms)
+  ✓  10 e2e/foundation.spec.ts:86:3 › admin demo uses appropriate home without academic actions (309ms)
+  ✓  11 e2e/foundation.spec.ts:86:3 › acting-hod demo uses appropriate home without academic actions (292ms)
+  ✓  12 e2e/foundation.spec.ts:103:1 › backend failure and unknown URL are recoverable (1.7s)
+  ✓  13 e2e/people.spec.ts:40:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history (1.6s)
+  ✓  14 e2e/people.spec.ts:116:1 › overlapping DRC and cross-department acting HoD is visibly rejected without losing inputs (705ms)
+  ✓  15 e2e/people.spec.ts:146:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards (823ms)
+  ✓  16 e2e/people.spec.ts:179:1 › HoD sees only the office department, and rehire history retains two episodes (660ms)
+  ✓  17 e2e/people.spec.ts:206:3 › people workflows at 1440px with accessible forms and tables (2.9s)
+  ✓  18 e2e/people.spec.ts:206:3 › people workflows at 390px with accessible forms and tables (2.3s)
+  ✓  19 e2e/people.spec.ts:206:3 › people workflows at 320px with accessible forms and tables (2.3s)
+  ✓  20 e2e/people.spec.ts:248:1 › existing browser session gains and loses office scope from source changes (1.3s)
+
+  20 passed (22.2s)

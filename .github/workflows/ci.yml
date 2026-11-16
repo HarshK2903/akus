@@ -1,0 +1,42 @@
+name: Foundation checks
+on: [push, pull_request]
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_USER: akus_demo, POSTGRES_PASSWORD: akus_demo, POSTGRES_DB: akus_test}
+        ports: ['55432:5432']
+        options: --health-cmd "pg_isready -U akus_demo -d akus_test" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      AKUS_DATABASE_URL: postgresql+psycopg://akus_demo:akus_demo@127.0.0.1:55432/akus_test
+      AKUS_TEST_DATABASE_URL: postgresql+psycopg://akus_demo:akus_demo@127.0.0.1:55432/akus_test
+      AKUS_DEMO_ENABLED: 'true'
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.local/browsers
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.13'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm, cache-dependency-path: apps/web/package-lock.json}
+      - run: python -m venv .venv
+      - run: .venv/bin/pip install -r apps/api/requirements.lock && .venv/bin/pip install --no-deps -e apps/api
+      - run: npm --prefix apps/web ci --no-audit --no-fund
+      - run: scripts/check.sh
+      - run: cd apps/web && npx playwright install --with-deps chromium
+      - run: |
+          scripts/dev.sh > /tmp/akus-dev.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:5173/api/v1/health/ready; then break; fi
+            sleep 1
+          done
+          npm --prefix apps/web run e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-proof
+          path: |
+            docs/qa/*.png
+            apps/web/playwright-report
+            apps/web/test-results

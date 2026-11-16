@@ -1,0 +1,49 @@
+name: akus-local
+x-api: &api
+  build: {context: ., dockerfile: infra/api.Dockerfile}
+  environment: &environment
+    AKUS_ENV: ${AKUS_ENV:-local}
+    AKUS_DEMO_ENABLED: ${AKUS_DEMO_ENABLED:-true}
+    AKUS_DATABASE_URL: ${AKUS_DATABASE_URL:-postgresql+psycopg://akus_demo:akus_demo@db:5432/akus}
+    AKUS_PUBLIC_ORIGIN: ${AKUS_PUBLIC_ORIGIN:-http://127.0.0.1:8080}
+    AKUS_GOOGLE_CLIENT_ID: ${AKUS_GOOGLE_CLIENT_ID:-}
+    AKUS_GOOGLE_CLIENT_SECRET: ${AKUS_GOOGLE_CLIENT_SECRET:-}
+    AKUS_GOOGLE_REDIRECT_URI: ${AKUS_GOOGLE_REDIRECT_URI:-}
+    AKUS_SESSION_KEY: ${AKUS_SESSION_KEY:-}
+    AKUS_INSTITUTION_LABEL: ${AKUS_INSTITUTION_LABEL:-Local demonstration institution}
+  depends_on:
+    db: {condition: service_healthy}
+services:
+  db:
+    image: postgres:16
+    environment: {POSTGRES_USER: akus_demo, POSTGRES_PASSWORD: akus_demo, POSTGRES_DB: akus}
+    volumes: [akus_pg:/var/lib/postgresql/data]
+    healthcheck: {test: ['CMD-SHELL', 'pg_isready -U akus_demo -d akus'], interval: 5s, timeout: 3s, retries: 20}
+  migrate:
+    <<: *api
+    command: ['sh', '-c', 'alembic -c apps/api/alembic.ini upgrade head && python -m akus.startup']
+  api:
+    <<: *api
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: ['CMD', 'python', '-c', "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health/ready')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  worker:
+    <<: *api
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    command: ['python', '-m', 'akus.worker']
+  web:
+    build: {context: ., dockerfile: infra/web.Dockerfile}
+  proxy:
+    image: caddy:2-alpine
+    ports: ['127.0.0.1:8080:80']
+    volumes: ['./infra/Caddyfile:/etc/caddy/Caddyfile:ro']
+    depends_on:
+      api: {condition: service_healthy}
+      web: {condition: service_started}
+volumes:
+  akus_pg:

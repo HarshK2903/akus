@@ -19,3 +19,7 @@ test-results/
 # OS/editor
 .DS_Store
 .idea/
+.local/
+.mypy_cache/
+*.tsbuildinfo
+*.egg-info/

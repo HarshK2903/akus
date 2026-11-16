@@ -1,0 +1,10 @@
+2026-11-16: docker compose up -d --build -> exit 0
+Fresh project: docker compose ps -a had no existing containers before startup.
+Migration and fictional seed job exited successfully.
+API: healthy. Database: healthy. Web, worker, proxy: running.
+Published port: 127.0.0.1:8080 only; PostgreSQL has no host-published port.
+GET http://127.0.0.1:8080 -> HTTP 200
+GET http://127.0.0.1:8080/api/v1/health/ready -> HTTP 200
+{"status":"ready","database":"connected","schema_version":"0001_foundation"}
+
+Compiled-stack Chromium browser acceptance: 12 passed, 9.9 seconds.

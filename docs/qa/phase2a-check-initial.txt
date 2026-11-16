@@ -1,0 +1,47 @@
+All checks passed!
+24 files already formatted
+Success: no issues found in 17 source files
+No new upgrade operations detected.
+...........................................                              [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /media/bugulnoz/New Volume/2/akus/.venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+43 passed, 1 warning in 4.05s
+
+> akus-web@0.1.0 lint
+> eslint .
+
+
+> akus-web@0.1.0 typecheck
+> tsc -b
+
+
+> akus-web@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /media/bugulnoz/New Volume/2/akus/apps/web
+
+ ✓ src/pages/Help.test.tsx (2 tests) 131ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  09:46:14
+   Duration  1.09s (transform 65ms, setup 134ms, collect 151ms, tests 131ms, environment 377ms, prepare 63ms)
+
+
+> akus-web@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.8 building client environment for production...
+transforming...
+✓ 1704 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.52 kB │ gzip:   0.34 kB
+dist/assets/index-CZwxcqLi.css   16.65 kB │ gzip:   4.03 kB
+dist/assets/index-CVuXZbIH.js   384.49 kB │ gzip: 119.25 kB
+✓ built in 2.05s

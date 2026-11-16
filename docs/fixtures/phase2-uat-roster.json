@@ -1,0 +1,106 @@
+{
+  "purpose": "User-authorized UAT preparation only. Not an executable privilege allowlist. Fill a private copy from approved institutional sources; never infer missing facts from emails.",
+  "people": [
+    {
+      "email": "faculty-harsh1.cse24@cmrit.ac.in",
+      "intended_uat_roles": [
+        "FACULTY"
+      ],
+      "status": "BLOCKED_NOT_VERIFIED",
+      "staff_key": null,
+      "display_name": null,
+      "department_code": null,
+      "department_name": null,
+      "employment_starts_on": null,
+      "employment_is_faculty": null,
+      "email_valid_from": null,
+      "office_valid_from": null,
+      "office_valid_until": null,
+      "source_reference": null,
+      "authorized_by": null,
+      "account_holder_participated": false,
+      "google_subject_verified": false
+    },
+    {
+      "email": "hod-ankit.cse24@cmrit.ac.in",
+      "intended_uat_roles": [
+        "HOD"
+      ],
+      "status": "BLOCKED_NOT_VERIFIED",
+      "staff_key": null,
+      "display_name": null,
+      "department_code": null,
+      "department_name": null,
+      "employment_starts_on": null,
+      "employment_is_faculty": null,
+      "email_valid_from": null,
+      "office_valid_from": null,
+      "office_valid_until": null,
+      "source_reference": null,
+      "authorized_by": null,
+      "account_holder_participated": false,
+      "google_subject_verified": false
+    },
+    {
+      "email": "DRC-awanish.cse24@cmrit.ac.in",
+      "intended_uat_roles": [
+        "FACULTY",
+        "DRC_HEAD"
+      ],
+      "status": "BLOCKED_NOT_VERIFIED",
+      "staff_key": null,
+      "display_name": null,
+      "department_code": null,
+      "department_name": null,
+      "employment_starts_on": null,
+      "employment_is_faculty": null,
+      "email_valid_from": null,
+      "office_valid_from": null,
+      "office_valid_until": null,
+      "source_reference": null,
+      "authorized_by": null,
+      "account_holder_participated": false,
+      "google_subject_verified": false
+    },
+    {
+      "email": "admin-harsh.cse24@cmrit.ac.in",
+      "intended_uat_roles": [
+        "ADMIN"
+      ],
+      "status": "BLOCKED_NOT_VERIFIED",
+      "staff_key": null,
+      "display_name": null,
+      "department_code": null,
+      "department_name": null,
+      "employment_starts_on": null,
+      "employment_is_faculty": null,
+      "email_valid_from": null,
+      "office_valid_from": null,
+      "office_valid_until": null,
+      "source_reference": null,
+      "authorized_by": null,
+      "account_holder_participated": false,
+      "google_subject_verified": false
+    },
+    {
+      "email": "principle-nikshay.cse24@cmrit.ac.in",
+      "intended_uat_roles": [
+        "PRINCIPAL"
+      ],
+      "status": "BLOCKED_NOT_VERIFIED",
+      "staff_key": null,
+      "display_name": null,
+      "department_code": null,
+      "department_name": null,
+      "employment_starts_on": null,
+      "employment_is_faculty": null,
+      "email_valid_from": null,
+      "office_valid_from": null,
+      "office_valid_until": null,
+      "source_reference": null,
+      "authorized_by": null,
+      "account_holder_participated": false,
+      "google_subject_verified": false
+    }
+  ]
+}

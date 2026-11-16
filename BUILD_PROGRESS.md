@@ -1,0 +1,36 @@
+# Build progress — recovered Phase 2
+
+2026-11-17. **Phase 0 complete; Phase 1 verified; Phase 2 local implementation verified, mandatory live Google UAT BLOCKED. Phase 2 is not declared complete.** All feasible identity, source-management and role-workspace work in `docs/codex/PHASE2_COMPLETION.md` is implemented. Academic domain services remain in Phases 3–7. This is not a production-readiness claim.
+
+## Recovery and preservation
+
+Recovered the interrupted working tree on `main`, including uncommitted/untracked source and migrations. Nothing was reset, discarded or recommitted. The rejected Docker build at the interruption did not execute; subsequent authorized builds succeeded. Fixed the outstanding `apps/api/akus/startup.py` Ruff formatting issue. Existing Compose topology, PostgreSQL volume `akus-local_akus_pg`, source/audit data, prior migrations, specs and scan evidence are retained. Earlier progress is archived in `docs/qa/phase2a-build-progress.md` and `docs/codex/PHASE2_RECOVERY.md`.
+
+## What works now
+
+- **Institutional identity:** `apps/api/akus/identity/` implements real Google code exchange using discovery/JWKS, Authlib and joserfc; state/browser binding, nonce, S256 PKCE, RS256 signature, issuer/audience/time/verified-email/Workspace-domain validation; opaque server sessions, rotation, logout, HTTPS Secure cookies, CSRF and current source authorization. No configured client means CONFIGURATION REQUIRED. No provider tokens are stored or logged.
+- **Controlled linking:** separate official email history, immutable issuer+subject links, observed verified-email history and sessions. No email-based role grants or automatic staff creation. Pending/denied/duplicate/disabled states, audited Admin reconciliation and exact old-link revocation are implemented. Operator-only first-Admin bootstrap and revocation are idempotent and require approved private roster facts; they never create a Google session.
+- **Source administration:** `apps/api/akus/sources/` provides validated CSV/XLSX staging, normalized row previews, persistent errors, explicit atomic commit, deduplication and safe retries. Employment/rehire, department membership, institutional email, person and office corrections preserve before/after facts. Canonical subjects/aliases, departments and July–June years have usable setup pages. Original office facts are superseded, not rewritten.
+- **Teaching:** create, filter, inspect, correct and void official assignments with effective intervals, term/year, provenance, conflict checks and immutable history. The timeline uses the first official date per employment episode and canonical subject; repeat teaching does not restart it, rehire does. IO-02 remains POLICY_PENDING; P-54 leap-day anniversary remains pending. No academic credit or violation is assessed.
+- **Five distinct dashboards:** Faculty, DRC Head, HoD, Admin and Principal use real scoped source counts and working navigation. Faculty routing is DRC → HoD; DRC-own route is directly HoD. HoD/Principal applicant access is denied; Principal has global source reads without write authority. Academic links show actual NOT_IMPLEMENTED dependencies, never fake approval/quota/compliance outcomes.
+- **Transactions/security:** effective permission checks on each request and after command locks; source/identity writes serialize consistently; PostgreSQL exclusion constraints prevent DRC/HoD overlap even across departments/concurrent writers. Immutable source revisions/audit, optimistic versions, command receipts and atomic import commits are tested.
+- **Migrations:** preserved 0001–0003; added 0004 institutional identity, 0005 source management and 0006 verified-email/session history. Running app schema is `0006_identity_history`.
+
+## Verified running result
+
+Open **http://127.0.0.1:8080**. API docs: **http://127.0.0.1:8080/api/docs**. Existing Docker services are running; API/database healthy; migrate exited 0. Current environment is explicitly LOCAL/DEMO with no real linked identities. No new native services or second app were created.
+
+Final gate: **109 PostgreSQL backend tests, 2 frontend tests, 27 Playwright tests passed**. Ruff lint/format (43 files), mypy (31 modules), ESLint, TypeScript, Prettier, production frontend build and migration drift checks passed. All four images (`api`, `migrate`, `worker`, `web`) rebuilt successfully. Responsive browser checks include 1440/1024/768/390/320 for foundation and 1440/390/320 for source/role pages; axe reported no violations in tested views. Desktop Admin, mobile DRC and teaching-history screenshots were visually inspected. Exact commands, repaired failures, fresh migration proof and limitations: `TEST_RESULTS.md`.
+
+Demo: sign in as **Nila Shah · Admin** → Source imports → upload a LOCAL/DEMO roster → inspect preview → confirm commit → staff detail → Correct source record. Reference setup → add a synthetic canonical subject → Teaching allocations → record/correct assignment → inspect first-teaching timeline and history. Other fictional identities demonstrate scoped and read-only dashboards. See `docs/USER_MANUAL.md` for file columns and full steps.
+
+## Remaining acceptance blockers and next steps
+
+1. **External integration:** no approved Google Web OAuth client ID/secret, persisted private session key or actual voluntary Google login was available. All five named real-user cases remain BLOCKED / NOT VERIFIED. No successful real login is claimed.
+2. **Authorized source facts:** the five email strings identify intended participants, not verified staff records. Approved staff keys, names, department/classification and effective appointment dates must be supplied privately before provisioning. Tracked `docs/fixtures/phase2-uat-roster.json` deliberately retains null facts. Use `docs/GOOGLE_OIDC_SETUP.md` to switch this same stack to a separate protected UAT database, bootstrap the approved Admin and complete real role tests. Do not insert real people into the demo dataset.
+3. **Institutional policy:** IO-02 acceptance, P-54 leap day, Q51 multi-subject credit, role-transition consequences and existing-seat topic remapping remain pending. Corrections alter authoritative source facts only; they do not approve exemptions, waive obligations or decide historic academic consequences.
+4. **Next planned phase:** Phase 3 canonical course/offerings, HoD primary-topic mappings and annual shared topic quotas, after the Phase 2 live-integration gate. Applications/review decisions and self-review transaction tests require Phase 4; evidence/annual/Silver assessment require Phase 6; historical separation consequences require Phase 7. No successful application submission exists yet.
+
+## Persistent resume instructions
+
+Read AGENTS, PHASE2_COMPLETION, BUILD_PHASES, this file, TEST_RESULTS, `docs/codex/PHASE2_CHECKLIST.md`, traceability and POLICY_GAPS before editing. Actual files remain the checkpoint; no commit was created. The entire 2,607-line master was read in bounded sections; 80 route contracts and Q01–Q50 remain inventoried and explicitly distinguish planned work from tested code. Master/blueprint hashes are unchanged. Do not restart Phase 2 or bypass Google to close the remaining acceptance gate.

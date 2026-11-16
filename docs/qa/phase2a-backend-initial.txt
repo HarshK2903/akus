@@ -1,0 +1,707 @@
+...........................FFFFFFFFFF.FFFFF                              [100%]
+=================================== FAILURES ===================================
+_____________ test_non_admin_cannot_write_even_with_csrf[faculty] ______________
+
+client = <starlette.testclient.TestClient object at 0x79dda8ddd590>
+key = 'faculty'
+
+    @pytest.mark.parametrize("key", ["faculty", "drc", "hod", "acting-hod", "principal"])
+    def test_non_admin_cannot_write_even_with_csrf(client, key):
+        headers = login(client, key)
+>       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
+E       AssertionError: assert 422 == 403
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'PaceVLbCUFp8WrRsVIBG65yA2CvKBGIFEDkkY--PP-U', 'Idempotency-Key': '6c1f5d54-d1bc-4acc-aac5-bdeb8c5f05cb'}, json={'staff_key': 'TEST-8d6c7e9531f147e6', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +      where post = <starlette.testclient.TestClient object at 0x79dda8ddd590>.post
+E        +      and   {'staff_key': 'TEST-8d6c7e9531f147e6', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
+
+apps/api/tests/test_people.py:114: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "26049306-c044-4dff-98a1-33ec03a72a6e"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "a973b4d3-f327-4b35-9002-89297084fc93"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "26049306-c044-4dff-98a1-33ec03a72a6e"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "a973b4d3-f327-4b35-9002-89297084fc93"}
+_______________ test_non_admin_cannot_write_even_with_csrf[drc] ________________
+
+client = <starlette.testclient.TestClient object at 0x79dda80d9260>, key = 'drc'
+
+    @pytest.mark.parametrize("key", ["faculty", "drc", "hod", "acting-hod", "principal"])
+    def test_non_admin_cannot_write_even_with_csrf(client, key):
+        headers = login(client, key)
+>       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
+E       AssertionError: assert 422 == 403
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'jpaEY91QE_pwvNFeQtccALTX_7WSnFkuWItTm_vi6C0', 'Idempotency-Key': '3b7ce194-3f1a-4a9f-9dc8-a09a84acf04a'}, json={'staff_key': 'TEST-e3b95e33b58d43fc', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +      where post = <starlette.testclient.TestClient object at 0x79dda80d9260>.post
+E        +      and   {'staff_key': 'TEST-e3b95e33b58d43fc', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
+
+apps/api/tests/test_people.py:114: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "1bf04a42-8407-46e3-ac17-7ca0a85ea70a"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "cd22ec53-26d6-45d8-bb8d-c7ab18280ee4"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "1bf04a42-8407-46e3-ac17-7ca0a85ea70a"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "cd22ec53-26d6-45d8-bb8d-c7ab18280ee4"}
+_______________ test_non_admin_cannot_write_even_with_csrf[hod] ________________
+
+client = <starlette.testclient.TestClient object at 0x79dda8de4e20>, key = 'hod'
+
+    @pytest.mark.parametrize("key", ["faculty", "drc", "hod", "acting-hod", "principal"])
+    def test_non_admin_cannot_write_even_with_csrf(client, key):
+        headers = login(client, key)
+>       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
+E       AssertionError: assert 422 == 403
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'pSQzz_dmXpXVCilOlOt2rdNU5amQbKND-k1tTpvZdeM', 'Idempotency-Key': 'c1abba89-75d6-4193-a978-0b70efb4a526'}, json={'staff_key': 'TEST-90aaa18e99554b92', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +      where post = <starlette.testclient.TestClient object at 0x79dda8de4e20>.post
+E        +      and   {'staff_key': 'TEST-90aaa18e99554b92', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
+
+apps/api/tests/test_people.py:114: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8ef7987d-88fc-40a6-8d51-aa7228e1117d"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "d68d47ef-5313-4dd6-91ce-7ed64f5b22a3"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8ef7987d-88fc-40a6-8d51-aa7228e1117d"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "d68d47ef-5313-4dd6-91ce-7ed64f5b22a3"}
+____________ test_non_admin_cannot_write_even_with_csrf[acting-hod] ____________
+
+client = <starlette.testclient.TestClient object at 0x79dda8de5e10>
+key = 'acting-hod'
+
+    @pytest.mark.parametrize("key", ["faculty", "drc", "hod", "acting-hod", "principal"])
+    def test_non_admin_cannot_write_even_with_csrf(client, key):
+        headers = login(client, key)
+>       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
+E       AssertionError: assert 422 == 403
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'PbD91nPN-H6FfW5gn1xYvMdOI7eHvYj4cNwz8H5bblA', 'Idempotency-Key': '6bb809d5-6845-471c-8e42-495db64d67f8'}, json={'staff_key': 'TEST-a4ba6e9e5c174214', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +      where post = <starlette.testclient.TestClient object at 0x79dda8de5e10>.post
+E        +      and   {'staff_key': 'TEST-a4ba6e9e5c174214', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
+
+apps/api/tests/test_people.py:114: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b6d5d0d1-e73a-45b6-bf73-5f1a8820e044"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "722dc182-20b2-4d8c-9b71-cf9173943b58"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b6d5d0d1-e73a-45b6-bf73-5f1a8820e044"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "722dc182-20b2-4d8c-9b71-cf9173943b58"}
+____________ test_non_admin_cannot_write_even_with_csrf[principal] _____________
+
+client = <starlette.testclient.TestClient object at 0x79dda69daad0>
+key = 'principal'
+
+    @pytest.mark.parametrize("key", ["faculty", "drc", "hod", "acting-hod", "principal"])
+    def test_non_admin_cannot_write_even_with_csrf(client, key):
+        headers = login(client, key)
+>       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
+E       AssertionError: assert 422 == 403
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'YaYutg30kNIOFq_LNbsiPAjau8CiiytVdQFRMdoyVDk', 'Idempotency-Key': 'e6061483-27d4-44c3-bda6-864b3fc6f214'}, json={'staff_key': 'TEST-bb6f2d69610d4311', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +      where post = <starlette.testclient.TestClient object at 0x79dda69daad0>.post
+E        +      and   {'staff_key': 'TEST-bb6f2d69610d4311', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
+
+apps/api/tests/test_people.py:114: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bb610a01-a46c-47bf-8af1-26817988914f"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "b9fecec0-7183-4252-9891-75ae0b2581c8"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bb610a01-a46c-47bf-8af1-26817988914f"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "b9fecec0-7183-4252-9891-75ae0b2581c8"}
+________________ test_staff_command_atomic_idempotent_and_csrf _________________
+
+client = <starlette.testclient.TestClient object at 0x79dda80daf10>
+db = <sqlalchemy.orm.session.Session object at 0x79dda8062c10>
+
+    def test_staff_command_atomic_idempotent_and_csrf(client, db):
+        headers = login(client)
+        body = staff_body()
+        assert client.post("/api/v1/admin/staff", json=body, headers=ORIGIN).status_code == 422
+>       assert (
+            client.post(
+                "/api/v1/admin/staff", json=body, headers=headers | {"X-CSRF-Token": "wrong"}
+            ).status_code
+            == 403
+        )
+E       AssertionError: assert 422 == 403
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', json={'staff_key': 'TEST-0593f50dbb614a9c', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...}, headers=({'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'ghf9GxhFORF4299aaQgUQ6T9Wp9OxVExkq0ieiGoAeI', 'Idempotency-Key': 'c22ea66d-7250-4e51-b5ed-a909ae8fc530'} | {'X-CSRF-Token': 'wrong'}))
+E        +      where post = <starlette.testclient.TestClient object at 0x79dda80daf10>.post
+
+apps/api/tests/test_people.py:135: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "570d2796-51f4-4317-a80f-ba7a353244dd"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "a6f9e420-5f36-4bf7-b727-8296a2396637"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "8b16b54f-a2a2-4dc3-8900-784553dd1d57"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "570d2796-51f4-4317-a80f-ba7a353244dd"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "a6f9e420-5f36-4bf7-b727-8296a2396637"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "8b16b54f-a2a2-4dc3-8900-784553dd1d57"}
+_________ test_global_cross_department_exclusion_and_pending_principal _________
+
+client = <starlette.testclient.TestClient object at 0x79dda8d80e20>
+db = <sqlalchemy.orm.session.Session object at 0x79dda90c6490>
+
+    def test_global_cross_department_exclusion_and_pending_principal(client, db):
+        headers = login(client)
+>       person = create_person(client, headers)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/api/tests/test_people.py:183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0x79dda8d80e20>
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'DMduYBecPdxC7F1DrVtMYailHGRMXEyOayqRQPbqkI0', 'Idempotency-Key': '253451e5-686c-4d72-9e6b-ac3adc968b82'}
+dept = None, faculty = True
+
+    def create_person(client, headers, dept=None, faculty=True):
+        r = client.post(
+            "/api/v1/admin/staff",
+            headers=headers | {"Idempotency-Key": str(uuid4())},
+            json=staff_body(dept, faculty),
+        )
+>       assert r.status_code == 201, r.text
+E       AssertionError: {"error":{"code":"INVALID_REQUEST","message":"Invalid request","correlation_id":"0978d235-7685-448d-ba42-86477e2f0185"}}
+E       assert 422 == 201
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+apps/api/tests/test_people.py:52: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "27213ace-ac00-46a9-ba43-e173c14c0e7a"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "0978d235-7685-448d-ba42-86477e2f0185"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "27213ace-ac00-46a9-ba43-e173c14c0e7a"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "0978d235-7685-448d-ba42-86477e2f0185"}
+_____________ test_office_boundaries_and_same_role_different_scope _____________
+
+client = <starlette.testclient.TestClient object at 0x79dda8d80f30>
+db = <sqlalchemy.orm.session.Session object at 0x79dda8dfb9d0>
+
+    def test_office_boundaries_and_same_role_different_scope(client, db):
+        headers = login(client)
+>       person = create_person(client, headers)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/api/tests/test_people.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0x79dda8d80f30>
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '1RWvVzfEKuP9AvsPonPtvBaT3Ei08TO0MSZqLTCOAyE', 'Idempotency-Key': '79458253-18b7-43f0-9b47-6a6d3f521829'}
+dept = None, faculty = True
+
+    def create_person(client, headers, dept=None, faculty=True):
+        r = client.post(
+            "/api/v1/admin/staff",
+            headers=headers | {"Idempotency-Key": str(uuid4())},
+            json=staff_body(dept, faculty),
+        )
+>       assert r.status_code == 201, r.text
+E       AssertionError: {"error":{"code":"INVALID_REQUEST","message":"Invalid request","correlation_id":"642f0d52-caa8-450e-aad7-9cd503c745ca"}}
+E       assert 422 == 201
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+apps/api/tests/test_people.py:52: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "025ed921-24b7-46d6-b17f-6739cde2ac3d"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "642f0d52-caa8-450e-aad7-9cd503c745ca"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "025ed921-24b7-46d6-b17f-6739cde2ac3d"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "642f0d52-caa8-450e-aad7-9cd503c745ca"}
+___________ test_drc_requires_faculty_and_office_requires_employment ___________
+
+client = <starlette.testclient.TestClient object at 0x79dda5f3b460>
+db = <sqlalchemy.orm.session.Session object at 0x79dda5f1ed50>
+
+    def test_drc_requires_faculty_and_office_requires_employment(client, db):
+        headers = login(client)
+>       person = create_person(client, headers, faculty=False)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/api/tests/test_people.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0x79dda5f3b460>
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'fYFGJajPMdVEgQgDtj2R9HCq7b8LjCkrlHQiaKEZwgQ', 'Idempotency-Key': '034b1848-599d-461e-8c78-1af0875cda17'}
+dept = None, faculty = False
+
+    def create_person(client, headers, dept=None, faculty=True):
+        r = client.post(
+            "/api/v1/admin/staff",
+            headers=headers | {"Idempotency-Key": str(uuid4())},
+            json=staff_body(dept, faculty),
+        )
+>       assert r.status_code == 201, r.text
+E       AssertionError: {"error":{"code":"INVALID_REQUEST","message":"Invalid request","correlation_id":"e87cd347-b834-4d34-844f-fe61781d6e51"}}
+E       assert 422 == 201
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+apps/api/tests/test_people.py:52: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "df77b4b9-ef07-42db-9622-cfd4c9327988"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "e87cd347-b834-4d34-844f-fe61781d6e51"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "df77b4b9-ef07-42db-9622-cfd4c9327988"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "e87cd347-b834-4d34-844f-fe61781d6e51"}
+_________ test_end_is_versioned_idempotent_and_preserves_issued_record _________
+
+client = <starlette.testclient.TestClient object at 0x79dda80db570>
+db = <sqlalchemy.orm.session.Session object at 0x79dda8dfa350>
+
+    def test_end_is_versioned_idempotent_and_preserves_issued_record(client, db):
+        headers = login(client)
+>       person = create_person(client, headers)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/api/tests/test_people.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0x79dda80db570>
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'dDCtspNa-8EkPrAkrkYWehNPovAsEI0Zk9Jo6LvlLB4', 'Idempotency-Key': '0d765b02-6ac2-4f2a-9332-001f6f947ba7'}
+dept = None, faculty = True
+
+    def create_person(client, headers, dept=None, faculty=True):
+        r = client.post(
+            "/api/v1/admin/staff",
+            headers=headers | {"Idempotency-Key": str(uuid4())},
+            json=staff_body(dept, faculty),
+        )
+>       assert r.status_code == 201, r.text
+E       AssertionError: {"error":{"code":"INVALID_REQUEST","message":"Invalid request","correlation_id":"61bdde8a-78d2-48e7-8426-4c7d1d0655c3"}}
+E       assert 422 == 201
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+apps/api/tests/test_people.py:52: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ce494d7e-84e5-4e5a-94f8-5b3c4b335f97"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "61bdde8a-78d2-48e7-8426-4c7d1d0655c3"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ce494d7e-84e5-4e5a-94f8-5b3c4b335f97"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "61bdde8a-78d2-48e7-8426-4c7d1d0655c3"}
+____ test_demo_role_label_cannot_elevate_and_disabled_staff_session_revoked ____
+
+client = <starlette.testclient.TestClient object at 0x79dda5fd97b0>
+db = <sqlalchemy.orm.session.Session object at 0x79dda5ff5090>
+
+    def test_demo_role_label_cannot_elevate_and_disabled_staff_session_revoked(client, db):
+        demo = db.scalar(select(DemoIdentity).where(DemoIdentity.key == "faculty"))
+        person = db.get(Person, fixture_id("person/faculty"))
+        demo.role = "ADMIN"
+        db.commit()
+        try:
+            login(client, "faculty")
+            assert client.get("/api/v1/me").json()["role"] == "FACULTY"
+>           person.enabled = False
+            ^^^^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'enabled' and no __dict__ for setting new attributes
+
+apps/api/tests/test_people.py:293: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+client = <starlette.testclient.TestClient object at 0x79dda5fd97b0>
+db = <sqlalchemy.orm.session.Session object at 0x79dda5ff5090>
+
+    def test_demo_role_label_cannot_elevate_and_disabled_staff_session_revoked(client, db):
+        demo = db.scalar(select(DemoIdentity).where(DemoIdentity.key == "faculty"))
+        person = db.get(Person, fixture_id("person/faculty"))
+        demo.role = "ADMIN"
+        db.commit()
+        try:
+            login(client, "faculty")
+            assert client.get("/api/v1/me").json()["role"] == "FACULTY"
+            person.enabled = False
+            db.commit()
+            assert client.get("/api/v1/me").status_code == 403
+            assert client.get("/api/v1/me").status_code == 401
+        finally:
+>           person.enabled = True
+            ^^^^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'enabled' and no __dict__ for setting new attributes
+
+apps/api/tests/test_people.py:298: AttributeError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8bae6a21-8456-480d-a0e6-8618c642a532"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "910864df-838c-4aa0-bcf8-aa27147c0b3c"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8bae6a21-8456-480d-a0e6-8618c642a532"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "910864df-838c-4aa0-bcf8-aa27147c0b3c"}
+_______________ test_scheduled_and_expired_offices_grant_nothing _______________
+
+self = <sqlalchemy.engine.base.Connection object at 0x79dda8068950>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x79dda5ff6850>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x79dda8088050>
+
+    def _exec_insertmany_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for an "insertmanyvalues"
+        operation, which will invoke DBAPI
+        cursor.execute() one or more times with individual log and
+        event hook calls.
+    
+        """
+    
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+        else:
+            generic_setinputsizes = None
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters = parameters
+    
+        engine_events = self._has_events or self.engine._has_events
+        if self.dialect._has_events:
+            do_execute_dispatch: Iterable[Any] = (
+                self.dialect.dispatch.do_execute
+            )
+        else:
+            do_execute_dispatch = ()
+    
+        if engine_events:
+            _WORKAROUND_ISSUE_13018 = getattr(
+                self, "_WORKAROUND_ISSUE_13018", False
+            )
+        else:
+            _WORKAROUND_ISSUE_13018 = False
+    
+        if self._echo:
+            stats = context._get_cache_stats() + " (insertmanyvalues)"
+    
+        preserve_rowcount = context.execution_options.get(
+            "preserve_rowcount", False
+        )
+        rowcount = 0
+    
+        for imv_batch in dialect._deliver_insertmanyvalues_batches(
+            self,
+            cursor,
+            str_statement,
+            effective_parameters,
+            generic_setinputsizes,
+            context,
+        ):
+            if imv_batch.processed_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor,
+                        imv_batch.processed_setinputsizes,
+                        context,
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e,
+                        sql_util._long_statement(imv_batch.replaced_statement),
+                        imv_batch.replaced_parameters,
+                        None,
+                        context,
+                        is_sub_exec=True,
+                    )
+    
+            sub_stmt = imv_batch.replaced_statement
+            sub_params = imv_batch.replaced_parameters
+    
+            if engine_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    sub_stmt, sub_params = fn(
+                        self,
+                        cursor,
+                        sub_stmt,
+                        sub_params,
+                        context,
+                        True,
+                    )
+    
+            if self._echo:
+                self._log_info(sql_util._long_statement(sub_stmt))
+    
+                imv_stats = f""" {imv_batch.batchnum}/{
+                            imv_batch.total_batches
+                } ({
+                    'ordered'
+                    if imv_batch.rows_sorted else 'unordered'
+                }{
+                    '; batch not supported'
+                    if imv_batch.is_downgraded
+                    else ''
+                })"""
+    
+                if imv_batch.batchnum == 1:
+                    stats += imv_stats
+                else:
+                    stats = f"insertmanyvalues{imv_stats}"
+    
+                self._log_parameters(sub_params, stats, ismulti=False)
+    
+            try:
+                for fn in do_execute_dispatch:
+                    if fn(
+                        cursor,
+                        sub_stmt,
+                        sub_params,
+                        context,
+                    ):
+                        break
+                else:
+>                   dialect.do_execute(
+                        cursor,
+                        sub_stmt,
+                        sub_params,
+                        context,
+                    )
+
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=55432 user=akus_demo database=akus_test) at 0x79dda806a510>
+query = 'INSERT INTO office_appointments (id, person_id, department_id, office, valid_from, valid_until, original_until, sourc...ion__1)s::INTEGER) RETURNING office_appointments.office_group, office_appointments.recorded_at, office_appointments.id'
+params = {'reason__0': 'Temporal resolution', 'office__0': 'HOD', 'department_id__0': UUID('a3c5c6cc-647a-4c0f-bdb3-d01aab40dda3'), 'version__0': 1, ...}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.ForeignKeyViolation: insert or update on table "office_appointments" violates foreign key constraint "office_appointments_person_id_fkey"
+E           DETAIL:  Key (person_id)=(1330d216-c78f-52d3-85bd-cc21b8efc1b5) is not present in table "persons".
+
+.venv/lib/python3.13/site-packages/psycopg/cursor.py:117: ForeignKeyViolation
+
+The above exception was the direct cause of the following exception:
+
+client = <starlette.testclient.TestClient object at 0x79dda5fdbac0>
+db = <sqlalchemy.orm.session.Session object at 0x79dda5ff7890>
+
+    def test_scheduled_and_expired_offices_grant_nothing(client, db):
+        login(client, "faculty")
+        now = datetime.now(UTC)
+        person = fixture_id("person/faculty")
+        dept = fresh_dept(db)
+        for start, end in [
+            (now - timedelta(days=3), now - timedelta(days=2)),
+            (now + timedelta(days=3), now + timedelta(days=4)),
+        ]:
+            db.add(
+                OfficeAppointment(
+                    person_id=person,
+                    department_id=dept,
+                    office="HOD",
+                    valid_from=start,
+                    valid_until=end,
+                    original_until=end,
+                    source_reference="LOCAL_TEST",
+                    reason="Temporal resolution",
+                )
+            )
+>       db.commit()
+
+apps/api/tests/test_people.py:324: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:2035: in commit
+    trans.commit(_to_root=True)
+<string>:2: in commit
+    ???
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1316: in commit
+    self._prepare_impl()
+<string>:2: in _prepare_impl
+    ???
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1290: in _prepare_impl
+    self.session.flush()
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4360: in flush
+    self._flush(objects)
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4495: in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4456: in _flush
+    flush_context.execute()
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:465: in execute
+    rec.execute(self)
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:641: in execute
+    util.preloaded.orm_persistence.save_obj(
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:94: in save_obj
+    _emit_insert_statements(
+.venv/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:1144: in _emit_insert_statements
+    result = connection.execute(
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1464: in execute
+    return meth(
+.venv/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1686: in _execute_clauseelement
+    ret = self._execute_context(
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1889: in _execute_context
+    return self._exec_insertmany_context(dialect, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2151: in _exec_insertmany_context
+    self._handle_dbapi_exception(
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2381: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2143: in _exec_insertmany_context
+    dialect.do_execute(
+.venv/lib/python3.13/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=55432 user=akus_demo database=akus_test) at 0x79dda806a510>
+query = 'INSERT INTO office_appointments (id, person_id, department_id, office, valid_from, valid_until, original_until, sourc...ion__1)s::INTEGER) RETURNING office_appointments.office_group, office_appointments.recorded_at, office_appointments.id'
+params = {'reason__0': 'Temporal resolution', 'office__0': 'HOD', 'department_id__0': UUID('a3c5c6cc-647a-4c0f-bdb3-d01aab40dda3'), 'version__0': 1, ...}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.ForeignKeyViolation) insert or update on table "office_appointments" violates foreign key constraint "office_appointments_person_id_fkey"
+E           DETAIL:  Key (person_id)=(1330d216-c78f-52d3-85bd-cc21b8efc1b5) is not present in table "persons".
+E           [SQL: INSERT INTO office_appointments (id, person_id, department_id, office, valid_from, valid_until, original_until, source_reference, reason, version) VALUES (%(id__0)s::UUID, %(person_id__0)s::UUID, %(department_id__0)s::UUID, %(office__0)s::VARCHAR, %( ... 538 characters truncated ...  RETURNING office_appointments.office_group, office_appointments.recorded_at, office_appointments.id]
+E           [parameters: {'reason__0': 'Temporal resolution', 'office__0': 'HOD', 'department_id__0': UUID('a3c5c6cc-647a-4c0f-bdb3-d01aab40dda3'), 'version__0': 1, 'source_reference__0': 'LOCAL_TEST', 'person_id__0': UUID('1330d216-c78f-52d3-85bd-cc21b8efc1b5'), 'valid_until__0': datetime.datetime(2026, 11, 14, 4, 14, 49, 815263, tzinfo=datetime.timezone.utc), 'original_until__0': datetime.datetime(2026, 11, 14, 4, 14, 49, 815263, tzinfo=datetime.timezone.utc), 'id__0': UUID('7cd8de8d-187b-4b2c-953a-f8568e72360d'), 'valid_from__0': datetime.datetime(2026, 11, 13, 4, 14, 49, 815263, tzinfo=datetime.timezone.utc), 'reason__1': 'Temporal resolution', 'office__1': 'HOD', 'department_id__1': UUID('a3c5c6cc-647a-4c0f-bdb3-d01aab40dda3'), 'version__1': 1, 'source_reference__1': 'LOCAL_TEST', 'person_id__1': UUID('1330d216-c78f-52d3-85bd-cc21b8efc1b5'), 'valid_until__1': datetime.datetime(2026, 11, 20, 4, 14, 49, 815263, tzinfo=datetime.timezone.utc), 'original_until__1': datetime.datetime(2026, 11, 20, 4, 14, 49, 815263, tzinfo=datetime.timezone.utc), 'id__1': UUID('0bb2c635-4f17-47a2-af66-5bec4fda4909'), 'valid_from__1': datetime.datetime(2026, 11, 19, 4, 14, 49, 815263, tzinfo=datetime.timezone.utc)}]
+E           (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+.venv/lib/python3.13/site-packages/psycopg/cursor.py:117: IntegrityError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "baec9a76-f3ec-48c0-9a37-fe6748009fc4"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "baec9a76-f3ec-48c0-9a37-fe6748009fc4"}
+____________ test_rehire_keeps_identity_and_episodes_do_not_overlap ____________
+
+client = <starlette.testclient.TestClient object at 0x79dda8d82030>
+db = <sqlalchemy.orm.session.Session object at 0x79dda6955810>
+
+    def test_rehire_keeps_identity_and_episodes_do_not_overlap(client, db):
+        login(client)
+        person = fixture_id("person/rehired")
+        history = client.get(f"/api/v1/people/staff/{person}").json()
+>       assert len(history["episodes"]) == 2
+                   ^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'episodes'
+
+apps/api/tests/test_people.py:336: KeyError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "2bc09936-0704-49e3-9fbf-3f1e629fae04"}
+{"event": "http_request", "method": "GET", "status": 404, "correlation_id": "ba16f0b2-5148-432c-a344-1bcdefa6443f"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "2bc09936-0704-49e3-9fbf-3f1e629fae04"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "GET", "status": 404, "correlation_id": "ba16f0b2-5148-432c-a344-1bcdefa6443f"}
+__________ test_global_exclusion_with_two_concurrent_database_writers __________
+
+client = <starlette.testclient.TestClient object at 0x79dda5f3b570>
+db = <sqlalchemy.orm.session.Session object at 0x79dda5f1d590>
+
+    def test_global_exclusion_with_two_concurrent_database_writers(client, db):
+        headers = login(client)
+>       person = UUID(create_person(client, headers))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/api/tests/test_people.py:353: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0x79dda5f3b570>
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'V17sxdj-M7xcUmplIdUigA5JNdyIwreG3WHii_eP57I', 'Idempotency-Key': '8f09239a-225f-4f1c-aa9c-b0606f81a91e'}
+dept = None, faculty = True
+
+    def create_person(client, headers, dept=None, faculty=True):
+        r = client.post(
+            "/api/v1/admin/staff",
+            headers=headers | {"Idempotency-Key": str(uuid4())},
+            json=staff_body(dept, faculty),
+        )
+>       assert r.status_code == 201, r.text
+E       AssertionError: {"error":{"code":"INVALID_REQUEST","message":"Invalid request","correlation_id":"85dfb85e-8b92-49eb-8b67-f2a304068047"}}
+E       assert 422 == 201
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+apps/api/tests/test_people.py:52: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3453efcb-95e5-4321-ad98-aa7c9b121a5e"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "85dfb85e-8b92-49eb-8b67-f2a304068047"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3453efcb-95e5-4321-ad98-aa7c9b121a5e"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "85dfb85e-8b92-49eb-8b67-f2a304068047"}
+______________ test_authority_rechecked_before_idempotent_replay _______________
+
+client = <starlette.testclient.TestClient object at 0x79dda5ee0e20>
+db = <sqlalchemy.orm.session.Session object at 0x79dda5ff5f90>
+
+    def test_authority_rechecked_before_idempotent_replay(client, db):
+        headers = login(client)
+        body = staff_body()
+>       assert client.post("/api/v1/admin/staff", headers=headers, json=body).status_code == 201
+E       AssertionError: assert 422 == 201
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'y1LdmqDeIrFxUvcfHSnTTVVgGRdzmiCBCPqKUhr9BEg', 'Idempotency-Key': '605a6512-62c6-4ff2-ad31-917b22389eb2'}, json={'staff_key': 'TEST-fd2e54f75d424b11', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +      where post = <starlette.testclient.TestClient object at 0x79dda5ee0e20>.post
+
+apps/api/tests/test_people.py:397: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "644189e8-f4f6-4177-9989-a21cb2524998"}
+{"event": "http_request", "method": "POST", "status": 422, "correlation_id": "0051360b-d4ac-42d4-9740-33339bc95cf7"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "644189e8-f4f6-4177-9989-a21cb2524998"}
+INFO     akus:main.py:61 {"event": "http_request", "method": "POST", "status": 422, "correlation_id": "0051360b-d4ac-42d4-9740-33339bc95cf7"}
+=============================== warnings summary ===============================
+.venv/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /media/bugulnoz/New Volume/2/akus/.venv/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_people.py::test_non_admin_cannot_write_even_with_csrf[faculty]
+FAILED apps/api/tests/test_people.py::test_non_admin_cannot_write_even_with_csrf[drc]
+FAILED apps/api/tests/test_people.py::test_non_admin_cannot_write_even_with_csrf[hod]
+FAILED apps/api/tests/test_people.py::test_non_admin_cannot_write_even_with_csrf[acting-hod]
+FAILED apps/api/tests/test_people.py::test_non_admin_cannot_write_even_with_csrf[principal]
+FAILED apps/api/tests/test_people.py::test_staff_command_atomic_idempotent_and_csrf
+FAILED apps/api/tests/test_people.py::test_global_cross_department_exclusion_and_pending_principal
+FAILED apps/api/tests/test_people.py::test_office_boundaries_and_same_role_different_scope
+FAILED apps/api/tests/test_people.py::test_drc_requires_faculty_and_office_requires_employment
+FAILED apps/api/tests/test_people.py::test_end_is_versioned_idempotent_and_preserves_issued_record
+FAILED apps/api/tests/test_people.py::test_demo_role_label_cannot_elevate_and_disabled_staff_session_revoked
+FAILED apps/api/tests/test_people.py::test_scheduled_and_expired_offices_grant_nothing
+FAILED apps/api/tests/test_people.py::test_rehire_keeps_identity_and_episodes_do_not_overlap
+FAILED apps/api/tests/test_people.py::test_global_exclusion_with_two_concurrent_database_writers
+FAILED apps/api/tests/test_people.py::test_authority_rechecked_before_idempotent_replay
+15 failed, 28 passed, 1 warning in 3.77s
