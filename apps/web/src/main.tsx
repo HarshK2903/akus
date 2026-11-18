@@ -1,4 +1,23 @@
 import React from "react";
+import {
+  Applications,
+  ApplicationDraft,
+  ApplicationDetail,
+} from "./pages/academic/Applications";
+import {
+  Catalog,
+  CourseDetail,
+  CourseForm,
+  OfferingDetail,
+  ProviderSources,
+} from "./pages/academic/Catalog";
+import {
+  Topics,
+  MappingList,
+  MappingDetail,
+  QuotaList,
+  QuotaDetail,
+} from "./pages/academic/Governance";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -47,6 +66,43 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               element={<RoleDashboard role="ADMIN" />}
             />
             <Route path="/app/system" element={<Overview />} />
+            <Route path="/app/catalog" element={<Catalog />} />
+            <Route path="/app/catalog/:courseId" element={<CourseDetail />} />
+            <Route
+              path="/app/offerings/:offeringId"
+              element={<OfferingDetail />}
+            />
+            <Route path="/admin/catalog/new" element={<CourseForm />} />
+            <Route path="/admin/nptel-sync" element={<ProviderSources />} />
+            <Route
+              path="/admin/nptel-offerings"
+              element={<ProviderSources versions />}
+            />
+            <Route path="/hod/topics" element={<Topics />} />
+            <Route path="/hod/topics/:topicId" element={<Topics />} />
+            <Route path="/hod/topic-mappings" element={<MappingList />} />
+            <Route
+              path="/hod/topic-mappings/requests"
+              element={<MappingList requests />}
+            />
+            <Route
+              path="/hod/topic-mappings/:courseId"
+              element={<MappingDetail />}
+            />
+            <Route
+              path="/hod/topic-mappings/:courseId/edit"
+              element={<MappingDetail editing />}
+            />
+            <Route path="/hod/quotas/new" element={<QuotaDetail creating />} />
+            <Route path="/hod/quotas/:poolId" element={<QuotaDetail />} />
+            <Route
+              path="/hod/quotas/:poolId/edit"
+              element={<QuotaDetail editing />}
+            />
+            <Route
+              path="/hod/quotas/:poolId/ledger"
+              element={<QuotaDetail ledger />}
+            />
             {[
               "/app/teaching",
               "/people/teaching",
@@ -86,25 +142,39 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/admin/staff/:staffId/sources"
               element={<SourceCorrection />}
             />
-            <Route
-              path="/app/applications"
-              element={<AcademicIntegration area="applications" />}
-            />
+            <Route path="/app/applications" element={<Applications />} />
             <Route
               path="/app/compliance"
               element={<AcademicIntegration area="compliance" />}
             />
+            <Route path="/drc/reviews" element={<Applications review />} />
+            <Route path="/hod/reviews" element={<Applications review />} />
+            <Route path="/hod/quotas" element={<QuotaList />} />
             <Route
-              path="/drc/reviews"
-              element={<AcademicIntegration area="reviews" />}
+              path="/app/applications/new/*"
+              element={<ApplicationDraft />}
             />
             <Route
-              path="/hod/reviews"
-              element={<AcademicIntegration area="reviews" />}
+              path="/app/applications/:appId"
+              element={<ApplicationDetail />}
             />
             <Route
-              path="/hod/quotas"
-              element={<AcademicIntegration area="quotas" />}
+              path="/app/applications/:appId/quota"
+              element={<ApplicationDetail />}
+            />
+            <Route
+              path="/app/applications/:appId/history"
+              element={<ApplicationDetail />}
+            />
+            <Route path="/drc/reviews/:appId" element={<ApplicationDetail />} />
+            <Route path="/hod/reviews/:appId" element={<ApplicationDetail />} />
+            <Route
+              path="/hod/quota-transfers"
+              element={<Applications reconciliation />}
+            />
+            <Route
+              path="/hod/quota-transfers/:caseId"
+              element={<ApplicationDetail caseView />}
             />
             <Route
               path="/principal/reports"

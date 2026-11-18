@@ -3,6 +3,7 @@
 ## Governing specification
 - `docs/spec/AKUS_MASTER_SPEC.txt` is the binding, self-contained functional + architecture + UI/UX specification. It embeds the blueprint and approved latest V2.4 amendments.
 - `docs/spec/AKUS_UIUX_BLUEPRINT.md` is a readable duplicate of the UX blueprint, useful for focused design work. Never interpret duplication as a second conflicting policy source.
+- The user-confirmed 2026-11-18 hall-ticket scheduled-date verification clarification is recorded in `docs/policy/HALL_TICKET_AUTHORITY_2026-11-18.md`: current department HoD may authenticate person-specific official schedule evidence; all other unresolved verification authorities remain pending.
 - Newer explicitly binding institutional overrides inside the master spec take precedence over historical Q01-Q50 rules. Historical rules must be retained for traceability but disabled when superseded.
 - Unresolved rules are NOT permission to invent policy. Use safe blocked `POLICY_PENDING` decisions, tests and an unresolved register.
 

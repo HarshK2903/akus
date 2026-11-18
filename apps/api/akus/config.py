@@ -2,11 +2,12 @@ from typing import Literal
 from urllib.parse import urlsplit
 
 from cryptography.fernet import Fernet
-from pydantic import SecretStr, model_validator
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    nptel_snapshot_max_age_seconds: int = Field(default=3600, ge=60, le=86400)
     model_config = SettingsConfigDict(
         env_prefix="AKUS_", env_file=".env", extra="ignore", hide_input_in_errors=True
     )

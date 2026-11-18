@@ -1,0 +1,41 @@
+NAME                   IMAGE                COMMAND                  SERVICE   CREATED         STATUS                     PORTS
+akus-local-api-1       akus-local-api       "uvicorn akus.main:c…"   api       3 minutes ago   Up 3 minutes (healthy)     
+akus-local-db-1        postgres:16          "docker-entrypoint.s…"   db        2 days ago      Up 19 minutes (healthy)    5432/tcp
+akus-local-migrate-1   akus-local-migrate   "sh -c 'alembic -c a…"   migrate   3 minutes ago   Exited (0) 3 minutes ago   
+akus-local-proxy-1     caddy:2-alpine       "caddy run --config …"   proxy     2 days ago      Up 19 minutes              443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1       akus-local-web       "caddy run --config …"   web       2 minutes ago   Up 2 minutes               80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1    akus-local-worker    "python -m akus.work…"   worker    3 minutes ago   Up 3 minutes               
+akus-local_akus_pg 2026-11-16T00:36:02+05:30
+0010_personal_schedule (head)
+No new upgrade operations detected.
+            fact             | records 
+-----------------------------+---------
+ persons                     |      28
+ source_revisions            |     195
+ audit_events                |     915
+ applications                |      14
+ quota_ledger                |      29
+ personal_schedule_revisions |       3
+ external_identities         |       0
+(7 rows)
+
+    name    |            seen_at            | heartbeat_age  
+------------+-------------------------------+----------------
+ foundation | 2026-11-18 13:51:23.486582+00 | 00:00:02.56488
+(1 row)
+
+ state | count 
+-------+-------
+ DONE  |    62
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+

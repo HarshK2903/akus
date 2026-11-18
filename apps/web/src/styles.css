@@ -1296,6 +1296,8 @@ textarea:focus-visible {
 .checkbox-label input {
   width: 1rem;
   height: 1rem;
+  min-height: 1rem;
+  padding: 0;
   margin-top: 0.25rem;
   flex-shrink: 0;
 }
@@ -1442,4 +1444,48 @@ textarea:focus-visible {
   .recovery-page {
     padding: 1.4rem;
   }
+}
+
+/* Phase 3 catalog and academic governance */
+.category-tags,
+.academic-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+.academic-links a {
+  padding: 0.35rem 0;
+  margin-right: 0.65rem;
+}
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.25rem 0;
+  align-items: end;
+}
+.filter-bar > * {
+  flex: 1;
+  min-width: min(240px, 100%);
+}
+.source-history {
+  list-style: none;
+  padding: 1.25rem;
+}
+.source-history li {
+  padding: 0.8rem;
+  border-left: 2px solid #dbe4ef;
+  margin-bottom: 0.5rem;
+  overflow-wrap: anywhere;
+}
+.source-history dd {
+  margin: 0.3rem 0 1rem;
+}
+.prose details {
+  overflow-wrap: anywhere;
+  margin: 0.75rem 0;
 }

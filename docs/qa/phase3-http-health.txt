@@ -1,0 +1,6 @@
+Checked at: 2026-11-18T13:51:27.811840+00:00
+Frontend: 200
+Readiness: {'status': 'ready', 'database': 'connected', 'schema_version': '0010_personal_schedule'}
+Auth configuration: {'demo_enabled': True, 'google_enabled': False, 'institution_label': 'Local demonstration institution'}
+Authenticated foundation: {'phase': 1, 'database': 'connected', 'worker': 'running', 'worker_seen_at': '2026-11-18T13:51:23.486582Z', 'google': 'not_configured', 'nptel': 'not_connected', 'institution_label': 'Local demonstration institution', 'checked_at': '2026-11-18T13:51:27.837055Z'}
+New case endpoint in OpenAPI: True

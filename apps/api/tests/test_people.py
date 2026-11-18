@@ -11,6 +11,7 @@ from sqlalchemy import func, select, text
 from sqlalchemy.exc import DBAPIError, IntegrityError
 
 from akus.access import authority
+from akus.auth import digest
 from akus.models import AuthSession, DemoIdentity
 from akus.people.models import (
     AdministrativeGrant,
@@ -322,7 +323,7 @@ def test_scheduled_and_expired_offices_grant_nothing(client, db):
     db.commit()
     assert client.get("/api/v1/me").json()["role"] == "FACULTY"
     demo = db.scalar(select(DemoIdentity).where(DemoIdentity.key == "faculty"))
-    session = db.scalar(select(AuthSession).where(AuthSession.identity_id == demo.id))
+    session = db.get(AuthSession, digest(client.cookies.get("akus_demo_session")))
     assert authority(db, demo, session, now + timedelta(days=3)).primary_role == "HOD"
     assert authority(db, demo, session, now + timedelta(days=4)).primary_role == "FACULTY"
 

@@ -77,7 +77,11 @@ test("Admin creates source records, appoints a DRC, ends authority and sees immu
     .getByRole("link", { name: "Employment history", exact: true })
     .click();
   await expect(page).toHaveURL(/\/employment$/);
-  await expect(page.getByRole("cell", { name: "2026-07-01" })).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Employment history", exact: true })
+      .getByRole("cell", { name: "2026-07-01", exact: true }),
+  ).toBeVisible();
   await page
     .getByRole("link", { name: "Record appointment", exact: true })
     .click();

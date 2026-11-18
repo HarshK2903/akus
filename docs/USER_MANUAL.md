@@ -1,20 +1,112 @@
-# Local demonstration
+# Phase 2 local walkthrough
 
-1. Open http://127.0.0.1:5173 and choose a clearly fictional demo identity. Google sign-in is disabled with an explanation.
-2. Enter the workspace. Refresh reads actual API/database state; worker shows running only for a recent heartbeat. Academic years are LOCAL/DEMO rows, not published quotas.
-3. Open Profile & access to inspect your current source authority, employment episodes, office history and access limits.
-4. Open Policy guide. Search `quota` or `P-51`; confirmed and pending decisions remain distinct. Search survives reload.
-5. On small screens use Open navigation; Escape closes the dialog and restores focus. Scroll the year table with keyboard focus.
-6. Sign out to revoke the server session. A direct profile link then returns to sign-in.
+Open **http://127.0.0.1:8080**. The current dataset is LOCAL/DEMO. Google shows
+configuration required until securely configured; no real person can be signed in
+through the fixture selector. Institutional instructions: GOOGLE_OIDC_SETUP.md.
 
-Faculty and DRC use `/app/home`, HoD uses `/hod/home`, Principal `/principal/home`, Admin `/admin/home`. These are foundation views, not full role dashboards. HoD and Principal have no personal application workflow. The six login fixtures plus two history-only fixtures are not real staff. Reviews, quota edits, catalog, applications, certificate evidence, annual/Silver assessment, reports will arrive in later tested phases.
+## Staff, employment and office sources
 
-## Staff and office source workflow (Phase 2A)
+1. Choose **Nila Shah · Admin**. Administration workspace shows actual staff, staged
+   import and account-request counts. Staff directory → Add staff record records
+   permanent identity, first employment and department with source/reason. It does
+   not create a Google account or infer an office.
+2. Open a staff detail to inspect episodes, offices, department/email history and
+   teaching. **Manage source records** allows person, employment, department, email
+   and office correction with expected version and source/reason. Employment history
+   is a dedicated episode register; rehire creates another non-overlapping episode
+   under the same permanent person. Dates are explicit; ends_before is exclusive.
+3. **Record appointment** uses approved role/scope/effective dates. DRC must be faculty;
+   DRC/HoD overlap is forbidden globally, including acting HoD. Current offices must
+   fit employment. End a temporary office on its dedicated detail page with reason,
+   source and confirmation. Correcting an issued office preserves and supersedes the
+   original; source history shows both facts. Changing authority affects existing
+   sessions without a fresh login.
+4. If an episode change would exclude dependent department, teaching or office records,
+   correct those source facts first. No source command silently waives academic
+   obligations or decides role-transition/separation policy.
 
-1. Choose **Nila Shah · Admin**. Open **Staff directory → Add staff record**. Enter a new permanent staff key, display name, home department, employment start, classification, source reference and reason. Submit; the saved detail and immutable change event appear only after the server commits. This does not create a sign-in account.
-2. On detail choose **Employment history** to inspect episodes; Tara Bose's fictional history shows two episodes sharing one identity. Editing past episodes and recording separation are not yet available.
-3. Choose **Record appointment**. Select source-authorized office and scope, exact IST start/end (end exclusive), source and rationale. DRC must be faculty. An overlapping DRC/HoD appointment is rejected even across departments; input remains for correction. Existing academic cases are not altered.
-4. In **Office appointments**, choose **View appointment**. Inspect original issued dates separately from current effective expiry. For a current appointment, enter the official end reason/source, confirm the checkbox and select **End appointment now**. The record remains; staff history shows the immutable end event. Do this only on a temporary demonstration appointment if preserving the six standard login examples.
-5. Choose **Dev Mehta · Principal** to read the institution-wide staff/office registers with no source-write controls. Leela Iyer sees only CSE staff and scoped offices, Omar Das only ECE. Faculty/DRC see their own source histories. All API scopes are server-enforced.
+## Official CSV/XLSX imports
 
-The source actions above are functional LOCAL/DEMO workflows. All new source records are fictional in this environment. There is no institutional OIDC, staff import, teaching management, academic approval, quota or compliance integration yet. Role dashboards remain partial.
+1. Create needed departments/subjects/academic years in **Reference setup** first.
+2. **Source imports** → choose Staff roster or Teaching assignments, enter source
+   reference, upload UTF-8 CSV or one-worksheet XLSX. Maximum 4 MiB, 500 data rows,
+   20 columns; formulas, macros/external links and malformed/oversized files are
+   rejected. Headers must match the displayed column names. Dates use YYYY-MM-DD;
+   email validity uses timezone-aware ISO datetime.
+3. Review normalized rows and every error on the persisted preview. A failed row
+   prevents the entire commit. Correct the source file and stage a new job. Existing
+   staff keys/teaching allocation keys require explicit source correction instead of
+   silently overwriting data. Reloading the preview preserves its result.
+4. Check the authorization confirmation and **Commit validated import**. The server
+   rechecks all rows and current Admin permission in one transaction. Retrying a
+   committed import returns its recorded result; it does not create duplicate staff.
+
+Staff columns:
+`staff_key,display_name,department_code,starts_on,ends_before,is_faculty,email,email_valid_from`.
+Use explicit true/false classification. Email is optional; if present it must be
+@example.test in demo, @cmrit.ac.in in institutional mode, with valid-from. There is
+no role column. Example fictional CSV (choose a new unique key on each demonstration):
+
+```csv
+staff_key,display_name,department_code,starts_on,ends_before,is_faculty
+LOCAL-IMPORT-001,Synthetic colleague,CSE,2020-07-01,,true
+```
+
+Teaching columns:
+`external_key,staff_key,episode_starts_on,subject_code,department_code,academic_year_start,term,starts_on,ends_before`.
+The episode, subject, department and year must already exist. The true teaching
+interval must fit its episode and configured year. No invented teaching is loaded
+for the five named real participants. Backend tests cover XLSX teaching imports;
+browser tests cover CSV staging/commit and manual teaching correction.
+
+## Teaching and academic reference
+
+Reference setup creates departments, canonical subjects, aliases and official July 1
+academic years. Stable codes/IDs are retained on name corrections. Alias corrections
+cannot merge distinct subjects; that governance remains pending. A year ends June 30
+and does not publish quotas or reset/carry capacity.
+
+**Teaching allocations** filters by staff name, department, subject, year and term.
+Admin records a source allocation, inspects its detail, and uses **Correct source
+record** for date/term/source correction or an explicit void. Before/after history is
+retained. The timeline uses the earliest non-voided official date for the same canonical
+subject and employment episode; repeating a semester does not reset it, rehire does.
+It shows a provisional two-year anniversary only where calculable. IO-02 acceptance
+and P-54 leap-day handling remain pending; this is not a compliance assessment.
+
+## Five role workspaces
+
+- Mira Rao, **Faculty**: personal source profile/teaching; application route readiness
+  DRC → HoD and compliance dependency. Other staff/source writes denied.
+- Arun Sen, **DRC Head**: distinct faculty responsibilities and independent review
+  navigation; own application readiness directly HoD. No self-review decision exists.
+- Leela Iyer, **HoD**: CSE source oversight/teaching, review/quota dependency links;
+  no applicant route. Omar Das demonstrates acting HoD limited to ECE.
+- Nila Shah, **Admin**: imports, reference/setup, source corrections and controlled
+  pending-account reconciliation; Admin alone grants no academic reviewer powers.
+- Dev Mehta, **Principal**: institution-wide source overview and registers with no
+  source writes or applicant route. Academic reports are later work.
+
+Policy guide keeps confirmed/pending decisions separate. **System connections &
+academic calendar** opens actual readiness/worker/year data. Academic services show
+NOT_IMPLEMENTED where Phases 3–7 are required; no quota/submission/review/certificate
+result is fabricated. On mobile use Open navigation; Escape restores focus. Sign out
+revokes the server session. Protected deep links then return to sign-in.
+
+## Real account acceptance
+
+All five user-named real accounts remain **BLOCKED / NOT VERIFIED**. The tracked roster
+template contains intended roles and blank facts only. An authorized operator must
+supply approved private roster/office facts, configure the real Web OAuth client,
+bootstrap the first Admin in a protected separate dataset and have EACH participant
+voluntarily sign in with Google. Follow GOOGLE_OIDC_SETUP.md; never use demo fixtures
+to claim these cases passed and never save auth codes/tokens in screenshots.
+
+## Phase 3 academic workflow
+
+Course discovery, exact provider sources, topic proposals/HoD mappings, annual quota
+publication, draft/submission, ordinary reviews, withdrawal, ledger and transfer cases
+now have working pages. The earlier phase description above is retained for source
+workflows; these academic integrations are no longer placeholders. Follow
+[NPTEL_PROVIDER_SETUP.md](NPTEL_PROVIDER_SETUP.md) for exact roles, steps, current
+manual hall-ticket verification and evidence/compliance boundaries.

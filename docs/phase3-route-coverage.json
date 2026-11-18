@@ -1,0 +1,162 @@
+{
+  "FAC-01": [
+    "pages/Dashboards.tsx",
+    "dashboard; applications",
+    "VERIFIED source workspace and admission navigation; final compliance metrics later"
+  ],
+  "HOD-01": [
+    "pages/Dashboards.tsx",
+    "dashboard; departments/*/quotas; applications",
+    "VERIFIED scoped sources and mapping/quota/review navigation; full metrics later"
+  ],
+  "ADM-01": [
+    "pages/Dashboards.tsx",
+    "dashboard; admin/nptel/provider-fetches",
+    "VERIFIED sources/imports/accounts and real public provider fetch"
+  ],
+  "ADM-08": [
+    "pages/ReferenceSetup.tsx",
+    "sources/reference; admin/reference",
+    "VERIFIED July\u2013June years; annual quota publication on HOD pages"
+  ],
+  "FAC-02": [
+    "pages/academic/Catalog.tsx",
+    "nptel/courses",
+    "VERIFIED catalog search, categories, pagination and source status"
+  ],
+  "FAC-03": [
+    "pages/academic/Catalog.tsx",
+    "nptel/courses/{id}",
+    "VERIFIED canonical identity, exact offerings and provenance"
+  ],
+  "FAC-04": [
+    "pages/academic/Catalog.tsx",
+    "nptel/offerings/{id}; nptel/mapping-requests",
+    "VERIFIED exact source/dates/topic/pool/blockers, admission and mapping request"
+  ],
+  "FAC-05": [
+    "pages/academic/Applications.tsx",
+    "applications",
+    "VERIFIED scoped drafts/submissions, current allocation and cases"
+  ],
+  "FAC-06": [
+    "pages/academic/Applications.tsx",
+    "nptel/offerings; applications",
+    "PARTIAL: catalog-to-draft selection; full evidence wizard later"
+  ],
+  "FAC-07": [
+    "pages/academic/Applications.tsx",
+    "applications; applications/{id}/submit",
+    "VERIFIED safe first-attempt declarations/reservation; evidence-dependent branches blocked"
+  ],
+  "FAC-08": [
+    "pages/academic/Applications.tsx",
+    "applications/new wildcard",
+    "NOT COMPLETE: no evidence upload; wildcard does not satisfy evidence-page acceptance"
+  ],
+  "FAC-09": [
+    "pages/academic/Applications.tsx",
+    "applications/{id}; applications/{id}/submit",
+    "PARTIAL: review/confirmation on draft detail, not a separate wizard step"
+  ],
+  "FAC-10": [
+    "pages/academic/Applications.tsx",
+    "applications/{id}; review; withdraw; schedule-claims",
+    "VERIFIED ordinary decisions, withdrawal and personal schedule claims; broader lifecycle later"
+  ],
+  "FAC-11": [
+    "pages/academic/Applications.tsx",
+    "applications/{id}",
+    "VERIFIED original/current/official years, allocation and immutable movements"
+  ],
+  "FAC-13": [
+    "pages/academic/Applications.tsx",
+    "applications/{id}",
+    "VERIFIED submission/source/movement/decision history; later evidence events absent"
+  ],
+  "DRC-01": [
+    "pages/academic/Applications.tsx",
+    "applications?review=true",
+    "VERIFIED scoped review queue and no self-review; advanced queue filters later"
+  ],
+  "HOD-02": [
+    "pages/academic/Applications.tsx",
+    "applications?review=true",
+    "VERIFIED scoped review queue and no self-review; advanced queue filters later"
+  ],
+  "DRC-02": [
+    "pages/academic/Applications.tsx",
+    "applications/{id}/review",
+    "VERIFIED ordinary decisions, current office and DRC-own direct route; evidence exceptions later"
+  ],
+  "HOD-03": [
+    "pages/academic/Applications.tsx",
+    "applications/{id}/review",
+    "VERIFIED ordinary decisions, current office and DRC-own direct route; evidence exceptions later"
+  ],
+  "HOD-04": [
+    "pages/academic/Governance.tsx",
+    "departments/{id}/topic-mappings",
+    "VERIFIED department canonical-course mapping list"
+  ],
+  "HOD-05": [
+    "pages/academic/Governance.tsx",
+    "departments/{id}/topic-mappings; POST nptel/mapping-requests",
+    "VERIFIED deduplicated request inbox without seat reservation"
+  ],
+  "HOD-06": [
+    "pages/academic/Governance.tsx",
+    "departments/{id}/topic-mappings/{course}",
+    "VERIFIED source candidates, current HoD decision, effective revisions; existing-seat migration POLICY_PENDING"
+  ],
+  "HOD-07": [
+    "pages/academic/Governance.tsx",
+    "departments/{id}/topic-mappings/{course}",
+    "VERIFIED source candidates, current HoD decision, effective revisions; existing-seat migration POLICY_PENDING"
+  ],
+  "HOD-08": [
+    "pages/academic/Governance.tsx",
+    "nptel/topics; topic-proposals; admin/nptel/topics",
+    "VERIFIED canonical topics, aliases, proposals and controlled Admin maintenance"
+  ],
+  "HOD-09": [
+    "pages/academic/Governance.tsx",
+    "departments/{id}/quotas",
+    "VERIFIED annual shared pools, filters and publication"
+  ],
+  "HOD-10": [
+    "pages/academic/Governance.tsx",
+    "quotas/{id}; departments/{id}/quotas",
+    "VERIFIED current HoD create/publish/revise, counted occupancy and provenance; no decrease below occupied"
+  ],
+  "HOD-11": [
+    "pages/academic/Governance.tsx",
+    "quotas/{id}; departments/{id}/quotas",
+    "VERIFIED current HoD create/publish/revise, counted occupancy and provenance; no decrease below occupied"
+  ],
+  "HOD-12": [
+    "pages/academic/Governance.tsx",
+    "quotas/{id}?as_of=...",
+    "VERIFIED ledger/current reconciliation and as-of API; UI shows latest 200 movements"
+  ],
+  "HOD-13": [
+    "pages/academic/Applications.tsx",
+    "applications?reconciliation=true",
+    "VERIFIED open transfer/policy cases and retained occupancy; broader inbox filtering later"
+  ],
+  "HOD-14": [
+    "pages/academic/Applications.tsx",
+    "quota-transfer-cases/{id}; applications/{id}/reconcile",
+    "VERIFIED scoped deep link, original/current facts, target quota link, recheck and audit"
+  ],
+  "ADM-09": [
+    "pages/academic/Catalog.tsx",
+    "admin/nptel/provider-fetches; nptel/courses/offerings",
+    "PARTIAL full page contract: real manual fetch/retry/accept and failure history; automated provider-job operations later"
+  ],
+  "ADM-10": [
+    "pages/academic/Catalog.tsx",
+    "nptel/offerings/{id}; admin/nptel/offerings/{id}/accept",
+    "PARTIAL full page contract: versions/source conflicts/review verified; separate ambiguity adjudication workflow later"
+  ]
+}

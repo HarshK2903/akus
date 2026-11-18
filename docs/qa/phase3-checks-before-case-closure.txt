@@ -1,0 +1,61 @@
+ Container akus-local-api-run-a694b9ef6d85 Creating 
+ Container akus-local-api-run-a694b9ef6d85 Created 
+All checks passed!
+66 files already formatted
+Success: no issues found in 48 source files
+No new upgrade operations detected.
+........................................................................ [ 40%]
+........................................................................ [ 81%]
+................................                                         [100%]
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+176 passed, 2 warnings in 45.09s
+
+> akus-web@0.1.0 lint
+> eslint .
+
+
+> akus-web@0.1.0 typecheck
+> tsc -b
+
+
+> akus-web@0.1.0 format:check
+> prettier --check src e2e *.ts *.js *.json
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> akus-web@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /media/bugulnoz/New Volume/2/akus/apps/web
+
+ ✓ src/pages/Help.test.tsx (2 tests) 142ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:10:52
+   Duration  1.35s (transform 82ms, setup 155ms, collect 191ms, tests 142ms, environment 493ms, prepare 98ms)
+
+
+> akus-web@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.8 building client environment for production...
+transforming...
+✓ 1719 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.52 kB │ gzip:   0.34 kB
+dist/assets/index-BS7ovGHt.css   20.05 kB │ gzip:   4.85 kB
+dist/assets/index-CzrElEKM.js   499.19 kB │ gzip: 146.06 kB
+✓ built in 2.47s

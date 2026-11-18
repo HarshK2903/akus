@@ -1,0 +1,92 @@
+ Container akus-local-api-run-7f27e030f4c9 Creating 
+ Container akus-local-api-run-7f27e030f4c9 Created 
+F
+=================================== FAILURES ===================================
+___ test_withdrawal_before_pending_schedule_acceptance_releases_source_once ____
+
+client = <starlette.testclient.TestClient object at 0x7e577965c440>
+db = <sqlalchemy.orm.session.Session object at 0x7e5779674550>
+
+    def test_withdrawal_before_pending_schedule_acceptance_releases_source_once(client, db):
+        """Force the withdrawal-first ordering of the concurrent transfer regression."""
+        s = setup(client)
+        aid, h = draft(client, s)
+        assert submit(client, aid, h).status_code == 200
+        dest = target(client, s)
+        _, observed, acceptance = observe(client, s)
+        assert observed["source_status"] == "SOURCE_CONFLICT_REVIEW_REQUIRED"
+        h = login(client, "faculty")
+        body = SOURCE | {"expected_version": 2, "not_enrolled_declaration": True}
+        key = uuid4()
+        first = post(client, f"/applications/{aid}/withdraw", body, h, key)
+>       assert first.status_code == 200, first.text
+E       AssertionError: {"error":{"code":"VERIFIED_COMMENCEMENT_REQUIRED","message":"Verified commencement required","correlation_id":"afceccf8-afc3-4c0b-86e9-c47b3888a923"}}
+E       assert 423 == 200
+E        +  where 423 = <Response [423 Locked]>.status_code
+
+apps/api/tests/test_admission.py:1172: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3db73089-c6c0-4366-829f-d5db00736ce8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "64a6f383-a819-4b29-95f8-b2ed6a95c4f8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "e017daf0-31db-4d29-ba9e-97d33c95e670"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9cb8ab95-d258-4ad4-a9c1-39a2b3d29618"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "85523201-fd55-4b72-bbae-230e3f5a105d"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "21271406-cae6-49bf-ae8a-c4834192f9b4"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b3c0c2e1-87ea-41da-ac92-d6e15a27192b"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "8c21861e-0ce6-4a5a-8824-205802fe6708"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "104e6226-dcb4-4367-8b6d-89e6781b72fc"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "6256e475-5d8e-4f1e-858b-20b10da032dd"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "85aa3c08-980e-4764-91b3-2260aff736fe"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "cb8b4f22-7e00-453b-901b-1eda0262d18e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "85dcd11d-7cdd-49aa-a2b1-b67b0a49ff38"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "41179ef7-f692-4670-b8c6-5eee5ef14dd5"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "638706d7-a753-4a2f-b30a-93ba5bdfe452"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "7e844830-108d-4a7a-b96c-e5e766f52800"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3aecee0e-7615-48d3-b1f3-078fa306b677"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "cc26f781-2736-41ea-b878-b40e5ae20485"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ede10b5d-6314-4d2d-83eb-6c23b30e2c84"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f790af48-964d-4242-b352-0d69b302a230"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "d898b4bf-a3e6-498a-a7c4-ffec52bd0905"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "4b75badc-c9a5-4fbb-8f9c-d7f89d3c7c63"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "918c8569-bc10-40fd-ae1d-afe2999767f9"}
+{"event": "http_request", "method": "POST", "status": 423, "correlation_id": "afceccf8-afc3-4c0b-86e9-c47b3888a923"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3db73089-c6c0-4366-829f-d5db00736ce8"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "64a6f383-a819-4b29-95f8-b2ed6a95c4f8"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "e017daf0-31db-4d29-ba9e-97d33c95e670"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9cb8ab95-d258-4ad4-a9c1-39a2b3d29618"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "85523201-fd55-4b72-bbae-230e3f5a105d"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "21271406-cae6-49bf-ae8a-c4834192f9b4"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b3c0c2e1-87ea-41da-ac92-d6e15a27192b"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "8c21861e-0ce6-4a5a-8824-205802fe6708"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "104e6226-dcb4-4367-8b6d-89e6781b72fc"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "6256e475-5d8e-4f1e-858b-20b10da032dd"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "85aa3c08-980e-4764-91b3-2260aff736fe"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "cb8b4f22-7e00-453b-901b-1eda0262d18e"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "85dcd11d-7cdd-49aa-a2b1-b67b0a49ff38"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "41179ef7-f692-4670-b8c6-5eee5ef14dd5"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "638706d7-a753-4a2f-b30a-93ba5bdfe452"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "7e844830-108d-4a7a-b96c-e5e766f52800"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3aecee0e-7615-48d3-b1f3-078fa306b677"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "cc26f781-2736-41ea-b878-b40e5ae20485"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ede10b5d-6314-4d2d-83eb-6c23b30e2c84"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f790af48-964d-4242-b352-0d69b302a230"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "d898b4bf-a3e6-498a-a7c4-ffec52bd0905"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "4b75badc-c9a5-4fbb-8f9c-d7f89d3c7c63"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "918c8569-bc10-40fd-ae1d-afe2999767f9"}
+INFO     akus:main.py:71 {"event": "http_request", "method": "POST", "status": 423, "correlation_id": "afceccf8-afc3-4c0b-86e9-c47b3888a923"}
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_admission.py::test_withdrawal_before_pending_schedule_acceptance_releases_source_once
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 warnings in 1.02s
+

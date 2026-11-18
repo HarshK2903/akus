@@ -36,7 +36,14 @@ def test_live_ready_openapi(client: TestClient) -> None:
     assert client.get("/api/v1/health/ready").json()["database"] == "connected"
     schema = client.get("/api/openapi.json").json()
     assert "/api/v1/me" in schema["paths"]
-    assert not any("submit" in path or "approve" in path for path in schema["paths"])
+    # Phase 3 now explicitly includes admission. Require its real contract and
+    # deny unauthenticated commands; the old Phase 1 absence assertion is obsolete.
+    for action in ("submit", "review", "withdraw", "reconcile"):
+        path = f"/api/v1/applications/{{app_id}}/{action}"
+        assert "post" in schema["paths"][path]
+        response = client.post(path.replace("{app_id}", str(uuid4())), json={})
+        assert response.status_code == 401
+        assert response.json()["error"]["code"] == "AUTHENTICATION_REQUIRED"
 
 
 def test_unavailable_database_not_green() -> None:
@@ -179,7 +186,7 @@ def test_audit_database_immutability(db: Session, operation: str) -> None:
 def test_pending_rules_not_confirmed(client: TestClient) -> None:
     login(client)
     rules = {r["id"]: r for r in client.get("/api/v1/policy/help").json()}
-    for code in ["P-51", "P-NEW-11", "P-NEW-04", "P-NEW-05/06", "P-NEW-10"]:
+    for code in ["P-51", "P-NEW-11", "P-NEW-04", "P-NEW-05/06", "P-NEW-10", "IO-02", "P-54"]:
         assert rules[code]["status"] == "POLICY_PENDING"
     assert rules["V2.4"]["status"] == "CONFIRMED"
     assert rules["V2.3"]["status"] == "CONFIRMED"
@@ -187,11 +194,7 @@ def test_pending_rules_not_confirmed(client: TestClient) -> None:
 
 def test_worker_claim_once_under_concurrency(settings: Settings, db: Session) -> None:
     engine, factory = database(settings.database_url)
-    # Settle earlier demo probe jobs; no data deletion or audit rewriting.
-    while True:
-        with factory() as worker_db:
-            if not tick(worker_db):
-                break
+    # Compete over this isolated job without consuming unrelated durable work.
     job = WorkJob(key=f"race-{uuid4()}", kind="LOCAL_DEMO_BOOTSTRAP", state="PENDING")
     db.add(job)
     db.commit()
@@ -200,7 +203,7 @@ def test_worker_claim_once_under_concurrency(settings: Settings, db: Session) ->
     def run() -> bool:
         barrier.wait()
         with factory() as worker_db:
-            return tick(worker_db)
+            return tick(worker_db, job.id)
 
     with ThreadPoolExecutor(max_workers=4) as pool:
         assert sum(pool.map(lambda _: run(), range(4))) == 1

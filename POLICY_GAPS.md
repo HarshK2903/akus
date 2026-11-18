@@ -120,4 +120,47 @@ Phase 1 exposes the source register as read-only help. Dependent domain commands
 
 Office appointments update only source authority. P-NEW-05/06 remain OPEN: no academic case/seat/obligation is withdrawn, waived, released or resumed by these commands. There are no academic case tables in this slice; impacted-case creation is a prerequisite before later academic intake is enabled. Conflicting Principal/departmental authority fails closed with `AUTHORITY_POLICY_PENDING` and has a negative API test; it is not treated as a ratified new role combination or approval route.
 
-Explicit `ends_before` employment storage must not be misread as resolution of P-59's date-only examination/separation ambiguity. No source correction, identity merge, retrospective teaching adjustment, or policy override command is exposed. These remain separate controlled workflows, with authority/chronology decisions retained as pending where required. Google OIDC configuration is an implementation/integration prerequisite, not an invented institutional policy decision.
+Explicit `ends_before` employment storage must not be misread as resolution of P-59's date-only examination/separation ambiguity. Phase 2 now exposes audited Admin corrections of official person/employment/department/email/office/teaching source facts. These are not identity merges, academic approvals, exemptions or retrospective compliance decisions. Identity merge and policy override remain unavailable; academic authority/chronology consequences stay pending. Google OIDC configuration is an implementation/integration prerequisite, not an invented institutional policy decision.
+
+
+## IO-02 OPEN — imported teaching acceptance
+
+PHASE2_COMPLETION.md explicitly leaves unratified whether imported official teaching
+allocations require separate HoD confirmation. Recording an authorized Admin source
+is implemented; accepting it into assessed Silver obligations is not presumed. Every
+teaching timeline returns `POLICY_PENDING:IO-02` and `NOT_ASSESSED`. No invented HoD
+accept/reject workflow or automatic violation/credit exists. The first official source
+date and provisional anniversary are visible independently; P-54 leap-day remains
+pending. This also applies to manually recorded official sources until ratification.
+
+## Phase 2 integration versus institutional policy
+
+Google client credentials, approved source roster and account-holder participation are
+external acceptance prerequisites, not new institutional policy gaps. Five live UAT
+cases remain blocked. P-62 correction governance is respected by limiting Admin to
+provenanced source-fact corrections: no exemption/waiver/academic credit or hidden
+policy override is available. Subject aliases can be corrected within one stable
+subject; cross-subject merges fail `SUBJECT_MERGE_POLICY_PENDING`.
+
+
+## 2026-11-18 confirmed clarification — personal hall-ticket schedule
+
+The user answered “HoD” to the specific authority question under master §9.2.
+See `docs/policy/HALL_TICKET_AUTHORITY_2026-11-18.md`. This resolves only who may
+independently authenticate the person-specific scheduled exam date. The implementation
+records immutable manual findings, exact applicant/offering applicability, evidence
+reference/digest, current office and rationale. Faculty claims remain unverified.
+No certificate, actual-exam or compliance verification follows from this date alone.
+
+
+## Phase 3 implementation disposition (2026-11-18)
+
+Confirmed annual topic publication, immutable admission, cross-year capacity-checked
+movement and current HoD individual schedule authentication are implemented and tested.
+P-NEW-11 mapping revisions create pending impact cases and do not change old counted
+topics. P-NEW-10 blocked destination retains source without priority/override. Current
+source/exemption transitions preserve capacity and queue review. Closing an allocation
+closes its pending work items without deciding those policies or verifying a claim.
+Q04 verified enrolled-before-start release and late/prior-result evidence paths remain
+future implementation, not permission to infer verification. The source-specific
+withdrawal correction uses accepted unchanged commencement; it creates no new policy.

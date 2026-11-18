@@ -1,0 +1,44 @@
+
+> akus-web@0.1.0 e2e
+> playwright test
+
+
+Running 33 tests using 1 worker
+
+(node:32520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/foundation.spec.ts:5:1 › sign-in, DB-backed navigation, reload, policy search, logout and denied deep link (1.3s)
+  ✓   2 e2e/foundation.spec.ts:58:3 › responsive foundation at 1440px with accessibility (1.1s)
+  ✓   3 e2e/foundation.spec.ts:58:3 › responsive foundation at 1024px with accessibility (1.1s)
+  ✓   4 e2e/foundation.spec.ts:58:3 › responsive foundation at 768px with accessibility (1.2s)
+  ✓   5 e2e/foundation.spec.ts:58:3 › responsive foundation at 390px with accessibility (1.1s)
+  ✓   6 e2e/foundation.spec.ts:58:3 › responsive foundation at 320px with accessibility (1.0s)
+  ✓   7 e2e/foundation.spec.ts:100:3 › drc demo uses appropriate home without academic actions (310ms)
+  ✓   8 e2e/foundation.spec.ts:100:3 › hod demo uses appropriate home without academic actions (329ms)
+  ✓   9 e2e/foundation.spec.ts:100:3 › principal demo uses appropriate home without academic actions (283ms)
+  ✓  10 e2e/foundation.spec.ts:100:3 › admin demo uses appropriate home without academic actions (284ms)
+  ✓  11 e2e/foundation.spec.ts:100:3 › acting-hod demo uses appropriate home without academic actions (314ms)
+  ✓  12 e2e/foundation.spec.ts:119:1 › backend failure and unknown URL are recoverable (1.7s)
+  ✓  13 e2e/people.spec.ts:42:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history (1.6s)
+  ✓  14 e2e/people.spec.ts:122:1 › overlapping DRC and cross-department acting HoD is visibly rejected without losing inputs (716ms)
+  ✓  15 e2e/people.spec.ts:152:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards (838ms)
+  ✓  16 e2e/people.spec.ts:185:1 › HoD sees only the office department, and rehire history retains two episodes (795ms)
+  ✓  17 e2e/people.spec.ts:223:3 › people workflows at 1440px with accessible forms and tables (3.4s)
+  ✓  18 e2e/people.spec.ts:223:3 › people workflows at 390px with accessible forms and tables (2.9s)
+  ✓  19 e2e/people.spec.ts:223:3 › people workflows at 320px with accessible forms and tables (2.7s)
+  ✓  20 e2e/people.spec.ts:265:1 › existing browser session gains and loses office scope from source changes (1.7s)
+  ✓  21 e2e/phase2.spec.ts:22:1 › Admin imports a CSV roster, reviews rows, commits once, and corrects the source name (1.2s)
+  ✓  22 e2e/phase2.spec.ts:75:1 › invalid roster rows remain visible after reload and cannot be committed (574ms)
+  ✓  23 e2e/phase2.spec.ts:101:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history (1.5s)
+  ✓  24 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 1440px (6.2s)
+  ✓  25 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 390px (5.6s)
+  ✓  26 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 320px (5.8s)
+  ✓  27 e2e/phase2.spec.ts:226:1 › Google configuration and account recovery routes are honest; academic pages enforce role scope (1.2s)
+  ✓  28 e2e/phase2.spec.ts:270:1 › canonical Admin reference and year routes persist changes and reject duplicate years (1.6s)
+  ✓  29 e2e/phase3.spec.ts:88:1 › catalog → applicant mapping intake → HoD decision → published annual quota, with scoped read oversight (2.6s)
+  ✓  30 e2e/phase3.spec.ts:221:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool (10.5s)
+  ✓  31 e2e/phase3.spec.ts:341:1 › DRC applicant receives direct HoD route without a self-review action (1.2s)
+  ✓  32 e2e/phase3.spec.ts:359:1 › HoD authenticates one applicant hall ticket without changing another applicant in the same offering (2.7s)
+  ✓  33 e2e/phase3.spec.ts:434:1 › Admin source workspace exposes exact offerings and immutable versions; Faculty has no source maintenance form (1.9s)
+
+  33 passed (1.1m)

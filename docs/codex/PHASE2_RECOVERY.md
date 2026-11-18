@@ -26,3 +26,18 @@ session/link after lock, bounded uploads/XML hardening, canonical Phase 2 route
 aliases, actual five-account UAT template, setup/runbook and regression tests.
 No real OIDC credentials configured; no account holder has signed in during this run.
 No real roster facts or appointments have been fabricated or inserted.
+
+
+## Final continuation checkpoint — 2026-11-17
+
+The earlier in-progress statements above are historical. All feasible Phase 2 local
+code is now implemented and tested. See BUILD_PROGRESS/TEST_RESULTS and the detailed
+PHASE2_CHECKLIST. Final source is migrations 0001–0006, 109 backend tests, 2 UI tests
+and 28 browser tests. The original denied build did not run; later authorized builds
+succeeded. Docker API/DB healthy, migrate exited 0, original volume retained.
+
+A new existing checkpoint commit `034f71a` (testing backend) appeared during the user
+continuation. The agent did not create it and did not reset it. Later documentation,
+canonical-route browser coverage and pending-policy help/tooling fixes remain in the
+working tree. Preserve both. No real Google login or authorized institutional source
+records were fabricated. Five-person UAT remains blocked pending external setup.

@@ -1,0 +1,6 @@
+ Container akus-local-api-run-f5e7c831b51e Creating 
+ Container akus-local-api-run-f5e7c831b51e Created 
+0010_personal_schedule (head)
+No new upgrade operations detected.
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.

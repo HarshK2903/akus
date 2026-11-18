@@ -75,6 +75,22 @@ export function Shell() {
           <LayoutDashboard size={18} />
           Overview
         </NavLink>
+        <NavLink to="/app/catalog" onClick={() => setOpen(false)}>
+          <BookOpen size={18} />
+          Course catalog
+        </NavLink>
+        {person.roles?.includes("HOD") && (
+          <>
+            <NavLink to="/hod/topic-mappings" onClick={() => setOpen(false)}>
+              <BookOpen size={18} />
+              Topic mappings
+            </NavLink>
+            <NavLink to="/hod/quotas" onClick={() => setOpen(false)}>
+              <BookOpen size={18} />
+              Annual quotas
+            </NavLink>
+          </>
+        )}
         <NavLink to="/app/profile" onClick={() => setOpen(false)}>
           <UserRound size={18} />
           Profile & access
@@ -123,16 +139,21 @@ export function Shell() {
               <ShieldCheck size={18} />
               Account requests
             </NavLink>
+            <NavLink to="/admin/nptel-sync" onClick={() => setOpen(false)}>
+              <BookOpen size={18} />
+              NPTEL provider sources
+            </NavLink>
           </>
         )}
       </nav>
       <div className="nav-note">
         <ShieldCheck size={20} />
-        <strong>A foundation for accountable decisions</strong>
+        <strong>Accountable academic decisions</strong>
         <p>
-          Academic workflows will be added in verified implementation phases.
+          Source evidence, current authority and immutable history guide each
+          decision.
         </p>
-        <span>BUILD 0.2 · LOCAL</span>
+        <span>AKUS · INSTITUTIONAL RECORDS</span>
       </div>
     </>
   );
@@ -206,12 +227,16 @@ export function Shell() {
       </aside>
       <div className="app-body">
         {person.mode === "LOCAL_DEMO" && (
-          <div className="demo-banner">
+          <div
+            className="demo-banner"
+            role="region"
+            aria-label="Local demonstration notice"
+          >
             <span className="demo-dot" />
             Local demonstration{" "}
             <span className="banner-detail">
-              Fictional identities and reference data. No live institutional or
-              NPTEL connection.
+              Fictional identities. Provider observations are labeled
+              separately; no verified enrollment or certificate is implied.
             </span>
           </div>
         )}
@@ -229,7 +254,7 @@ export function Shell() {
         </main>
         <footer className="app-footer">
           <span>AKUS · NPTEL participation & compliance</span>
-          <span>Phase 2 / People & access</span>
+          <span>Evidence · Authority · History</span>
         </footer>
       </div>
     </>

@@ -11,6 +11,7 @@ from sqlalchemy.exc import DBAPIError
 from test_people import appoint, create_person, fresh_dept, login, office_body
 
 from akus.access import authority
+from akus.auth import digest
 from akus.models import AcademicYear, AuthSession, DemoIdentity
 from akus.people.models import EmploymentEpisode, OfficeAppointment, Person
 from akus.people.seed import fixture_id
@@ -364,13 +365,14 @@ def test_dashboard_and_academic_integration_role_boundaries(client):
         login(client, key)
         dash = client.get("/api/v1/dashboard").json()
         assert dash["role"] == role and dash["own_review_route"] == route
-        assert dash["academic_status"] == "NOT_IMPLEMENTED"
+        assert dash["academic_status"] == "CATALOG_ADMISSION_AVAILABLE"
         assert client.get("/api/v1/academic/integration/applications").status_code == (
             200 if route else 403
         )
         reviews = client.get("/api/v1/academic/integration/reviews")
         assert reviews.status_code == (200 if role in {"DRC_HEAD", "HOD"} else 403)
         if reviews.status_code == 200:
+            assert reviews.json()["status"] == "AVAILABLE"
             assert reviews.json()["can_decide"] is False and reviews.json()["records"] is None
         if role == "PRINCIPAL":
             assert len(dash["departments"]) >= 3
@@ -381,7 +383,7 @@ def test_same_import_commits_once_under_race(client, db, settings):
     key = f"RACE-{uuid4().hex[:12].upper()}"
     job = upload(client, headers, "staff", staff_csv(key)).json()
     identity = db.scalar(select(DemoIdentity).where(DemoIdentity.key == "admin"))
-    auth_session = db.scalar(select(AuthSession).where(AuthSession.identity_id == identity.id))
+    auth_session = db.get(AuthSession, digest(client.cookies.get("akus_demo_session")))
     session_hash = auth_session.token_hash
     barrier = Barrier(6)
 
@@ -406,7 +408,7 @@ def test_session_revoked_after_authority_read_cannot_execute_source_command(clie
 
     login(client)
     identity = db.scalar(select(DemoIdentity).where(DemoIdentity.key == "admin"))
-    auth_session = db.scalar(select(AuthSession).where(AuthSession.identity_id == identity.id))
+    auth_session = db.get(AuthSession, digest(client.cookies.get("akus_demo_session")))
     actor = authority(db, identity, auth_session)
     with client.app.state.sessions() as other:
         revoked = other.get(AuthSession, auth_session.token_hash)

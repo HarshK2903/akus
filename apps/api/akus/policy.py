@@ -1,4 +1,4 @@
-"""Source-approved summaries; no domain policy decisions are executed in Phase 1."""
+"""Source-approved summaries; pending rules never imply academic authorization."""
 
 from akus.schemas import PolicyHelp
 
@@ -32,6 +32,18 @@ HELP = [
         title="Annual completion and subject Silver",
         status="CONFIRMED",
         summary="Actual verified exam date determines annual credit. One qualifying course of at least eight weeks or two distinct four-week courses in the same academic year may qualify with valid certificates. Subject Silver is a separate obligation.",
+    ),
+    PolicyHelp(
+        id="IO-02",
+        title="Acceptance of official teaching sources",
+        status="POLICY_PENDING",
+        summary="Whether imported teaching assignments require separate HoD confirmation is awaiting an institutional decision. Recording or correcting an official source does not certify Silver compliance. Teaching timelines remain provisional and unassessed.",
+    ),
+    PolicyHelp(
+        id="P-54",
+        title="Leap-day first teaching anniversary",
+        status="POLICY_PENDING",
+        summary="The institution has not decided the two-year deadline for a February 29 first official teaching date when the anniversary year is not a leap year. Preserve the source date and leave the deadline pending; do not choose February 28 or March 1 automatically.",
     ),
     PolicyHelp(
         id="P-NEW-11",

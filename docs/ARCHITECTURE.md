@@ -1,38 +1,78 @@
-# Architecture — current source workflows and planned academic modules
+# Architecture — implemented source and academic services
 
-Phase 2A extends the local-only modular monolith with staff and office source workflows. All subsequent domain modules stay in the same authoritative PostgreSQL transaction boundary. See implementation-plan.md for schema/API/UI order and route-matrix.md for the full target UI.
+AKUS remains a modular monolith: React/TypeScript through the existing Caddy proxy,
+FastAPI/Python 3.13 with sync SQLAlchemy/Psycopg, PostgreSQL and Alembic. No parallel
+app, Redis, Kafka or cloud deployment was introduced. See implementation-plan.md.
 
 ```mermaid
 flowchart LR
-  Browser[React browser] --> Edge[Vite dev proxy / Caddy Compose]
-  Edge --> API[FastAPI /api/v1]
-  API --> Sessions[Local demo session services]
-  API --> Reads[Profile / years / policy reads]
-  Sessions --> DB[(PostgreSQL)]
-  Reads --> DB
-  Worker[Local work-ledger consumer] --> DB
+  Browser[React browser] --> Edge[Caddy same-origin proxy]
+  Edge --> API[FastAPI]
+  API --> Identity[Google identity and opaque sessions]
+  Identity --> Google[Google discovery / token / JWKS]
+  API --> People[People and current effective authority]
+  API --> Sources[Imports / reference / corrections / teaching]
+  Identity --> DB[(PostgreSQL)]
+  People --> DB
+  Sources --> DB
+  API --> Catalog[Catalog / topic mappings / annual quotas]
+  API --> Applications[Admission / review / schedule transfers]
+  Catalog --> NPTEL[Public NPTEL metadata]
+  Catalog --> DB
+  Applications --> DB
+  Worker[Quota reconciliation worker] --> DB
 ```
 
-No live Google/NPTEL/Drive connection exists. Login's Google action is disabled with explanation. Demo identity endpoints require explicit local mode. Production settings fail at startup, even if demo mode is false, until real OIDC/access implementation is provided.
+The Google connection is implemented but live credentials/account-holder UAT were
+not available. Automated tests use isolated HTTP responses and generated RSA keys.
+Demo mode is explicitly separate and cannot coexist with Google client configuration.
+Production settings require complete secure configuration; the local Docker deployment
+itself has not passed production hardening.
 
-## Ownership and invariants
+## Ownership
 
-- `akus/config.py`: validates deployment boundary. No credentials are printed.
-- `akus/auth.py`: hashed opaque 256-bit random session token, 8-hour local lifetime, rotation/revocation, CSRF proof. Cookie is HttpOnly/SameSite Strict and non-Secure only for local HTTP. Institutional sessions will require Secure cookies and effective authorization in Phase 2.
-- `akus/models.py`: foundation storage only. `demo_identities` is explicitly not the staff/office model. `academic_years` stores date-only July–June boundaries, not inferred quotas. Foreign keys restrict historical deletes.
-- `akus/main.py`: typed API contracts, correlation IDs, safe errors, structured JSON request logs without credentials, DB-aware readiness versus independent liveness.
-- `akus/worker.py`: row-locked local probe job and audit commit together, unknown kinds dead-lettered, heartbeat read by UI. No remote side effects, lease/retry claims or full delivery pipeline yet.
-- `audit_events`: update/delete/truncate blocked by database triggers. PostgreSQL superusers still control database administration; deployment runtime least-privilege roles are later hardening work.
-- Web features are separate pages with shared shell, tokens, query cache, generated OpenAPI schema types and a typed HTTP wrapper. No identity/access tokens in localStorage. SessionStorage contains only CSRF proof, not authentication.
+- identity/provider.py handles only trusted Google discovery/exchange/signatures/claims.
+  router.py stores browser-bound one-use state and encrypted PKCE verifier, then closes
+  the transaction before provider HTTP. service.py owns stable links, pending accounts,
+  sessions and verified provider-email observations. operator.py is a non-web first
+  Admin bootstrap/revocation command, not an authentication bypass.
+- access.py resolves current person/employment/department/offices and separate Admin
+  grant for every request. Demo labels grant nothing. people/service.py locks and
+  rechecks live session/link/authority before any source command or receipt replay.
+- sources owns bounded import staging and atomic commit, authoritative reference and
+  teaching records, versioned corrections and immutable before/after revisions. A
+  common advisory lock serializes source/identity writes; lock order is consistent.
+  Office corrections supersede immutable issued records. Source changes queue affected
+  applications for reconciliation; unratified academic consequences stay pending.
+- DB constraints enforce permanent keys, non-overlapping episodes/home memberships,
+  scoped offices, global DRC/HoD exclusion and teaching intervals. Triggers prevent
+  audit/source/identity history rewriting/deletion. DB superuser remains privileged;
+  production least-privilege runtime credentials are a separate operational gate.
+- Five distinct dashboard components query real source counts and effective scope.
+  API checks are authoritative. React renders loading/error/denied/empty/saved states,
+  working forms and history. Academic pages expose current catalog/quota/admission/review services; assessed
+  annual/Silver compliance and full reporting still return unavailable.
+- Opaque session hashes live server-side. Cookies are HttpOnly/SameSite=Lax for Google,
+  Secure with HTTPS; exact Origin and session CSRF protect mutations. Browser storage
+  holds only CSRF proof, never provider/session tokens. Structured logs omit query,
+  body and credentials; Uvicorn query-bearing access logs are disabled.
 
-Future quota command transaction: resolve eligible employment and current office, validate immutable provider snapshot, lock/revalidate current departmental canonical-course mapping and published topic/year pool, enforce unique active canonical application, append snapshot/allocation/ledger/audit/outbox, then commit. Reschedule locks application and both pools in stable order; failure retains the source. No network call inside either transaction. Historical audit is additive.
+Implemented quota submit: resolve eligible source authority, lock/revalidate approved
+canonical course-topic mapping and published department/topic/year pool, atomically
+reserve and append immutable application snapshot/ledger/audit/outbox. Verified
+cross-year reschedule locks both pools; failure retains counted source and flags.
+No provider HTTP inside these transactions. Mapping-revision existing-seat treatment
+remains pending; actual-exam-year annual credit is distinct from quota charging.
 
-All 80 target routes are retained. Foundation homes at role-specific URLs are explicitly not completed academic dashboards. Own profile includes employment/office history; full institutional identity and account linking remain partial; remaining actions are deferred, not fabricated.
+Current boundaries: no private evidence store, provider certificate verification,
+assessed annual/Silver credit or backup/restore guarantee.
+First-teaching source timelines are provisional, with IO-02/P54 safe pending states.
 
-## People and access now implemented
-
-`akus/people/models.py`, additive migrations 0002/0003: departments, persons, employment episodes, home assignments, effective offices, Admin grants and source command receipts. `akus/access.py` bridges LOCAL/DEMO sessions to explicit person source records; `DemoIdentity.role` never grants permissions. Reads filter by current authority. Mutations recheck after locks and keep audit + state + receipt in one transaction. No network calls occur in a command transaction.
-
-`people/router.py` validates typed input and mutation origin/CSRF. `people/service.py` owns business transaction boundaries. `people/seed.py` creates conspicuous fictional histories and authority facts independent of demo role labels, including rehire and separated records with no login. Web pages call real routes and invalidate/refetch after confirmation. Query cache keys include effective access so a role/scope change refreshes reads.
-
-Staff search and appointment lists are paginated (maximum 100 rows); detail history currently reads all episodes/offices and latest 100 audit events. Summary lookups are bounded but not yet optimized for large institutional datasets. Person-linked OIDC/session storage, imports, source corrections, teaching assignments and academic dashboards are next Phase 2 work; production remains fail-closed.
+Academic commands use a shared source-authority gate; source changes use the exclusive
+side. Order: command key → offering → application → mapping anchor → sorted pools.
+Transfer acceptance locks the offering exclusively and all affected pools deterministically.
+Withdrawal uses fresh accepted commencement and rejects any newer conflicting start
+date; an exam-only conflict cannot create a withdrawal-ordering failure. App locks
+and deferred allocation/ledger/count constraints preserve exactly-once current-pool release.
+Manual individual schedule findings bind exact person/offering/current HoD to immutable
+source reference/digest/time/reason. Durable notices are in-app, not delivered email.

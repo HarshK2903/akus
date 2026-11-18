@@ -34,6 +34,12 @@ test("sign-in, DB-backed navigation, reload, policy search, logout and denied de
   await expect(page.getByText("Policy pending", { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Find a policy or term")).toHaveValue("P-51");
+  for (const code of ["IO-02", "P-54"]) {
+    await page.getByLabel("Find a policy or term").fill(code);
+    await expect(page.getByRole("article")).toHaveCount(1);
+    await expect(page.getByRole("article")).toContainText("Policy pending");
+    await expect(page.getByRole("article")).toContainText(code);
+  }
   await page.goto("/hod/home");
   await expect(
     page.getByRole("heading", { name: "Access is not available" }),

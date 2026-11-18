@@ -1,0 +1,190 @@
+
+> akus-web@0.1.0 e2e
+> playwright test
+
+
+Running 27 tests using 1 worker
+
+(node:62394) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/foundation.spec.ts:5:1 › sign-in, DB-backed navigation, reload, policy search, logout and denied deep link (1.2s)
+  ✓   2 e2e/foundation.spec.ts:52:3 › responsive foundation at 1440px with accessibility (1.1s)
+  ✓   3 e2e/foundation.spec.ts:52:3 › responsive foundation at 1024px with accessibility (1.1s)
+  ✓   4 e2e/foundation.spec.ts:52:3 › responsive foundation at 768px with accessibility (1.2s)
+  ✓   5 e2e/foundation.spec.ts:52:3 › responsive foundation at 390px with accessibility (1.1s)
+  ✓   6 e2e/foundation.spec.ts:52:3 › responsive foundation at 320px with accessibility (993ms)
+  ✓   7 e2e/foundation.spec.ts:94:3 › drc demo uses appropriate home without academic actions (340ms)
+  ✓   8 e2e/foundation.spec.ts:94:3 › hod demo uses appropriate home without academic actions (288ms)
+  ✓   9 e2e/foundation.spec.ts:94:3 › principal demo uses appropriate home without academic actions (275ms)
+  ✓  10 e2e/foundation.spec.ts:94:3 › admin demo uses appropriate home without academic actions (294ms)
+  ✓  11 e2e/foundation.spec.ts:94:3 › acting-hod demo uses appropriate home without academic actions (289ms)
+  ✓  12 e2e/foundation.spec.ts:113:1 › backend failure and unknown URL are recoverable (1.7s)
+  ✘  13 e2e/people.spec.ts:42:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history (30.1s)
+(node:63416) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 e2e/people.spec.ts:118:1 › overlapping DRC and cross-department acting HoD is visibly rejected without losing inputs (767ms)
+  ✓  15 e2e/people.spec.ts:148:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards (930ms)
+  ✓  16 e2e/people.spec.ts:181:1 › HoD sees only the office department, and rehire history retains two episodes (836ms)
+  ✓  17 e2e/people.spec.ts:219:3 › people workflows at 1440px with accessible forms and tables (3.1s)
+  ✓  18 e2e/people.spec.ts:219:3 › people workflows at 390px with accessible forms and tables (2.6s)
+  ✓  19 e2e/people.spec.ts:219:3 › people workflows at 320px with accessible forms and tables (2.4s)
+  ✓  20 e2e/people.spec.ts:261:1 › existing browser session gains and loses office scope from source changes (1.6s)
+  ✘  21 e2e/phase2.spec.ts:22:1 › Admin imports a CSV roster, reviews rows, commits once, and corrects the source name (6.3s)
+(node:64215) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  22 e2e/phase2.spec.ts:72:1 › invalid roster rows remain visible after reload and cannot be committed (5.7s)
+(node:64446) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  23 e2e/phase2.spec.ts:97:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history (30.2s)
+(node:65575) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  24 e2e/phase2.spec.ts:158:3 › five distinct role dashboards, responsive sources and no invented academic results at 1440px (6.1s)
+  ✓  25 e2e/phase2.spec.ts:158:3 › five distinct role dashboards, responsive sources and no invented academic results at 390px (5.4s)
+  ✓  26 e2e/phase2.spec.ts:158:3 › five distinct role dashboards, responsive sources and no invented academic results at 320px (5.2s)
+  ✓  27 e2e/phase2.spec.ts:222:1 › Google configuration and account recovery routes are honest; academic pages enforce role scope (2.3s)
+
+
+  1) e2e/people.spec.ts:42:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Record appointment', exact: true })
+
+
+      81 |   await page
+      82 |     .getByRole("link", { name: "Record appointment", exact: true })
+    > 83 |     .click();
+         |      ^
+      84 |   await page.getByLabel("Office", { exact: true }).selectOption("DRC_HEAD");
+      85 |   await page
+      86 |     .getByLabel("Scope", { exact: true })
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/people.spec.ts:83:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/people-Admin-creates-sourc-a0bc1--and-sees-immutable-history/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e/phase2.spec.ts:22:1 › Admin imports a CSV roster, reviews rows, commits once, and corrects the source name 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('definition').filter({ hasText: 'Synthetic import 1794858465661' }).first()
+    Expected substring: "corrected"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('definition').filter({ hasText: 'Synthetic import 1794858465661' }).first() with timeout 5000ms
+      - waiting for getByRole('definition').filter({ hasText: 'Synthetic import 1794858465661' }).first()
+
+
+      67 |   await expect(
+      68 |     page.getByRole("definition").filter({ hasText: name }).first(),
+    > 69 |   ).toContainText("corrected");
+         |     ^
+      70 | });
+      71 |
+      72 | test("invalid roster rows remain visible after reload and cannot be committed", async ({
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase2.spec.ts:69:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase2-Admin-imports-a-CSV-fae28-nd-corrects-the-source-name/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase2-Admin-imports-a-CSV-fae28-nd-corrects-the-source-name/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase2-Admin-imports-a-CSV-fae28-nd-corrects-the-source-name/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase2-Admin-imports-a-CSV-fae28-nd-corrects-the-source-name/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) e2e/phase2.spec.ts:72:1 › invalid roster rows remain visible after reload and cannot be committed 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('DEPARTMENT CODE NOT FOUND')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('DEPARTMENT CODE NOT FOUND') with timeout 5000ms
+      - waiting for getByText('DEPARTMENT CODE NOT FOUND')
+
+
+      89 |   await page.getByRole("button", { name: "Upload and preview" }).click();
+      90 |   await page.reload();
+    > 91 |   await expect(page.getByText("DEPARTMENT CODE NOT FOUND")).toBeVisible();
+         |                                                             ^
+      92 |   await expect(
+      93 |     page.getByRole("button", { name: "Commit validated import" }),
+      94 |   ).toBeDisabled();
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase2.spec.ts:91:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase2-invalid-roster-rows-0b622-oad-and-cannot-be-committed/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase2-invalid-roster-rows-0b622-oad-and-cannot-be-committed/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase2-invalid-roster-rows-0b622-oad-and-cannot-be-committed/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase2-invalid-roster-rows-0b622-oad-and-cannot-be-committed/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) e2e/phase2.spec.ts:97:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Staff member', { exact: true })
+
+
+      114 |   await page
+      115 |     .getByLabel("Staff member", { exact: true })
+    > 116 |     .selectOption({ label: "Mira Rao · DEMO-FACULTY" });
+          |      ^
+      117 |   await page.getByLabel("Official allocation key").fill(`LOCAL-${code}`);
+      118 |   await page
+      119 |     .getByLabel("Employment episode")
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase2.spec.ts:116:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    e2e/people.spec.ts:42:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history 
+    e2e/phase2.spec.ts:22:1 › Admin imports a CSV roster, reviews rows, commits once, and corrects the source name 
+    e2e/phase2.spec.ts:72:1 › invalid roster rows remain visible after reload and cannot be committed 
+    e2e/phase2.spec.ts:97:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history 
+  23 passed (2.0m)

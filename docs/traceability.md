@@ -1,76 +1,68 @@
 # Requirements → code → API → tests
 
-Status as of 2026-11-16. Master specification is binding; complete source coverage is in spec-inventory.md. This matrix distinguishes actual executable foundation/source workflows from planned academic behavior. No full business policy or all-80-page completion is claimed.
+2026-11-18. Complete source inventory: spec-inventory.md. Local Phase 2 and expanded
+Phase 3 slices are tested; mandatory live Google UAT remains BLOCKED. This is not
+80-page or full academic workflow completion. Detailed boundaries: Phase 2 and
+Phase 3 checklists in codex/. Actual commands/results/logs: ../TEST_RESULTS.md.
 
-## Implemented Phase 1 acceptance
+## Executed vertical slices
 
-| Requirement | Code/schema | API/UI | Actual tests |
+Paths below are relative to apps/api/akus unless frontend-prefixed. Backend tests are
+in apps/api/tests; browser tests in apps/web/e2e. All use real PostgreSQL; OIDC protocol
+fixtures are isolated test-only generated signatures/HTTP responses, not real sign-ins.
+
+| Requirement/source | Code/schema | API/UI | Executed tests |
 |---|---|---|---|
-| PostgreSQL foundation / forward migration | apps/api/akus/models.py; migrations/versions/0001_foundation_phase_1_foundation.py | health/ready, academic-years | test_live_ready_openapi, test_seed_idempotent_and_year_constraints; Alembic check |
-| Honest DB health / safe errors | apps/api/akus/main.py | health/live, health/ready, Overview, Recovery | test_unavailable_database_not_green; browser backend failure |
-| Local identity opt-in / production blocked | apps/api/akus/config.py, seed.py | Login, auth/config | test_demo_disabled_and_production_fail_closed |
-| Server-resolved fixture identity | apps/api/akus/auth.py | auth/demo-login, me, Profile | test_demo_identity_is_server_resolved (six fixtures), test_forged_fields_origin_and_identity_denied |
-| Protected reads | apps/api/akus/main.py current dependency | me, academic-years, foundation, policy/help | test_reads_require_session (four endpoints) |
-| Session/CSRF expiry/revocation | models.AuthSession, auth.py | auth/demo-login, auth/logout | test_logout_csrf_and_revocation; test_login_rotates_session_and_expiry_is_enforced |
-| Immutable foundation audit | models.AuditEvent, DB triggers | local login/logout/worker | test_audit_database_immutability (UPDATE, DELETE) |
-| Transactional local worker claim | work_jobs, worker_heartbeats, worker.py | foundation status | test_worker_claim_once_under_concurrency (four real PG sessions) |
-| Explicit policy pending | akus/policy.py, POLICY_GAPS.md | policy/help, Help | test_pending_rules_not_confirmed; Help.test.tsx |
-| Light responsive shell and accessible navigation | web/src/styles.css, components/Shell.tsx | home/profile/help and recovery | foundation.spec.ts: widths 1440/1024/768/390/320, axe, dialog focus restore |
-| Real browser navigation and recoverable failure | pages/*, lib/api.ts | /login, role homes, profile/help | foundation.spec.ts: login, reload, denied deep link, policy URL, logout, failure and 404 |
-| Contract and quality | docs/openapi.json, web/src/lib/schema.d.ts, scripts/check.sh | /api/openapi.json, /api/docs | Ruff, mypy, ESLint, TypeScript, Vitest, Vite build |
+| Foundation health/calendar/worker/audit | main.py, models.py, worker.py; 0001 | health/*, foundation, academic-years; Overview | test_foundation.py; foundation.spec.ts; migration/drift checks |
+| Permanent staff and episodes | people/*; 0002/0003 | people/staff, admin/staff; Staff pages | test_people.py staff/idempotency/rehire; people.spec.ts create/history |
+| Effective source authority, A01–04/I01–04/I11 | access.py, people/service.py | me; all protected APIs and role homes | current/scheduled/expired office tests; scoped IDOR and write denials; browser live authority change |
+| Global DRC/HoD exclusion, A02/I02 | GiST constraint; office validators | create/end/correct office pages | two competing PG writers; cross-department acting HoD conflict; immutable original facts |
+| Real OIDC protocol and safe config | identity/provider.py, router.py, config.py; 0004 | begin/callback/session/logout; Login/AuthState | test_identity.py claim/signature/state/nonce/PKCE/JWKS/HTTPS-cookie tests; phase2.spec.ts configuration/recovery |
+| Controlled stable identity, account queue, first Admin | identity/service.py, operator.py; 0004/0006 | admin/account-requests; Accounts; operator CLI | duplicate/racing links, changed email, blocked staff, explicit replacement/revocation, bootstrap idempotency; no real UAT |
+| Source correction and history | sources/service.py; 0005 | admin/staff/{id}/sources; SourceCorrection/StaffSources | test_sources.py versions/office supersession/source history; browser name correction and reload |
+| Safe CSV/XLSX import | sources/imports.py, body_limit.py | admin/imports stage/preview/commit; Imports | file limits/formula/XML, bad row rollback, retry/dedupe, concurrent commit; real CSV browser workflow |
+| Teaching/reference sources, Q39/Q40/Q42 prerequisites | sources/*; 0005 | teaching, sources/reference, admin/reference; Teaching/ReferenceSetup | first-date continuity, rehire, leap day pending, correction/void, filtered scope, alias history/merge rejection; browser teaching and canonical reference/year actions |
+| Five role-specific dashboards | sources/router.py; web/pages/Dashboards.tsx | dashboard, academic/integration/{area} | role routing/exemption/denials, no fake academic state; five-role responsive axe/browser |
+| Current auth after transaction locks | people/service.py lock_command | all source/import/account mutations | session revocation after read, current grant recheck, command/commit races |
+| Responsive usable forms and navigation | web/src/components, pages, styles.css | all source workflows plus foundation | people.spec.ts, phase2.spec.ts at 1440/390/320; foundation also 1024/768; actual screenshots |
 
-Backend tests: `apps/api/tests/test_foundation.py`; UI tests: `apps/web/src/pages/Help.test.tsx`; browser tests: `apps/web/e2e/foundation.spec.ts`. Test results and limits: ../TEST_RESULTS.md.
-
-## Implemented Phase 2A acceptance (Phase 2 still incomplete)
-
-Master sections reread: 1095–1189, 1401–1415, 1635–1673, 1807–1830, 1901–1925, 2172–2183. Backend tests below live in `apps/api/tests/test_people.py`; browser actions in `apps/web/e2e/people.spec.ts`. Local fixtures exercise real source-schema rules; no institutional provider success is claimed.
-
-| Requirement / source | Code / schema | API / UI | Executable verification |
-|---|---|---|---|
-| Permanent identity and employment, §6 / ADM-02–04 | people/models.py; migration 0002 | POST admin/staff; StaffNew, StaffRecord | test_staff_command_atomic_idempotent_and_csrf; test_rehire_keeps_identity_and_episodes_do_not_overlap; browser create/reload/history |
-| A02/I02 global exclusive DRC/HoD, historical Q12/16 retired | GiST exclusive_drc_hod_globally; people/service.py; migrations 0002/0003 | POST admin/appointments; AppointmentNew | test_global_cross_department_exclusion_and_pending_principal; test_global_exclusion_with_two_concurrent_database_writers; browser conflict |
-| No invented same-role cross-department restriction | migration 0003 | source appointment command | test_office_boundaries_and_same_role_different_scope |
-| Current effective authority, I11 / §8 | access.py; source episodes/offices/Admin grants | me; all protected reads/commands | test_current_roles_and_filtered_reads; test_scheduled_and_expired_offices_grant_nothing; test_demo_role_label_cannot_elevate_and_disabled_staff_session_revoked |
-| A01/A02/I01 eligibility boundary (academic intake still absent) | Actor.view | me / Profile | parametrized eligible Faculty+DRC; exempt HoD/acting/Principal; no application API |
-| A04/I04 Principal read-only global source visibility | access.py, staff_scope / require_admin | people/staff, people/appointments; read-only pages | test_non_admin_cannot_write_even_with_csrf; browser Principal denial; academic oversight pending |
-| Scoped and own-record privacy | service.detail, appointment_detail | staff and office detail / profile | test_current_roles_and_filtered_reads; test_appointment_record_reads_require_own_or_scoped_authority; HoD and Faculty browser denials |
-| Authority ending without login refresh; Q17 prerequisite only | end_appointment; server-time versioned source end | AppointmentRecord full page; profile | test_appointment_changes_live_session_authority_and_end_revokes; two-browser source-change/revocation workflow |
-| Original facts and immutable changes | office trigger, audit events, command receipts | staff/office history | test_end_is_versioned_idempotent_and_preserves_issued_record; direct SQL UPDATE/DELETE rejected |
-| CSRF/origin/idempotency/optimistic concurrency | mutation_guard; lock_command; commit_command | all source commands | test_staff_command_atomic_idempotent_and_csrf; test_duplicate_concurrent_source_command_commits_once; test_authority_rechecked_before_idempotent_replay |
-| Pending authority never implies a new approver | authority + create_appointment | AUTHORITY_POLICY_PENDING; readable error | test_global_cross_department_exclusion_and_pending_principal; POLICY_GAPS.md |
-| Responsive usable source pages | web/pages/Staff*, Appointment* | real forms, source history, full end page, read-only variants | people.spec.ts; axe at 1440/390/320, actual screenshots; native and compiled Compose |
-
-Extra functional routes supporting these contracts: `/admin/staff/new`, `/admin/appointments/new`, `/admin/appointments/:appointmentId`, `/people/staff`, `/people/staff/:staffId`, `/people/appointments`, `/people/appointments/:appointmentId`. They do not inflate the canonical 80-page inventory. Department/episode correction, OIDC/linking, teaching and complete dashboards are unfinished Phase 2 work.
+Phase 3 code/schema/API/race evidence: [Phase 3 checklist](codex/PHASE3_CHECKLIST.md).
+Source/identity writes take an exclusive authority gate; academic commands take its
+shared side, then offering/application/mapping and sorted pool locks. HTTP runs outside
+transactions. Source facts/audit remain immutable; no source command grants certificate credit.
 
 ## All 80 target routes
 
-Full roles and planned API contracts: route-matrix.md. Paths below are relative to apps/web/src; API prefix is /api/v1. Unimplemented routes recover through the real not-found page; that is not fulfillment of their contracts.
+Full target roles/API contracts: route-matrix.md. Paths below are relative to
+apps/web/src; API prefix /api/v1. An unavailable integration or not-found page does
+not fulfill its eventual academic page contract. Extra import/account/correction
+routes support the inventory and do not inflate its count.
 
 | Page | Route | Current code / API | Implementation status | Target phase |
 |---|---|---|---|---|
-| PUB-01 | `/login` | `pages/Login.tsx` / auth/config, auth/demo-identities, auth/demo-login | Local demo complete; Google OIDC deferred to Phase 2 | 2 |
-| PUB-02 | `/auth/callback` | `pages/Recovery.tsx` / none | Honest not-configured boundary; OIDC callback deferred | 2 |
-| PUB-03 | `/access-denied` | `pages/Recovery.tsx` / me | Recovery only; institutional denial details Phase 2 | 2 |
-| PUB-04 | `/system-unavailable` | `pages/Recovery.tsx` / health/ready | Foundation recovery implemented | 2 |
-| PUB-05 | `/not-found` | `pages/Recovery.tsx` / router | Foundation recovery implemented | 2 |
+| PUB-01 | `/login` | `pages/Login.tsx` / auth/config, auth/google/begin, auth/demo-login | VERIFIED locally; live Google UAT BLOCKED | 2 |
+| PUB-02 | `/auth/callback` | `pages/AuthState.tsx` / auth/google/callback, auth/session, me | VERIFIED protocol/recovery locally; real provider UAT BLOCKED | 2 |
+| PUB-03 | `/access-denied` | `pages/AuthState.tsx, Recovery.tsx` / auth/session, me | VERIFIED pending/disabled/denied/duplicate states locally | 2 |
+| PUB-04 | `/system-unavailable` | `pages/Recovery.tsx` / health/ready | VERIFIED foundation recovery | 2 |
+| PUB-05 | `/not-found` | `pages/Recovery.tsx` / router | VERIFIED not-found recovery | 2 |
 | SHR-01 | `/app/tasks` | None | NOT IMPLEMENTED | 8 |
 | SHR-02 | `/app/notifications` | None | NOT IMPLEMENTED | 8 |
-| SHR-03 | `/app/profile` | `pages/StaffRecord.tsx` / me, me/authority, people/appointments/{id} | Phase 2A own identity/episode/office history; institutional OIDC/linking not yet implemented | 2 |
-| SHR-04 | `/app/help` | `pages/Help.tsx` / policy/help | Searchable source-approved summaries; full register in repository | 2 |
+| SHR-03 | `/app/profile` | `pages/StaffRecord.tsx, components/StaffSources.tsx` / me, people/staff/{id}/sources | VERIFIED own source history; optional self-declared skills not implemented | 2 |
+| SHR-04 | `/app/help` | `pages/Help.tsx` / policy/help | VERIFIED searchable policy summaries | 2 |
 | SHR-05 | `/app/search` | None | NOT IMPLEMENTED | 8 |
-| FAC-01 | `/app/home` | `pages/Overview.tsx` / foundation, academic-years, current me | PARTIAL: source-authorized navigation and role home; full academic/source dashboards unfinished | 2 |
-| FAC-02 | `/app/catalog` | None | NOT IMPLEMENTED | 3 |
-| FAC-03 | `/app/catalog/:courseId` | None | NOT IMPLEMENTED | 3 |
-| FAC-04 | `/app/offerings/:offeringId` | None | NOT IMPLEMENTED | 3 |
-| FAC-05 | `/app/applications` | None | NOT IMPLEMENTED | 4 |
-| FAC-06 | `/app/applications/new/offering` | None | NOT IMPLEMENTED | 4 |
-| FAC-07 | `/app/applications/new/eligibility` | None | NOT IMPLEMENTED | 4 |
-| FAC-08 | `/app/applications/new/evidence` | None | NOT IMPLEMENTED | 4 |
-| FAC-09 | `/app/applications/new/review` | None | NOT IMPLEMENTED | 4 |
-| FAC-10 | `/app/applications/:applicationId` | None | NOT IMPLEMENTED | 4 |
-| FAC-11 | `/app/applications/:applicationId/quota` | None | NOT IMPLEMENTED | 4 |
+| FAC-01 | `/app/home` | `pages/Dashboards.tsx` / dashboard; applications | VERIFIED source workspace and admission navigation; final compliance metrics later | 2 |
+| FAC-02 | `/app/catalog` | `pages/academic/Catalog.tsx` / nptel/courses | VERIFIED catalog search, categories, pagination and source status | 3 |
+| FAC-03 | `/app/catalog/:courseId` | `pages/academic/Catalog.tsx` / nptel/courses/{id} | VERIFIED canonical identity, exact offerings and provenance | 3 |
+| FAC-04 | `/app/offerings/:offeringId` | `pages/academic/Catalog.tsx` / nptel/offerings/{id}; nptel/mapping-requests | VERIFIED exact source/dates/topic/pool/blockers, admission and mapping request | 3 |
+| FAC-05 | `/app/applications` | `pages/academic/Applications.tsx` / applications | VERIFIED scoped drafts/submissions, current allocation and cases | 4 |
+| FAC-06 | `/app/applications/new/offering` | `pages/academic/Applications.tsx` / nptel/offerings; applications | PARTIAL: catalog-to-draft selection; full evidence wizard later | 4 |
+| FAC-07 | `/app/applications/new/eligibility` | `pages/academic/Applications.tsx` / applications; applications/{id}/submit | VERIFIED safe first-attempt declarations/reservation; evidence-dependent branches blocked | 4 |
+| FAC-08 | `/app/applications/new/evidence` | `pages/academic/Applications.tsx` / applications/new wildcard | NOT COMPLETE: no evidence upload; wildcard does not satisfy evidence-page acceptance | 4 |
+| FAC-09 | `/app/applications/new/review` | `pages/academic/Applications.tsx` / applications/{id}; applications/{id}/submit | PARTIAL: review/confirmation on draft detail, not a separate wizard step | 4 |
+| FAC-10 | `/app/applications/:applicationId` | `pages/academic/Applications.tsx` / applications/{id}; review; withdraw; schedule-claims | VERIFIED ordinary decisions, withdrawal and personal schedule claims; broader lifecycle later | 4 |
+| FAC-11 | `/app/applications/:applicationId/quota` | `pages/academic/Applications.tsx` / applications/{id} | VERIFIED original/current/official years, allocation and immutable movements | 4 |
 | FAC-12 | `/app/applications/:applicationId/evidence` | None | NOT IMPLEMENTED | 4 |
-| FAC-13 | `/app/applications/:applicationId/history` | None | NOT IMPLEMENTED | 4 |
+| FAC-13 | `/app/applications/:applicationId/history` | `pages/academic/Applications.tsx` / applications/{id} | VERIFIED submission/source/movement/decision history; later evidence events absent | 4 |
 | FAC-14 | `/app/participation/:applicationId` | None | NOT IMPLEMENTED | 6 |
 | FAC-15 | `/app/previous-attempts` | None | NOT IMPLEMENTED | 6 |
 | FAC-16 | `/app/previous-attempts/:attemptId` | None | NOT IMPLEMENTED | 6 |
@@ -79,23 +71,23 @@ Full roles and planned API contracts: route-matrix.md. Paths below are relative 
 | FAC-19 | `/app/compliance/silver` | None | NOT IMPLEMENTED | 6 |
 | FAC-20 | `/app/compliance/silver/:obligationId` | None | NOT IMPLEMENTED | 6 |
 | FAC-21 | `/app/certificates` | None | NOT IMPLEMENTED | 6 |
-| DRC-01 | `/drc/reviews` | None | NOT IMPLEMENTED | 4 |
-| DRC-02 | `/drc/reviews/:taskId` | None | NOT IMPLEMENTED | 4 |
+| DRC-01 | `/drc/reviews` | `pages/academic/Applications.tsx` / applications?review=true | VERIFIED scoped review queue and no self-review; advanced queue filters later | 4 |
+| DRC-02 | `/drc/reviews/:taskId` | `pages/academic/Applications.tsx` / applications/{id}/review | VERIFIED ordinary decisions, current office and DRC-own direct route; evidence exceptions later | 4 |
 | DRC-03 | `/drc/history` | None | NOT IMPLEMENTED | 4 |
-| HOD-01 | `/hod/home` | `pages/Overview.tsx` / foundation, academic-years, current me | PARTIAL: source-authorized navigation and role home; full academic/source dashboards unfinished | 2 |
-| HOD-02 | `/hod/reviews` | None | NOT IMPLEMENTED | 4 |
-| HOD-03 | `/hod/reviews/:taskId` | None | NOT IMPLEMENTED | 4 |
-| HOD-04 | `/hod/topic-mappings` | None | NOT IMPLEMENTED | 3 |
-| HOD-05 | `/hod/topic-mappings/requests` | None | NOT IMPLEMENTED | 3 |
-| HOD-06 | `/hod/topic-mappings/:courseId` | None | NOT IMPLEMENTED | 3 |
-| HOD-07 | `/hod/topic-mappings/:courseId/edit` | None | NOT IMPLEMENTED | 3 |
-| HOD-08 | `/hod/topics` | None | NOT IMPLEMENTED | 3 |
-| HOD-09 | `/hod/quotas` | None | NOT IMPLEMENTED | 3 |
-| HOD-10 | `/hod/quotas/:poolId` | None | NOT IMPLEMENTED | 3 |
-| HOD-11 | `/hod/quotas/:poolId/edit` | None | NOT IMPLEMENTED | 3 |
-| HOD-12 | `/hod/quotas/:poolId/ledger` | None | NOT IMPLEMENTED | 3 |
-| HOD-13 | `/hod/quota-transfers` | None | NOT IMPLEMENTED | 5 |
-| HOD-14 | `/hod/quota-transfers/:caseId` | None | NOT IMPLEMENTED | 5 |
+| HOD-01 | `/hod/home` | `pages/Dashboards.tsx` / dashboard; departments/*/quotas; applications | VERIFIED scoped sources and mapping/quota/review navigation; full metrics later | 2 |
+| HOD-02 | `/hod/reviews` | `pages/academic/Applications.tsx` / applications?review=true | VERIFIED scoped review queue and no self-review; advanced queue filters later | 4 |
+| HOD-03 | `/hod/reviews/:taskId` | `pages/academic/Applications.tsx` / applications/{id}/review | VERIFIED ordinary decisions, current office and DRC-own direct route; evidence exceptions later | 4 |
+| HOD-04 | `/hod/topic-mappings` | `pages/academic/Governance.tsx` / departments/{id}/topic-mappings | VERIFIED department canonical-course mapping list | 3 |
+| HOD-05 | `/hod/topic-mappings/requests` | `pages/academic/Governance.tsx` / departments/{id}/topic-mappings; POST nptel/mapping-requests | VERIFIED deduplicated request inbox without seat reservation | 3 |
+| HOD-06 | `/hod/topic-mappings/:courseId` | `pages/academic/Governance.tsx` / departments/{id}/topic-mappings/{course} | VERIFIED source candidates, current HoD decision, effective revisions; existing-seat migration POLICY_PENDING | 3 |
+| HOD-07 | `/hod/topic-mappings/:courseId/edit` | `pages/academic/Governance.tsx` / departments/{id}/topic-mappings/{course} | VERIFIED source candidates, current HoD decision, effective revisions; existing-seat migration POLICY_PENDING | 3 |
+| HOD-08 | `/hod/topics` | `pages/academic/Governance.tsx` / nptel/topics; topic-proposals; admin/nptel/topics | VERIFIED canonical topics, aliases, proposals and controlled Admin maintenance | 3 |
+| HOD-09 | `/hod/quotas` | `pages/academic/Governance.tsx` / departments/{id}/quotas | VERIFIED annual shared pools, filters and publication | 3 |
+| HOD-10 | `/hod/quotas/:poolId` | `pages/academic/Governance.tsx` / quotas/{id}; departments/{id}/quotas | VERIFIED current HoD create/publish/revise, counted occupancy and provenance; no decrease below occupied | 3 |
+| HOD-11 | `/hod/quotas/:poolId/edit` | `pages/academic/Governance.tsx` / quotas/{id}; departments/{id}/quotas | VERIFIED current HoD create/publish/revise, counted occupancy and provenance; no decrease below occupied | 3 |
+| HOD-12 | `/hod/quotas/:poolId/ledger` | `pages/academic/Governance.tsx` / quotas/{id}?as_of=... | VERIFIED ledger/current reconciliation and as-of API; UI shows latest 200 movements | 3 |
+| HOD-13 | `/hod/quota-transfers` | `pages/academic/Applications.tsx` / applications?reconciliation=true | VERIFIED open transfer/policy cases and retained occupancy; broader inbox filtering later | 5 |
+| HOD-14 | `/hod/quota-transfers/:caseId` | `pages/academic/Applications.tsx` / quota-transfer-cases/{id}; applications/{id}/reconcile | VERIFIED scoped deep link, original/current facts, target quota link, recheck and audit | 5 |
 | HOD-15 | `/hod/outcome-verifications` | None | NOT IMPLEMENTED | 6 |
 | HOD-16 | `/hod/outcome-verifications/:caseId` | None | NOT IMPLEMENTED | 6 |
 | HOD-17 | `/hod/integrity` | None | NOT IMPLEMENTED | 5 |
@@ -106,7 +98,7 @@ Full roles and planned API contracts: route-matrix.md. Paths below are relative 
 | HOD-22 | `/hod/reports/silver` | None | NOT IMPLEMENTED | 6 |
 | HOD-23 | `/hod/reports/applications` | None | NOT IMPLEMENTED | 6 |
 | HOD-24 | `/hod/decisions` | None | NOT IMPLEMENTED | 4 |
-| PRN-01 | `/principal/home` | `pages/Overview.tsx` / foundation, academic-years, current me | PARTIAL: source-authorized navigation and role home; full academic/source dashboards unfinished | 2 |
+| PRN-01 | `/principal/home` | `pages/Dashboards.tsx: PrincipalDashboard` / dashboard | VERIFIED global read-only source oversight; academic reports later | 2 |
 | PRN-02 | `/principal/departments` | None | NOT IMPLEMENTED | 8 |
 | PRN-03 | `/principal/departments/:departmentId` | None | NOT IMPLEMENTED | 8 |
 | PRN-04 | `/principal/applications` | None | NOT IMPLEMENTED | 8 |
@@ -115,24 +107,28 @@ Full roles and planned API contracts: route-matrix.md. Paths below are relative 
 | PRN-07 | `/principal/reports/silver` | None | NOT IMPLEMENTED | 8 |
 | PRN-08 | `/principal/exceptions` | None | NOT IMPLEMENTED | 8 |
 | PRN-09 | `/principal/audit` | None | NOT IMPLEMENTED | 8 |
-| ADM-01 | `/admin/home` | `pages/Overview.tsx` / foundation, academic-years, current me | PARTIAL: source-authorized navigation and role home; full academic/source dashboards unfinished | 2 |
-| ADM-02 | `/admin/staff` | `pages/StaffDirectory.tsx, pages/StaffNew.tsx` / GET people/staff; POST admin/staff | Phase 2A search, scoped reads, atomic initial source creation; roster verification/import/linking deferred | 2 |
-| ADM-03 | `/admin/staff/:staffId` | `pages/StaffRecord.tsx` / people/staff/{id} | Phase 2A source detail/history/appointment navigation; teaching, identity linking and correction tabs deferred | 2 |
-| ADM-04 | `/admin/staff/:staffId/employment` | `pages/StaffRecord.tsx` / people/staff/{id}; admin/staff initial creation | PARTIAL: initial episode + read history including rehire; correction/separation/rehire commands not implemented | 2 |
-| ADM-05 | `/admin/appointments` | `pages/Appointments.tsx, AppointmentNew.tsx, AppointmentRecord.tsx` / people/appointments; admin/appointments; admin/appointments/{id}/end | Phase 2A record/view/end, scoped authority and exclusion implemented; arbitrary temporal corrections and academic impact review deferred | 2 |
-| ADM-06 | `/admin/teaching-assignments` | None | NOT IMPLEMENTED | 2 |
-| ADM-07 | `/admin/academic-reference` | None | NOT IMPLEMENTED | 2 |
-| ADM-08 | `/admin/academic-years` | None | NOT IMPLEMENTED | 2 |
-| ADM-09 | `/admin/nptel-sync` | None | NOT IMPLEMENTED | 8 |
-| ADM-10 | `/admin/nptel-offerings` | None | NOT IMPLEMENTED | 8 |
+| ADM-01 | `/admin/home` | `pages/Dashboards.tsx` / dashboard; admin/nptel/provider-fetches | VERIFIED sources/imports/accounts and real public provider fetch | 2 |
+| ADM-02 | `/admin/staff` | `pages/StaffDirectory.tsx, StaffNew.tsx` / people/staff, admin/staff | VERIFIED scoped search/create; Google linking separate | 2 |
+| ADM-03 | `/admin/staff/:staffId` | `pages/StaffRecord.tsx, SourceCorrection.tsx` / people/staff/{id}, people/staff/{id}/sources | VERIFIED source detail/corrections; private attachments and identity merge not implemented | 2 |
+| ADM-04 | `/admin/staff/:staffId/employment` | `pages/SourceCorrection.tsx` / admin/staff/{id}/sources | VERIFIED episode/rehire corrections; academic impact/evidence attachments later | 2 |
+| ADM-05 | `/admin/appointments` | `pages/Appointments.tsx, AppointmentNew.tsx, AppointmentRecord.tsx, SourceCorrection.tsx` / people/appointments, admin/appointments, admin/staff/{id}/sources | VERIFIED create/end/correct/supersede and DB exclusion; active-case impacts later | 2 |
+| ADM-06 | `/admin/teaching-assignments` | `pages/Teaching.tsx` / teaching, admin/teaching | VERIFIED create/filter/correct/void/timeline; IO-02 POLICY_PENDING, compliance not assessed | 2 |
+| ADM-07 | `/admin/academic-reference` | `pages/ReferenceSetup.tsx` / sources/reference, admin/reference | VERIFIED canonical references/alias corrections; subject merge POLICY_PENDING | 2 |
+| ADM-08 | `/admin/academic-years` | `pages/ReferenceSetup.tsx` / sources/reference; admin/reference | VERIFIED July–June years; annual quota publication on HOD pages | 2 |
+| ADM-09 | `/admin/nptel-sync` | `pages/academic/Catalog.tsx` / admin/nptel/provider-fetches; nptel/courses/offerings | PARTIAL full page contract: real manual fetch/retry/accept and failure history; automated provider-job operations later | 8 |
+| ADM-10 | `/admin/nptel-offerings` | `pages/academic/Catalog.tsx` / nptel/offerings/{id}; admin/nptel/offerings/{id}/accept | PARTIAL full page contract: versions/source conflicts/review verified; separate ambiguity adjudication workflow later | 8 |
 | ADM-11 | `/admin/operations` | None | NOT IMPLEMENTED | 8 |
 | ADM-12 | `/admin/notifications` | None | NOT IMPLEMENTED | 8 |
 | ADM-13 | `/admin/audit` | None | NOT IMPLEMENTED | 8 |
 
-## Historical policy coverage
+## Historical and amended policy coverage
 
-All fifty reconciled rows are in POLICY_REGISTER.md with source lines and planned T-Q01–T-Q50 acceptance. Detailed owning modules, target UI and planned test references are in POLICY_TEST_TRACEABILITY.md. No Phase 1 demo-role test substitutes for institutional office/approval policy coverage. Negative applicant, topic-quota, cross-year and compliance tests must run with their actual domain services in later phases.
+All Q01–Q50 remain reconciled in POLICY_REGISTER.md; planned domain acceptances are
+in POLICY_TEST_TRACEABILITY.md. Actual application and quota races are mapped in the Phase 3 checklist.
+Source tests alone do not prove quota or review correctness. Q39/Q40/Q42 source dates are tested; Silver compliance assessment is not.
 
-## Additional complete source inventories (planned tests)
-
-A01–A08 and I01–I18: master 1403–1410 and 1656–1673. J1–J16 journeys: 1254–1284. UX-01–UX-25: 1357–1381. T-Q01–T-Q50, T-AMEND-01–10, T-V2.4-TOPIC-MAP-01–05, T-ANNUAL-TOPIC-01–07, T-QUOTA-XFER-01–05: section 15, lines 2190–2266. C01–C50 adversarial scenarios: 2270–2319. All remain planned except the foundation and source-authority assertions explicitly listed above. No academic review, active-case transition or compliance calculation is implemented by those assertions. No quota concurrency proof is claimed from the local work-ledger concurrency test.
+A01–A08/I01–I18, J1–J16, UX-01–25, T-Q01–50, T-AMEND-01–10,
+T-V2.4-TOPIC-MAP-01–05, T-ANNUAL-TOPIC-01–07, T-QUOTA-XFER-01–05 and C01–C50
+remain required target coverage in master sections 15–16. Only explicitly named
+tests in the checklists/results have executed; full lifecycle coverage is not claimed. Superseded HoD/Principal applicant,
+dual DRC/HoD, per-offering quota and unratified mapping-credit paths stay disabled.

@@ -1,0 +1,80 @@
+
+> akus-web@0.1.0 e2e
+> playwright test
+
+
+Running 27 tests using 1 worker
+
+(node:70928) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/foundation.spec.ts:5:1 › sign-in, DB-backed navigation, reload, policy search, logout and denied deep link (1.1s)
+  ✓   2 e2e/foundation.spec.ts:52:3 › responsive foundation at 1440px with accessibility (1.1s)
+  ✓   3 e2e/foundation.spec.ts:52:3 › responsive foundation at 1024px with accessibility (1.0s)
+  ✓   4 e2e/foundation.spec.ts:52:3 › responsive foundation at 768px with accessibility (1.1s)
+  ✓   5 e2e/foundation.spec.ts:52:3 › responsive foundation at 390px with accessibility (1.1s)
+  ✓   6 e2e/foundation.spec.ts:52:3 › responsive foundation at 320px with accessibility (963ms)
+  ✓   7 e2e/foundation.spec.ts:94:3 › drc demo uses appropriate home without academic actions (285ms)
+  ✓   8 e2e/foundation.spec.ts:94:3 › hod demo uses appropriate home without academic actions (275ms)
+  ✓   9 e2e/foundation.spec.ts:94:3 › principal demo uses appropriate home without academic actions (271ms)
+  ✓  10 e2e/foundation.spec.ts:94:3 › admin demo uses appropriate home without academic actions (295ms)
+  ✓  11 e2e/foundation.spec.ts:94:3 › acting-hod demo uses appropriate home without academic actions (260ms)
+  ✓  12 e2e/foundation.spec.ts:113:1 › backend failure and unknown URL are recoverable (1.7s)
+  ✓  13 e2e/people.spec.ts:42:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history (1.6s)
+  ✓  14 e2e/people.spec.ts:118:1 › overlapping DRC and cross-department acting HoD is visibly rejected without losing inputs (723ms)
+  ✓  15 e2e/people.spec.ts:148:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards (784ms)
+  ✓  16 e2e/people.spec.ts:181:1 › HoD sees only the office department, and rehire history retains two episodes (757ms)
+  ✓  17 e2e/people.spec.ts:219:3 › people workflows at 1440px with accessible forms and tables (3.0s)
+  ✓  18 e2e/people.spec.ts:219:3 › people workflows at 390px with accessible forms and tables (2.6s)
+  ✓  19 e2e/people.spec.ts:219:3 › people workflows at 320px with accessible forms and tables (2.5s)
+  ✓  20 e2e/people.spec.ts:261:1 › existing browser session gains and loses office scope from source changes (1.6s)
+  ✓  21 e2e/phase2.spec.ts:22:1 › Admin imports a CSV roster, reviews rows, commits once, and corrects the source name (1.6s)
+  ✓  22 e2e/phase2.spec.ts:75:1 › invalid roster rows remain visible after reload and cannot be committed (638ms)
+  ✘  23 e2e/phase2.spec.ts:101:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history (6.0s)
+(node:72413) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  24 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 1440px (5.5s)
+  ✓  25 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 390px (5.3s)
+  ✓  26 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 320px (5.3s)
+  ✓  27 e2e/phase2.spec.ts:226:1 › Google configuration and account recovery routes are honest; academic pages enforce role scope (2.3s)
+
+
+  1) e2e/phase2.spec.ts:101:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Synthetic subject E2E1794858727939', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Synthetic subject E2E1794858727939', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Synthetic subject E2E1794858727939', exact: true })
+
+
+      142 |       exact: true,
+      143 |     }),
+    > 144 |   ).toBeVisible();
+          |     ^
+      145 |   await expect(page.getByText("2028-07-10", { exact: true })).toBeVisible();
+      146 |   await page.getByRole("link", { name: "Correct source record" }).click();
+      147 |   await page.getByLabel("Teaching starts on").fill("2026-07-20");
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase2.spec.ts:144:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase2-Admin-records-a-can-c19d7-tion-with-immutable-history/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/phase2.spec.ts:101:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history 
+  26 passed (51.7s)

@@ -251,11 +251,97 @@ test("Google configuration and account recovery routes are honest; academic page
   ).toHaveCount(0);
   await signIn(page, "principal");
   await page.goto("/app/applications");
+  await expect(
+    page.getByRole("heading", { name: "NPTEL applications", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Submit|Approve/ }),
+  ).toHaveCount(0);
+  await page.goto("/app/applications/new/offering");
   await expect(page.getByRole("alert")).toContainText(
-    "faculty applicant required exempt office",
+    "HoD and Principal offices are NPTEL-exempt",
   );
   await page.goto("/admin/imports");
   await expect(
     page.getByRole("heading", { name: "Administration access required" }),
+  ).toBeVisible();
+});
+
+test("canonical Admin reference and year routes persist changes and reject duplicate years", async ({
+  page,
+}) => {
+  await signIn(page);
+  const code = `REF${Date.now()}`;
+  const alias = `synthetic alias ${code.toLowerCase()}`;
+  await page.goto("/admin/academic-reference");
+  await page.getByLabel("Stable canonical code").fill(code);
+  await page
+    .getByLabel("Official name", { exact: true })
+    .fill(`Synthetic ${code}`);
+  await source(page);
+  await page.getByRole("button", { name: "Save official reference" }).click();
+  await expect(
+    page.getByRole("button", { name: `Correct ${code}`, exact: true }),
+  ).toBeVisible();
+  await page.getByLabel("Reference type").selectOption("alias");
+  await page
+    .getByLabel("Canonical subject", { exact: true })
+    .selectOption({ label: `${code} · Synthetic ${code}` });
+  await page.getByLabel("Alias name").fill(alias);
+  await source(page);
+  await page.getByRole("button", { name: "Save official reference" }).click();
+  await expect(
+    page.getByRole("button", { name: `Correct alias ${alias}`, exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: `Correct alias ${alias}`, exact: true })
+    .click();
+  await page.getByLabel("Alias name").fill(`${alias} corrected`);
+  await source(page);
+  await page.getByRole("button", { name: "Save official reference" }).click();
+  await expect(
+    page.getByRole("button", {
+      name: `Correct alias ${alias} corrected`,
+      exact: true,
+    }),
+  ).toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole("button", {
+      name: `Correct alias ${alias} corrected`,
+      exact: true,
+    }),
+  ).toBeVisible();
+  const references = await (
+    await page.request.get("/api/v1/sources/reference")
+  ).json();
+  const latestYear = Math.max(
+    ...references.years.map((year: { starts_on: string }) =>
+      Number(year.starts_on.slice(0, 4)),
+    ),
+  );
+  const starts = `${latestYear + 1}-07-01`;
+  await page.goto("/admin/academic-years");
+  await expect(page.getByLabel("Reference type")).toHaveValue("year");
+  await page.getByLabel("Official academic year starts on").fill(starts);
+  await source(page);
+  await page.getByRole("button", { name: "Save official reference" }).click();
+  await expect(
+    page.getByRole("cell", { name: starts, exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Save official reference" }).click();
+  await expect(page.getByRole("alert")).toContainText(
+    /reference already exists/i,
+  );
+  await page.reload();
+  await expect(
+    page.getByRole("cell", { name: starts, exact: true }),
+  ).toHaveCount(1);
+  await page.goto("/admin/teaching-assignments");
+  await expect(
+    page.getByRole("heading", {
+      name: "Teaching allocations",
+      exact: true,
+    }),
   ).toBeVisible();
 });

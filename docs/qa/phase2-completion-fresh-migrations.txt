@@ -1,0 +1,6 @@
+ Container akus-local-api-run-cb87bf353326 Creating 
+ Container akus-local-api-run-cb87bf353326 Created 
+0006_identity_history (head)
+No new upgrade operations detected.
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.

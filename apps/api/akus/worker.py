@@ -1,8 +1,9 @@
-"""Phase 1 local work-ledger probe; external delivery adapters are future work."""
+"""Durable quota reconciliation and local work ledger; no external email delivery."""
 
 import logging
 import time
 from datetime import UTC, datetime
+from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
@@ -13,7 +14,7 @@ from akus.db import database
 from akus.models import AuditEvent, WorkerHeartbeat, WorkJob
 
 
-def tick(db: Session) -> bool:
+def tick(db: Session, job_id: UUID | None = None) -> bool:
     with db.begin():
         now = datetime.now(UTC)
         db.execute(
@@ -21,16 +22,20 @@ def tick(db: Session) -> bool:
             .values(name="foundation", seen_at=now)
             .on_conflict_do_update(index_elements=["name"], set_={"seen_at": now})
         )
+        candidates = select(WorkJob).where(WorkJob.state == "PENDING")
+        if job_id is not None:
+            candidates = candidates.where(WorkJob.id == job_id)
         job = db.scalar(
-            select(WorkJob)
-            .where(WorkJob.state == "PENDING")
-            .order_by(WorkJob.created_at)
-            .with_for_update(skip_locked=True)
-            .limit(1)
+            candidates.order_by(WorkJob.created_at).with_for_update(skip_locked=True).limit(1)
         )
         if job is None:
             return False
-        if job.kind != "LOCAL_DEMO_BOOTSTRAP":
+        if job.kind == "QUOTA_RECHECK":
+            from akus.applications.transfers import worker_recheck
+
+            worker_recheck(db, UUID(job.key.split(":")[1]))
+            job.state = "DONE"
+        elif job.kind != "LOCAL_DEMO_BOOTSTRAP":
             job.state = "DEAD"
             db.add(AuditEvent(action="UNKNOWN_WORK_KIND", details={"job_id": str(job.id)}))
         else:
@@ -46,8 +51,10 @@ def main() -> None:
     try:
         while True:
             try:
-                with factory() as db:
-                    tick(db)
+                for _ in range(20):
+                    with factory() as db:
+                        if not tick(db):
+                            break
             except Exception as exc:
                 logging.error("worker_tick_failed type=%s", type(exc).__name__)
             time.sleep(5)

@@ -297,7 +297,7 @@ def dashboard(db: DB, actor: Current) -> dict[str, Any]:
         else ["DRC_HEAD", "HOD"]
         if actor.view().applicant_eligible
         else [],
-        "academic_status": "NOT_IMPLEMENTED",
+        "academic_status": "CATALOG_ADMISSION_AVAILABLE",
         "teaching_acceptance": "POLICY_PENDING:IO-02",
     }
     if "ADMIN" in actor.roles:
@@ -369,6 +369,21 @@ def academic_integration(area: str, actor: Current) -> dict[str, Any]:
         )
     else:
         raise HTTPException(404, "NOT_FOUND")
+    if area in {"applications", "reviews", "quotas"}:
+        return {
+            "area": area,
+            "status": "AVAILABLE",
+            "phase": "3 continuation",
+            "dependency": "Current source, office, metadata and policy gates apply",
+            "records": None,
+            "can_decide": False,
+            "route": {
+                "applications": "/app/applications",
+                "reviews": "/hod/reviews" if "HOD" in actor.roles else "/drc/reviews",
+                "quotas": "/hod/quotas",
+            }[area],
+            "policy": "Individual command authorization is evaluated at decision time",
+        }
     return {
         "area": area,
         "status": "NOT_IMPLEMENTED",

@@ -1,0 +1,168 @@
+ Image akus-local-web Building 
+ Image akus-local-migrate Building 
+ Image akus-local-api Building 
+ Image akus-local-worker Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.85kB done
+#1 DONE 0.0s
+
+#2 [web internal] load build definition from web.Dockerfile
+#2 transferring dockerfile: 324B done
+#2 DONE 0.0s
+
+#3 [api internal] load build definition from api.Dockerfile
+#3 transferring dockerfile: 430B done
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for docker.io/library/caddy:2-alpine
+#4 DONE 0.0s
+
+#5 [api internal] load metadata for docker.io/library/python:3.13-slim
+#5 DONE 1.9s
+
+#6 [api internal] load .dockerignore
+#6 transferring context: 208B done
+#6 DONE 0.0s
+
+#7 [worker 1/6] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#7 DONE 0.0s
+
+#8 [migrate internal] load build context
+#8 transferring context: 277.87kB 0.0s done
+#8 DONE 0.0s
+
+#9 [migrate 2/6] WORKDIR /app
+#9 CACHED
+
+#10 [migrate 3/6] COPY apps/api/requirements.lock /app/requirements.lock
+#10 CACHED
+
+#11 [migrate 4/6] RUN pip install --no-cache-dir -r requirements.lock
+#11 CACHED
+
+#12 [migrate 5/6] COPY apps/api /app/apps/api
+#12 DONE 0.0s
+
+#13 [web internal] load metadata for docker.io/library/node:24-slim
+#13 DONE 2.1s
+
+#14 [worker 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#14 ...
+
+#6 [web internal] load .dockerignore
+#6 transferring context: 208B done
+#6 DONE 0.0s
+
+#15 [web build 1/6] FROM docker.io/library/node:24-slim@sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54
+#15 DONE 0.0s
+
+#16 [web stage-1 1/3] FROM docker.io/library/caddy:2-alpine
+#16 DONE 0.0s
+
+#17 [web internal] load build context
+#17 transferring context: 475.35kB 0.0s done
+#17 DONE 0.0s
+
+#18 [web build 3/6] COPY apps/web/package*.json ./
+#18 CACHED
+
+#19 [web build 2/6] WORKDIR /web
+#19 CACHED
+
+#20 [web build 4/6] RUN npm ci --no-fund --no-audit
+#20 CACHED
+
+#21 [web build 5/6] COPY apps/web ./
+#21 DONE 0.1s
+
+#22 [web build 6/6] RUN npm run build
+#22 0.386 
+#22 0.386 > akus-web@0.1.0 build
+#22 0.386 > tsc -b && vite build
+#22 0.386 
+#22 3.665 vite v7.3.8 building client environment for production...
+#22 3.724 transforming...
+#22 ...
+
+#14 [api 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#14 0.791 Obtaining file:///app/apps/api
+#14 0.793   Installing build dependencies: started
+#14 3.249   Installing build dependencies: finished with status 'done'
+#14 3.250   Checking if build backend supports build_editable: started
+#14 3.557   Checking if build backend supports build_editable: finished with status 'done'
+#14 3.558   Getting requirements to build editable: started
+#14 3.874   Getting requirements to build editable: finished with status 'done'
+#14 3.875   Preparing editable metadata (pyproject.toml): started
+#14 4.083   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#14 4.090 Building wheels for collected packages: akus-api
+#14 4.090   Building editable for akus-api (pyproject.toml): started
+#14 4.308   Building editable for akus-api (pyproject.toml): finished with status 'done'
+#14 4.309   Created wheel for akus-api: filename=akus_api-0.1.0-0.editable-py3-none-any.whl size=2875 sha256=d7c3f01e78dd42434c7a0fb840e03a8c7342ad825f2aaf115a582d98e9d8ab38
+#14 4.309   Stored in directory: /tmp/pip-ephem-wheel-cache-vjfiodvy/wheels/b1/8f/6c/228667c2da5e253868149b5f65557add9c4fbba2f70f6f297e
+#14 4.312 Successfully built akus-api
+#14 4.323 Installing collected packages: akus-api
+#14 4.344 Successfully installed akus-api-0.1.0
+#14 4.344 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#14 4.345 
+#14 4.345 [notice] A new release of pip is available: 26.2.2 -> 26.3
+#14 4.345 [notice] To update, run: pip install --upgrade pip
+#14 DONE 4.5s
+
+#23 [api] exporting to image
+#23 exporting layers 0.1s done
+#23 writing image sha256:90b3143dfd9c2d88c3f8e8ed44c2bbf7152689ef1e1d9b88df70baec4b89f79c done
+#23 naming to docker.io/library/akus-local-api 0.0s done
+#23 DONE 0.2s
+
+#24 [migrate] exporting to image
+#24 exporting layers 0.1s done
+#24 writing image sha256:090f1b696c912d9f28589f68e2889991b2034f8815da12c5633dd6ca40079b87 done
+#24 naming to docker.io/library/akus-local-migrate 0.0s done
+#24 DONE 0.1s
+
+#25 [worker] exporting to image
+#25 exporting layers 0.1s done
+#25 writing image sha256:9cb4ab549c6dcd030bc684855044e99d2614bfa120bd7f86577b8176ae60f631 0.0s done
+#25 naming to docker.io/library/akus-local-worker 0.0s done
+#25 DONE 0.2s
+
+#22 [web build 6/6] RUN npm run build
+#22 ...
+
+#26 [api] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#27 [migrate] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#28 [worker] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#22 [web build 6/6] RUN npm run build
+#22 5.671 ✓ 1714 modules transformed.
+#22 5.846 rendering chunks...
+#22 5.854 computing gzip size...
+#22 5.874 dist/index.html                   0.52 kB │ gzip:   0.34 kB
+#22 5.874 dist/assets/index-ChtRZOMl.css   19.49 kB │ gzip:   4.72 kB
+#22 5.874 dist/assets/index-CM_fn-Ud.js   440.77 kB │ gzip: 131.75 kB
+#22 5.874 ✓ built in 2.18s
+#22 DONE 6.0s
+
+#29 [web stage-1 2/3] COPY --from=build /web/dist /srv
+#29 CACHED
+
+#30 [web stage-1 3/3] COPY infra/Caddy.web /etc/caddy/Caddyfile
+#30 CACHED
+
+#31 [web] exporting to image
+#31 exporting layers done
+#31 writing image sha256:62d0832c338d05c0a86c7127e76e2401821e7f86dd7f2d585ceaec516c1294d4 done
+#31 naming to docker.io/library/akus-local-web done
+#31 DONE 0.0s
+
+#32 [web] resolving provenance for metadata file
+#32 DONE 0.0s
+ Image akus-local-api Built 
+ Image akus-local-migrate Built 
+ Image akus-local-worker Built 
+ Image akus-local-web Built 

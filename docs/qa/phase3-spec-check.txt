@@ -1,0 +1,2 @@
+Inventoried 80 routes, 50 policies, 27 policy-register entries; full source coverage verified.
+Traceability refreshed: 80 routes, 50 policy rows; Phase 2/3 tested slices and explicit live/policy/later-phase boundaries.

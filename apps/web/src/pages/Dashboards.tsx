@@ -142,9 +142,9 @@ export function DrcDashboard({ data }: { data: DashboardData }) {
       <div className="overview-grid">
         <Journey
           title="Independent review queue"
-          description="Ordinary faculty reviews will appear here when application intake is implemented. You cannot review your own application."
+          description="Review submitted ordinary faculty applications under your current office authority. You cannot review your own application."
           to="/drc/reviews"
-          label="Review service status"
+          label="Open review queue"
         />
         <Journey
           title="Your own NPTEL application"
@@ -190,15 +190,15 @@ export function HodDashboard({ data }: { data: DashboardData }) {
         />
         <Journey
           title="Final academic reviews"
-          description="Ordinary faculty routes finish with HoD; DRC Head applicants come directly to HoD. Current authority will be checked on every decision."
+          description="Ordinary faculty routes finish with HoD; DRC Head applicants come directly to HoD. Current authority is checked on every decision."
           to="/hod/reviews"
-          label="Review service status"
+          label="Open review queue"
         />
         <Journey
           title="Primary topic & annual quotas"
-          description="A department, approved canonical primary topic and July–June year identify one shared quota pool. Publication is not yet available."
+          description="A department, approved canonical primary topic and July–June year identify one shared quota pool. Publish capacity, inspect occupancy and reconcile transfers."
           to="/hod/quotas"
-          label="Quota service status"
+          label="Manage annual quotas"
         />
         <Journey
           title="People in your scope"

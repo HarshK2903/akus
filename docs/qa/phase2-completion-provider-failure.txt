@@ -1,0 +1,110 @@
+ Container akus-local-api-run-dd44bffad1b6 Creating 
+ Container akus-local-api-run-dd44bffad1b6 Created 
+No new upgrade operations detected.
+.........................................................F.............. [ 68%]
+.................................                                        [100%]
+=================================== FAILURES ===================================
+________ test_google_http_exchange_uses_discovery_pkce_and_trusted_jwks ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x756c3911ab70>
+settings = Settings(env='test', demo_enabled=True, database_url='postgresql+psycopg://akus_demo:akus_demo@db:5432/akus_completion...stitution', google_client_id='', google_client_secret=SecretStr(''), google_redirect_uri='', session_key=SecretStr(''))
+signing_key = <joserfc._rfc7518.rsa_key.RSAKey object at 0x756c39166040>
+
+    def test_google_http_exchange_uses_discovery_pkce_and_trusted_jwks(
+        monkeypatch, settings, signing_key
+    ):
+        import httpx
+        from authlib.integrations.httpx_client import OAuth2Client
+    
+        from akus.identity.provider import DISCOVERY
+    
+        cfg = Settings(
+            env="test",
+            database_url=settings.database_url,
+            demo_enabled=False,
+            public_origin="http://127.0.0.1:5173",
+            google_client_id="isolated-client",
+            google_client_secret="ISOLATED_TEST_NOT_A_CREDENTIAL",
+            session_key=Fernet.generate_key().decode(),
+            google_redirect_uri="http://127.0.0.1:5173/api/v1/auth/google/callback",
+            _env_file=None,
+        )
+        visited = []
+        metadata = {
+            "issuer": ISSUER,
+            "authorization_endpoint": ISSUER + "/o/oauth2/v2/auth",
+            "token_endpoint": "https://oauth2.googleapis.com/token",
+            "jwks_uri": "https://www.googleapis.com/oauth2/v3/certs",
+        }
+    
+        def handler(request):
+            visited.append(str(request.url))
+            if str(request.url) == DISCOVERY:
+                return httpx.Response(200, json=metadata)
+            if str(request.url) == metadata["token_endpoint"]:
+                payload = parse_qs(request.content.decode())
+                assert payload["code_verifier"] == ["v" * 43]
+                assert payload["code"] == ["ISOLATED_AUTHORIZATION_CODE"]
+                assert payload["grant_type"] == ["authorization_code"]
+                return httpx.Response(
+                    200,
+                    json={
+                        "access_token": "ISOLATED_NOT_A_REAL_TOKEN",
+                        "token_type": "Bearer",
+                        "id_token": signed(signing_key, claims(email="synthetic@cmrit.ac.in")),
+                    },
+                )
+            if str(request.url) == metadata["jwks_uri"]:
+                assert "authorization" not in request.headers
+                return httpx.Response(200, json={"keys": [signing_key.as_dict(private=False)]})
+            raise AssertionError("Unexpected provider endpoint")
+    
+        transport = httpx.MockTransport(handler)
+        monkeypatch.setattr(
+            httpx.HTTPTransport, "handle_request", lambda self, request: handler(request)
+        )
+        monkeypatch.setattr(
+            GoogleProvider,
+            "client",
+            lambda _: OAuth2Client(
+                cfg.google_client_id,
+                cfg.google_client_secret.get_secret_value(),
+                redirect_uri=cfg.google_redirect_uri,
+                transport=transport,
+            ),
+        )
+>       result = GoogleProvider(cfg).exchange("ISOLATED_AUTHORIZATION_CODE", "test-nonce", "v" * 43)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+apps/api/tests/test_identity.py:442: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <akus.identity.provider.GoogleProvider object at 0x756c395c2dd0>
+code = 'ISOLATED_AUTHORIZATION_CODE', nonce = 'test-nonce'
+verifier = 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv'
+
+    def exchange(self, code: str, nonce: str, verifier: str) -> dict[str, Any]:
+        metadata = self.metadata()
+        with self.client() as client:
+            token = client.fetch_token(
+                metadata["token_endpoint"], code=code, code_verifier=verifier
+            )
+>           response = client.get(metadata["jwks_uri"], withhold_token=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: Client.get() got an unexpected keyword argument 'withhold_token'
+
+apps/api/akus/identity/provider.py:72: TypeError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_identity.py::test_google_http_exchange_uses_discovery_pkce_and_trusted_jwks
+1 failed, 104 passed, 2 warnings in 12.40s
+

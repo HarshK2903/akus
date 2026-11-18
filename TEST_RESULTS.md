@@ -1,3 +1,206 @@
+# Observed verification — Phase 3 recovery, 2026-11-18
+
+**Local catalog/topic/quota + expanded admission/reschedule acceptance passed.**
+Live Google and five real account-holder UATs remain BLOCKED/NOT VERIFIED. Full
+AKUS evidence/compliance, all 80 page contracts and production readiness are not claimed.
+The old /tmp interruption log was absent after restart; the prior 173/1 result is a
+reported checkpoint, not a newly read traceback. New durable evidence is below.
+
+| Executed command/check | Observed result | Evidence under docs/qa |
+|---|---|---|
+| Original withdrawal-vs-transfer test, five pre-fix repetitions | All 5 passed; scheduler ordering did not force the bug | phase3-withdrawal-reproduction.txt |
+| Added deterministic withdrawal-before-source-acceptance regression, pre-fix | FAILED 423 VERIFIED_COMMENCEMENT_REQUIRED vs required 200; full traceback retained | phase3-withdrawal-ordered-failure.txt |
+| Docker pytest test_admission.py after commencement fix | **45 passed**, 2 dependency warnings, 22.84s; original race retained plus two new ordering/source tests | phase3-admission-recovery.txt |
+| First full scripts/check-docker.sh | **176 passed**, then frontend gates passed | phase3-checks-before-case-closure.txt |
+| Final scripts/check-docker.sh after terminal-case closure | **177 passed, 2 warnings, 43.81s**; Ruff lint, format **66 files**, mypy **48 modules**, Alembic head/drift; ESLint/TypeScript/Prettier, **2 Vitest tests**, Vite production build passed | phase3-final-checks.txt |
+| Frontend checks after visual corrections | lint/types/format, **2 Vitest tests**, production build passed; final formatting check passed | tool output; phase3-final-frontend-format.txt; phase3-web-build-final.txt |
+| docker compose build api migrate worker web; up -d | PASS all four existing images; final web rebuild after copy/layout correction also passed | phase3-build.txt, phase3-start.txt, phase3-web-build-final.txt, phase3-web-start-final.txt |
+| Fresh isolated akus_phase3_recovery_fresh_test: upgrade head/current/check, startup twice | **0010_personal_schedule**, no new upgrade operations; both fictional seeds succeeded. New database retained | phase3-fresh-migrations.txt |
+| First full browser run | **32 passed / 1 failed**: legacy employment-date locator matched employment and department tables. Corrected scope; assertions retained | phase3-browser-initial.txt, phase3-browser-employment-selector.md |
+| Full Playwright after repair, compiled Docker app | **33 passed (1.1m)**; original 28 plus 5 Phase 3 flows, responsive/axe evidence | phase3-browser.txt |
+| Final affected system-page Playwright after copy-only correction | **12 passed (10.4s)** including 1440/1024/768/390/320 accessibility, navigation and recovery | phase3-system-browser-final.txt |
+| Existing database current/check, Docker health and volume | **0010_personal_schedule**, no drift; API/DB healthy; worker/web/proxy running; migrate exit 0; original volume created 2026-11-16 retained | phase3-health.txt |
+| Live quota aggregate integrity | **0 inconsistent pools, 0 invalid transfer pairs**; every observed job DONE (62 at check), worker heartbeat fresh | phase3-health.txt |
+| HTTP frontend, ready, auth config and authenticated foundation | **HTTP 200**, ready/connected/0010, worker running; demo true, Google false. NPTEL participation verification remains not connected; public metadata is a separate working adapter | phase3-http-health.txt |
+| Real authenticated local Admin → public NPTEL metadata fetch | **OBSERVED / OFFICIAL_HTTPS**, noc26_cs98, normalized title/dates/categories, immutable digest; left AWAITING_SOURCE_ACCEPTANCE | phase3-live-provider.txt |
+| spec_inventory --check; traceability generator; py_compile; git diff --check | PASS: **2,607 lines, 80 routes, 50 historic policy rows** retained; current policy amendments separated | phase3-spec-check.txt; root/generated documents |
+| Limited source pattern scan | **90 files, 0 matching files**; earlier reports retained, not comprehensive security certification | phase3-secret-scan-final.md |
+
+Browser command: `AKUS_E2E_URL=http://127.0.0.1:8080 PLAYWRIGHT_BROWSERS_PATH="$PWD/.local/browsers" npm --prefix apps/web run e2e`.
+Backend gates use real PostgreSQL in isolated `akus_completion_test`; no SQLite,
+reset or volume deletion. Browser fixtures use clearly fictional identities and source
+records in the demo database; records/audit remain after tests. Migrations 0001–0010
+were not reset or downgraded. New changes required no replacement of applied history.
+
+## What the new tests establish
+
+The original failing concurrency test is unchanged. Exam-date-only conflicts no longer
+make withdrawal's outcome depend on source-acceptance order. Withdrawal keeps accepted
+commencement evidence fresh/consistent, serializes on offering/application, reads the
+authoritative current allocation and releases once; retry cannot release twice.
+A conflicting commencement still blocks. The pre-fix deterministic reproduction
+established a precondition race, not an observed double-decrement; count, ledger,
+capacity and idempotency assertions remain intact.
+
+Other admission/catalog cases cover exact canonical/offering identity, approved topic
+and quota publication, full/shared pool, last-seat and mapping-revision races, cap
+reductions, immutable submission and ledger, two-stage/direct-HoD review, actor scope,
+CSRF, exempt applicants, stale/unavailable sources, same-year/older/repeated/roundtrip
+reschedules, last target seat, current-pool rejection/withdrawal, retained closure,
+as-of/privacy and office transitions. Manual personal schedule tests bind current HoD,
+exact applicant/offering and archived evidence, including different years for two
+people in one run. Released work closes without authenticating a pending claim.
+
+Browser Phase 3 journeys: catalog→mapping request→HoD mapping→annual publication;
+Faculty draft→DRC→HoD→blocked transfer→destination publication→worker transfer→current
+pool withdrawal; DRC-own direct HoD/no self-review; personal claim→independent HoD
+verification for one person only; Admin source/metadata navigation with Faculty denied.
+Case deep-link refresh and target quota navigation are exercised. Axe and responsive
+screenshots cover 1440/390/320 Phase 3 pages; prior foundation also 1024/768. Actual
+screenshots were inspected and checkbox sizing/stale copy corrected. Screenshots:
+phase3-{quota,application}-{1440,390,320}.png.
+
+## Data, source and verification limits
+
+Point-in-time live DB at final health evidence: **28 people, 195 source revisions,
+915 audit events, 14 applications, 29 ledger entries, 3 personal schedule revisions,
+0 external identity links**. Later browser checks add labeled synthetic records; these
+counts are observations, not invariant expected totals. Original volume is retained.
+
+Public source fetch at 2026-11-18T13:44:45Z returned AI for Earth Observation,
+12 weeks, categories COMP_SCI_ENGG/Domain_15, scheduled exam 2026-10-16 and historical
+2026 dates. Digest `6779ee9e5b883a2890bb1b20815603818137d94dccc1ab65816b2796fe361824`.
+This is real public metadata evidence, not provider availability monitoring, current
+eligibility, external enrollment, certificate or real Google login. Manual HoD findings
+in tests are synthetic and labeled; no real faculty document was authenticated here.
+
+Two backend warnings are upstream Starlette/Authlib httpx deprecations with locked
+working dependencies; no tests were skipped to hide them. Browser NO_COLOR/FORCE_COLOR
+warnings are non-failing tooling warnings. Remote CI and production deployment not run.
+
+Master SHA-256 `f3a8fcfbef034fe76da05c6331427fa6d846b2e4c02f073934550de00e276e36`;
+blueprint `2c349d6ddb9fbaa61c5689aab524b830d89ec854dea61f27ddc6cc7dd9dd51c7`, unchanged.
+Real Google prerequisites remain client/private key, approved roster/appointments and
+five voluntary sign-ins; see docs/GOOGLE_OIDC_SETUP.md. Remaining institutional policy
+and later implementation boundaries: POLICY_GAPS.md and docs/codex/PHASE3_CHECKLIST.md.
+
+---
+
+# Historical verification — Phase 2 continuation, 2026-11-17
+
+**Local Phase 2 implementation verified. Mandatory live Google UAT BLOCKED; Phase 2 is not declared complete.**
+This section supersedes current-state statements in the retained Phase 2A/Phase 1
+history below. Current browser http://127.0.0.1:8080; API docs at the same origin
+/api/docs. Existing Docker services/volume are retained; no second native stack was
+started. All current application records remain conspicuously LOCAL/DEMO.
+
+| Actual command / check | Observed result and evidence |
+|---|---|
+| `docker compose build api migrate worker web` | PASS, all four images built. The earlier denied attempt did not execute; this later authorized build did. docs/qa/phase2-completion-build.txt |
+| `docker compose up -d`; `docker compose config -q`; `docker compose ps -a` | PASS. API and DB healthy, web/proxy/worker running, migrate exited 0. docs/qa/phase2-completion-start.txt |
+| `scripts/check-docker.sh` | PASS. Ruff lint/format **43 files**, mypy **31 modules**, migrations/drift, **109 PostgreSQL tests passed (12.28s)**, ESLint, TypeScript, Prettier, **2 Vitest tests**, production Vite build. docs/qa/phase2-completion-checks.txt |
+| Isolated fresh DB: `alembic upgrade head`, `current`, `check`, startup seed twice inside existing API image | PASS on newly created `akus_phase2_completion_fresh_test`: **0006_identity_history (head)**, no new upgrade operations, both seed calls succeeded. Database retained. docs/qa/phase2-completion-fresh-migrations.txt |
+| `AKUS_E2E_URL=http://127.0.0.1:8080 PLAYWRIGHT_BROWSERS_PATH="$PWD/.local/browsers" npm --prefix apps/web run e2e` | **28 passed (48.9s)** on compiled Docker/Caddy/FastAPI/PostgreSQL. Includes original 20 equivalents plus eight Phase 2 tests. docs/qa/phase2-completion-browser.txt |
+| Proxy HTTP checks with curl | Frontend **HTTP 200**; readiness **ready / connected / 0006_identity_history**; auth config **demo_enabled:true, google_enabled:false** |
+| Existing app DB source/schema inspection | Head **0006_identity_history**; snapshot during final browser run: **18 people, 107 immutable source revisions, 327 audit events, 0 institutional identity links**. Later browser actions add synthetic facts; these are point-in-time counts, not fixed expectations |
+| Existing Docker volume inspection | Original **akus-local_akus_pg**, created 2026-11-16T00:36:02+05:30, retained. No down -v, reset, prune or volume deletion |
+| `python3 scripts/spec_inventory.py --check`; regeneration-preservation assertion | PASS: **2,607 lines, 80 routes, 50 historical policies, 27 original register entries**; embedded blueprint exact. Regeneration preserved the complete later policy continuation including IO-02 |
+| `python3 scripts/traceability.py` | PASS: 80 target route rows, 50 policy rows, current local evidence separated from planned domain tests |
+| `python3 scripts/scan-source.py --report docs/qa/phase2-completion-secret-scan.md` | PASS: **68 source/config files, zero matches** for limited private-key/GitHub/AWS patterns. Earlier scan reports retained; not comprehensive security certification |
+| `git diff --check`; Python compile of inventory/traceability tooling | PASS |
+| Specification SHA-256 | Master **f3a8fcfbef034fe76da05c6331427fa6d846b2e4c02f073934550de00e276e36**, blueprint **2c349d6ddb9fbaa61c5689aab524b830d89ec854dea61f27ddc6cc7dd9dd51c7**; unchanged |
+
+## What the tests prove
+
+The original 45 backend tests remain included. Added identity/source coverage brings
+the total to 109, not 109 additional tests. Tests use an isolated database ending
+_test and real PostgreSQL transactions/constraints. No SQLite substitute or real
+account impersonation is used.
+
+Identity tests exercise signed tokens with locally generated RSA keys, wrong signature,
+issuer/audience/hd/nonce/time/unverified email/missing claims; real Authlib code-exchange
+and JWKS paths against isolated HTTP responses; one-use expiring browser-bound state,
+PKCE, redirect allowlist, consent/error paths, session rotation/expiry/logout/CSRF,
+HTTPS-cookie/config boundaries, active source authorization, disabled/separated staff,
+immutable subject/change-email behavior, duplicate links and competing first-link
+transactions. Admin reconciliation revokes the exact old identity/session; denied
+requests cannot later auto-link. Operator bootstrap is explicit, idempotent, fact-checked
+and issues no session. These tests are NOT a successful real Google login.
+
+Source tests exercise versioned corrections and immutable before/after facts, office
+supersession/global DRC-HoD exclusion, source-command session revalidation after locks,
+file/body/XML/formula/row limits, all-or-nothing CSV/XLSX imports, bad rows, dedupe,
+concurrent commit, canonical alias corrections and forbidden merges, scoped teaching
+filters, first true teaching date, continuity, rehire and leap-day pending. IO-02 and
+P-54 remain pending in both source timelines and searchable policy help. No final
+Silver/annual decision is inferred from those assertions.
+
+Browser tests submit real local forms: staff/appointment creation/end/history and live
+permission changes; CSV upload/preview/commit/reload and source correction; invalid row
+persistence; canonical subject and teaching allocation/date correction; alias correction,
+July–June year creation and duplicate rejection through canonical Admin routes; all five
+distinct role dashboards with actual scoped source data; login/recovery/configuration,
+read-only/deep-link denials, policy search and logout. Existing source/audit facts remain.
+Browser setup ends ONLY its own leftover temporary LOCAL_E2E_TEMPORARY_OFFICE appointment
+using authorized demo APIs and an audit reason, never deletion/reset.
+
+Responsive checks: foundation 1440/1024/768/390/320 px; source forms and all five role
+workspaces 1440/390/320 px. Selected axe WCAG A/AA checks report zero violations. Real
+screenshots are docs/qa/phase2-completion-*.png. Desktop Admin, 320px DRC and teaching
+history were visually inspected. This is not a complete manual screen-reader audit.
+
+## Failures observed and repaired
+
+- Outstanding startup.py Ruff formatting repaired; final 43-file formatting gate passes.
+- Added full HTTP-provider test caught Authlib's convenience get() rejecting
+  withhold_token. Changed JWKS fetch to request("GET", ..., withhold_token=True), which
+  prevents bearer-token forwarding and passes the protocol test. Earlier fixture-state
+  lookup was also corrected. Failure output retained in phase2-completion-provider-failure.txt.
+- Initial Phase 2 browser run **23 passed / 4 failed**: employment route lacked expected
+  appointment navigation; history assertion ran before refreshed revisions; invalid
+  upload test reloaded before preview navigation; wrapped select labels included option
+  text. Added the episode register/link, explicit labels and waits for actual server UI.
+- Next run **26 passed / 1 failed** exposed teaching form remounting while staff sources
+  loaded, clearing the entered allocation key. Form now waits for sources before mounting.
+  Subsequent full 27-test run passed. Both early logs retained under phase2-completion-browser-*.
+- Added canonical-reference browser test initially used the wrong alias-button label and
+  uppercase error text. Corrected selectors to actual accessible labels and case-insensitive
+  error assertion. Final 28-test suite passes; these were test expectation errors, not
+  successful application claims. Diagnostic logs retained.
+- Inventory regeneration previously overwrote later implementation policy notes. Added
+  read-only --check and preserved continuation; verified retained content equality.
+
+Non-fatal warnings: Authlib/Starlette httpx adapter deprecation and Playwright
+FORCE_COLOR/NO_COLOR notice. Locked dependencies passed; no unrelated forced upgrade.
+
+## Explicitly unverified / blocked / later phase
+
+**Real Google integration: BLOCKED / NOT VERIFIED for all five real accounts.** No
+approved Web OAuth client ID/secret, private session key, approved institutional roster
+facts or voluntary participant sign-in were available. Demo database has zero linked
+institutional identities. See docs/GOOGLE_OIDC_SETUP.md and fixtures/phase2-uat-roster.json
+for exact prerequisites, private fields, operator commands and role acceptance script.
+No runtime bypass was added to make these cases pass.
+
+Live Google redirect/consent/Workspace policy, real HTTPS deployment, private first-Admin
+roster bootstrap and five account-holder actions remain external acceptance gates.
+Actual application submission/reviews/self-review transactions, quota concurrency,
+provider verification, evidence/annual/Silver credit and academic separation consequences
+remain Phases 3–7. Complete 80-page contracts, private attachments, cross-domain impact
+previews, production DB least privilege/TLS/monitoring, backup/restore and remote CI are
+not verified by this local Phase 2 suite. Unratified IO-02, Q51, P54 and role/topic
+transition policies remain safely pending.
+
+Git recovery: preserved original uncommitted source; later observed existing commit
+034f71a (testing backend) during user continuation. The agent did not create a commit
+or reset that checkpoint. Subsequent corrections/tests/docs remain working-tree changes.
+
+---
+
+## Historical verification retained below
+
+The following sections describe earlier checkpoints, not current limitations or ports.
+
 # Observed verification — Phase 2A, 2026-11-16
 
 **Phase 2A source-record vertical slice verified locally. Phase 2 remains IN PROGRESS.** The Phase 1 results below are retained historical evidence; this section supersedes their current-state limitations. Native web http://127.0.0.1:5173; compiled Compose web http://127.0.0.1:8080; API docs http://127.0.0.1:8000/api/docs. Both stacks are left running with fictional data.

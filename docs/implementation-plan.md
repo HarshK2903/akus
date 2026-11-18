@@ -1,42 +1,68 @@
 # AKUS implementation plan
 
-Binding source: spec/AKUS_MASTER_SPEC.txt. Execution order: codex/BUILD_PHASES.md (its nine phases organize the embedded baseline recommendations). Read spec-inventory.md, POLICY_REGISTER.md, ../POLICY_GAPS.md and ../BUILD_PROGRESS.md on resume. Never change source specs to reconcile contradictions.
+Binding sources: spec/AKUS_MASTER_SPEC.txt (complete inventory, latest V2.4),
+codex/BUILD_PHASES.md, expanded codex/PHASE3_CONTINUATION.md and the confirmed
+policy/HALL_TICKET_AUTHORITY_2026-11-18.md. Read BUILD_PROGRESS, TEST_RESULTS,
+traceability and POLICY_GAPS before resuming. Preserve existing working-tree changes.
 
-## Architecture and boundaries
+## Architecture and transactions
 
-React 19 strict TypeScript + Vite + React Router + TanStack Query. Radix Dialog provides accessible navigation primitives; local design tokens implement the blueprint. Same-origin /api/v1; generated OpenAPI types. FastAPI/Python 3.13, synchronous SQLAlchemy/Psycopg, PostgreSQL 16, Alembic. Caddy fronts web/API in Compose. No Redis, Kafka, distributed services or remote calls within transactions.
+React 19/TypeScript/Vite/Router/TanStack Query calls same-origin /api/v1 through Caddy.
+FastAPI/Python 3.13 uses synchronous SQLAlchemy/Psycopg 3 and PostgreSQL 16. Existing
+Compose services/volume remain authoritative; Alembic migrations are forward-only.
 
-Modules: identity/access; institutional people/employment/offices; academic reference; provider catalog and snapshots; department course-topic mapping; annual topic quotas; applications and reviews; participation/evidence; integrity and separation; independent annual and Silver assessments; audit/reporting; durable work ledger. Each owns its mutations. Command services coordinate one PostgreSQL transaction and immutable audit/outbox. Controllers validate DTOs and call services.
+Identity owns Google protocol, stable subject links, account reconciliation and opaque
+sessions. People resolves permanent staff, employment, department and current effective
+offices. Sources owns validated imports, corrections, reference data and teaching.
+Catalog owns canonical courses vs exact offerings, immutable bounded public-provider
+observations, topics/aliases/proposals and effective HoD primary-topic decisions.
+Quotas owns published department/topic/July–June pools and revisions. Applications
+coordinates immutable submission facts, single counted allocation, balanced ledger,
+review/withdrawal, person-specific schedule verification, transfers and reconciliation.
+The worker processes durable quota rechecks; notices are persisted in-app, not emailed.
 
-Phase 1 schema is intentionally limited: fictional demo identities, hashed opaque sessions, official-shaped academic-year fixtures, immutable audit, work jobs and worker heartbeat. Fixture roles are not institutional appointments. Phase 2A now adds source-shaped people, employment and effective office authority, exercised with explicitly fictional records. Institutional OIDC remains a separate unfinished Phase 2 slice. No academic mutation API is exposed by Phase 1.
+Academic commands take a shared source-authority advisory gate; identity/source changes
+use the exclusive side. Per-person command keys serialize retries. Resource order is
+offering → application → mapping anchor → sorted source/target pools. Authority and
+versions are revalidated after locks. Provider HTTP happens outside DB transactions.
+One commit includes allocation, pool count, immutable ledger/event/notice and receipt.
+Deferred PostgreSQL constraints check allocation/ledger/count agreement and balanced
+transfer pairs. Exclusion constraints prevent effective DRC/HoD overlap globally.
+Current-role checks at the API are authoritative; frontend controls only aid navigation.
 
 ## Work order and acceptance gates
 
-| Phase | Schema / service / UI work | Gate |
+| Phase | Current delivered scope | Remaining gate/work |
 |---|---|---|
-| 0 | Complete source inventory, 80 routes, 50 policies, all pending rules | Contiguous read manifest, exact embedded-blueprint match, immutable source hashes |
-| 1 | PostgreSQL migration, demo sessions, health/readiness, worker, React shell/profile/help, Compose/dev scripts | Real DB migration, seed idempotence, backend tests, lint/typecheck, frontend tests/build, responsive browser proof |
-| 2 | People, episodes, offices, institutional Google OIDC, ABAC, five real dashboards | Overlap races; expired grants, self/cross-department access denied; no Principal blanket writes |
-| 3 | Canonical courses/offerings, provider snapshots, HoD primary topic revisions and annual quotas | Missing mapping/quota gate, no alternate-category selection, cap race tests |
-| 4 | Drafts, atomic submit, route plans, DRC/HoD decisions and withdrawal | Last-seat and canonical duplicate concurrency, retry idempotence, immutable history |
-| 5 | Verified reschedules, two-pool transfer, exception cases | Both-pool atomicity, retain+flag failure, repeated/stale events and release races |
-| 6 | Evidence, outcomes, annual and Silver ledgers | Actual-exam-year credit, no-repeat, no automatic multi-subject credit, integrity holds |
-| 7 | Separation/rehire, historical reassessment | Q41–50, date-only ambiguity, exactly-once current-pool release, immutable as-of |
-| 8 | Remaining dedicated pages, reports, ops and security | Complete 80-route/action audit, accessibility, E2E, backup/restore and deployment proof |
+| 0 | Entire 2,607-line master, 80 target routes, historical Q01–50 reconciled | Preserve source hashes/inventory and pending-policy register |
+| 1 | Docker/PostgreSQL/API health/worker/React foundation | Included in every regression run |
+| 2 | Identity/linking/bootstrap, people/imports/corrections/teaching, five dashboards | Real Google private configuration, approved source roster and five voluntary account-holder UATs |
+| 3 expanded | Catalog, topic governance, annual publication/occupancy; admission/reviews and official/person-specific atomic transfers required by continuation | See Phase 3 checklist and TEST_RESULTS for actual gate status; no implicit credit/compliance |
+| 4 | Safe first-attempt draft/admission, normal review, withdrawal/rejection already delivered | Finish evidence-dependent chronology/prior-result/late-enrollment branches and complete wizard, without reimplementing existing admission |
+| 5 | Provider/personal schedule transfer, retained failed transfer, reconciliation already delivered | Broader integrity/authority rotation/deadline exceptions; policy-pending branches remain blocked |
+| 6 | No final compliance implementation | Secure evidence intake, authorized independent verification, actual-exam annual and separate Silver assessment; IO-02/Q51/P54 gates |
+| 7 | Current allocation history/as-of query available | Separation/rehire academic consequences, retrospective credit and exception workflows |
+| 8 | Working responsive source/academic pages and automation | Remaining route contracts, advanced reports/operations, production hardening and tested backup restore |
 
-Every slice includes migrations, real actions, server authorization, meaningful tests and recorded manual demo before proceeding. Phase 1 does not count the 80 inventory rows as built pages. Production remains fail-closed until OIDC and real authority are implemented. External integrations require verified contracts and approved configuration; no fabricated provider truth.
+Each vertical slice is schema → transaction/service/API authorization → usable pages
+→ PostgreSQL unit/integration/concurrency tests → browser workflow/accessibility and
+responsive evidence → durable docs. Gates: scripts/check-docker.sh, existing Docker
+build/up, additive migration/current/drift checks, Playwright on :8080. Use separate
+retained *_test databases; never reset/truncate audit or delete Docker volumes.
 
-## Phase 2 execution slices — current session
+## Recovery checkpoint
 
-The next unfinished phase was Phase 2. This session implements **2A: staff source records and effective office authority**. The entire Phase 2 remains IN PROGRESS.
+Migrations 0001–0006 are preserved. Additions: 0007 catalog/mapping/annual pools,
+0008 admission/allocation/transfer ledger, 0009 permanent quota identity/balanced pair,
+0010 immutable person-specific schedule findings and evidence-bound movements.
+Current head: 0010_personal_schedule. Generated OpenAPI/TypeScript contract is refreshed.
 
-1. Schema: permanent people, departments, non-overlapping employment episodes and home assignments, office intervals, separately provisioned Admin grants, idempotency receipts. Migration 0002 adds schema and immutable issued-office protection; 0003 narrows a duplicate-office restriction without deleting data. Current head: `0003_office_scope`.
-2. Server: `akus/access.py` resolves current source authority for every authenticated API request. `people/service.py` owns Admin source transactions, locks people in stable UUID order, rechecks authority, writes audit and command receipt atomically. PostgreSQL enforces global DRC/HoD exclusion even without the service. Principal has global read visibility; HoD reads its current office departments; Faculty/DRC read themselves.
-3. API/UI: staff search/detail and history, Admin create-staff page, office register/create/detail/end pages, own source profile. Shared read API `/people/*`; Admin commands `/admin/*`. All commands require current Admin grant, same origin, CSRF, source/reason and UUID idempotency key. Ending also requires version and leaves original source facts immutable. Read aliases are not a permission bypass.
-4. Gate: real PG exclusion and duplicate-command races; current/scheduled/expired grants; scope and write denials; idempotence, audit and original-fact preservation; strict code/build checks; Chromium actions, reloads, errors, responsive axe and screenshots; Compose upgrade/browser proof. Observed results belong in TEST_RESULTS.md.
+Source-only exam-date conflict does not invalidate an unchanged verified commencement
+for lawful withdrawal. Any newer conflicting commencement, stale/unavailable source or
+unverified enrollment exception still blocks. Offering/app locks serialize transfer and
+release, and withdrawal records the accepted commencement source/digest/date.
 
-Relevant source reread before edits: master 1095–1189 (ADM page contracts), 1401–1415 (binding A amendments), 1635–1673 (roles/invariants), 1807–1830 (source model), 1901–1925 (authority), 2172–2183 (API/security). Complete master read from Phase 0 remains in spec-inventory.md. Blueprint is duplicate source, not a separate rule hierarchy.
-
-Next **2B: institutional identity and controlled account linking**: Google issuer+subject identity, state/nonce/PKCE callback verification, approved provisioning, person-backed sessions, revocation, provider failure/denial tests and usable linking/denial pages. No fake provider success. Local protocol tests can use a clearly test-only issuer; real institutional credentials/domain/account actions need explicit authorization. Production remains disabled until secure configuration and integration verification exist.
-
-Subsequent Phase 2 work: complete staff department/episode correction and rehire source workflows (respecting unresolved authority and chronology), teaching source pages and five actual source-aware dashboards. Separation/compliance consequences stay in their planned phases. Do not start Phase 3 until the whole Phase 2 gate is met. Phase 2A does not claim any academic approval, quota, provider verification, compliance waiver or full page-contract completion.
+Next implement the remaining Phase 4 evidence-dependent vertical slice, then Phase 5
+exceptional lifecycle and Phase 6 assessment. Real Google UAT proceeds independently
+when authorized configuration/account holders are available; never use demo results as
+real institutional acceptance. POLICY_PENDING is preserved for unratified decisions.

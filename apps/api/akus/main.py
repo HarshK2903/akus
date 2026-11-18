@@ -11,8 +11,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
 
 from akus.access import DB, Current, authority
+from akus.applications.router import router as applications_router
 from akus.auth import csrf_valid, resolve, sign_in
 from akus.body_limit import BodyLimitMiddleware
+from akus.catalog.router import router as catalog_router
 from akus.config import Settings
 from akus.db import database
 from akus.identity.router import router as identity_router
@@ -37,7 +39,7 @@ if not log.handlers:
 log.setLevel(logging.INFO)
 log.propagate = False
 COOKIE = "akus_demo_session"
-SCHEMA_HEAD = "0006_identity_history"
+SCHEMA_HEAD = "0010_personal_schedule"
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -56,6 +58,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(people_router)
     app.include_router(identity_router)
     app.include_router(sources_router)
+    app.include_router(catalog_router)
+    app.include_router(applications_router)
 
     @app.middleware("http")
     async def request_context(request: Request, call_next):  # type: ignore[no-untyped-def]

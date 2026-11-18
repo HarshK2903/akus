@@ -1,0 +1,53 @@
+
+> akus-web@0.1.0 e2e
+> playwright test --grep canonical Admin
+
+
+Running 1 test using 1 worker
+
+(node:273390) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 e2e/phase2.spec.ts:263:1 › canonical Admin reference and year routes persist changes and reject duplicate years (6.4s)
+
+
+  1) e2e/phase2.spec.ts:263:1 › canonical Admin reference and year routes persist changes and reject duplicate years 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "REFERENCE ALREADY EXISTS"
+    Received string:    "reference already exists Changes have not been confirmed."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        13 × locator resolved to <div role="alert" class="error-box">reference already exists Changes have not been co…</div>
+           - unexpected value "reference already exists Changes have not been confirmed."
+
+
+      324 |   ).toBeVisible();
+      325 |   await page.getByRole("button", { name: "Save official reference" }).click();
+    > 326 |   await expect(page.getByRole("alert")).toContainText(
+          |                                         ^
+      327 |     "REFERENCE ALREADY EXISTS",
+      328 |   );
+      329 |   await page.reload();
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase2.spec.ts:326:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase2-canonical-Admin-ref-22a76--and-reject-duplicate-years/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase2-canonical-Admin-ref-22a76--and-reject-duplicate-years/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase2-canonical-Admin-ref-22a76--and-reject-duplicate-years/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase2-canonical-Admin-ref-22a76--and-reject-duplicate-years/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/phase2.spec.ts:263:1 › canonical Admin reference and year routes persist changes and reject duplicate years 

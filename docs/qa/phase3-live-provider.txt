@@ -1,0 +1,9 @@
+Provider ID: noc26_cs98
+Latest fetch: {'status': 'OBSERVED', 'error': None, 'observed_at': '2026-11-18T13:44:45.142293Z'}
+Accepted status: AWAITING_SOURCE_ACCEPTANCE
+Trust: OFFICIAL_HTTPS
+URL: https://onlinecourses.nptel.ac.in/e-learning/api/coursepreview?course_id=noc26_cs98
+Observed at: 2026-11-18T13:44:45.142293Z
+Digest: 6779ee9e5b883a2890bb1b20815603818137d94dccc1ab65816b2796fe361824
+Academic metadata: {'title': 'AI for Earth Observation', 'ends_on': '2026-10-09', 'timezone': 'Asia/Kolkata', 'precision': 'DATE', 'starts_on': '2026-07-20', 'categories': ['COMP_SCI_ENGG', 'Domain_15'], 'description': 'ABOUT THE COURSE: The course provides a comprehensive introduction to Earth observation (EO) data and unique challenges it poses for Artificial Intelligence. It covers key learning paradigms, semantic segmentation, and change detection. Course explores architectures tailored for Synthetic Aperture Radar (SAR) and hyperspectral image, multi-sensor and multi-modal fusion. The course also introduces vision foundation models for EO applications. INTENDED AUDIENCE: Students/researchers interested in remote sensing, environment, or just to explore an AI application area. PREREQUISITES: An introductory-level understanding of machine learning is desirable.', 'duration_weeks': 12, 'scheduled_exam_on': '2026-10-16', 'enrollment_ends_on': '2026-08-03', 'exam_registration_ends_on': '2026-08-17'}
+No source acceptance, enrollment, certificate or Google sign-in performed.

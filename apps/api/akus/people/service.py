@@ -2,7 +2,7 @@
 
 from datetime import UTC, datetime, time
 from hashlib import sha256
-from uuid import UUID
+from uuid import UUID, uuid4
 from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel
@@ -132,6 +132,21 @@ def commit_command(
         )
     )
     try:
+        from akus.applications.models import Application
+        from akus.models import WorkJob
+
+        # Source facts may change eligibility of already counted applications.
+        # Reconcile after commit, with current facts; never guess separation policy.
+        for app_id in db.scalars(
+            select(Application.id).where(
+                Application.state.in_(["UNDER_REVIEW", "APPROVED", "WITHDRAWN"]),
+                Application.person_id
+                == (UUID(details["person_id"]) if details.get("person_id") else None),
+            )
+        ):
+            db.add(
+                WorkJob(key=f"recheck:{app_id}:{uuid4()}", kind="QUOTA_RECHECK", state="PENDING")
+            )
         db.commit()
     except IntegrityError as exc:
         db.rollback()

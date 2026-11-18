@@ -11,6 +11,7 @@ x-api: &api
     AKUS_GOOGLE_REDIRECT_URI: ${AKUS_GOOGLE_REDIRECT_URI:-}
     AKUS_SESSION_KEY: ${AKUS_SESSION_KEY:-}
     AKUS_INSTITUTION_LABEL: ${AKUS_INSTITUTION_LABEL:-Local demonstration institution}
+    AKUS_NPTEL_SNAPSHOT_MAX_AGE_SECONDS: ${AKUS_NPTEL_SNAPSHOT_MAX_AGE_SECONDS:-3600}
   depends_on:
     db: {condition: service_healthy}
 services:

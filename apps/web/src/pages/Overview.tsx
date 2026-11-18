@@ -160,8 +160,11 @@ export function Overview() {
                   </li>
                   <li>
                     <span>
-                      <strong>NPTEL provider</strong>
-                      <small>No enrollment or certificate verification</small>
+                      <strong>NPTEL participation verification</strong>
+                      <small>
+                        Public metadata is available; enrollment and
+                        certificates remain unverified
+                      </small>
                     </span>
                     <Badge>Not connected</Badge>
                   </li>
@@ -256,44 +259,45 @@ export function Overview() {
       </section>
       <section className="delivery-section">
         <div>
-          <div className="eyebrow">IMPLEMENTATION PROGRESS</div>
-          <h2>Built in verified phases</h2>
+          <div className="eyebrow">WORKSPACE CAPABILITIES</div>
+          <h2>Available workflows</h2>
           <p>
-            Academic actions become available as their complete workflows are
-            implemented and tested.
+            Your current institutional authority determines which records and
+            decisions you can access.
           </p>
         </div>
         <ol className="phase-list">
           <li>
             <CircleCheck size={18} />
             <div>
-              <strong>01 · Runnable foundation</strong>
+              <strong>Application and quota records</strong>
               <span>
-                Local sessions, connected services and shared interface
+                Admission, review decisions and current allocation history
               </span>
             </div>
-            <Badge>Verified foundation</Badge>
+            <Badge>Available</Badge>
           </li>
           <li>
             <span className="phase-number">02</span>
             <div>
-              <strong>People & access</strong>
+              <strong>People and authority</strong>
               <span>
-                Institutional identity, employment and effective office
-                authority
+                Official staff, employment, teaching and effective office
+                records
               </span>
             </div>
-            <Badge>In progress</Badge>
+            <Badge>Current sources</Badge>
           </li>
           <li>
             <span className="phase-number">03</span>
             <div>
               <strong>Course, topic & quota</strong>
               <span>
-                Provider records, HoD mappings and annual shared pools
+                Public provider observations, HoD mappings and published annual
+                pools
               </span>
             </div>
-            <Badge>Planned</Badge>
+            <Badge>Available</Badge>
           </li>
         </ol>
       </section>
