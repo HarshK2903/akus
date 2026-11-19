@@ -18,6 +18,7 @@ from akus.models import AuthSession, DemoIdentity
 from akus.quotas.models import QuotaPool
 
 DECLARATIONS = {
+    "academic_relevance": "LOCAL_TEST alignment with official teaching and department subject knowledge",
     "score_sharing_yes": True,
     "not_yet_enrolled": True,
     "prior_attempt": "NONE_DECLARED",
@@ -1263,3 +1264,80 @@ def test_withdrawal_closes_pending_schedule_work_without_verifying_claim(client,
         )
     )
     assert_balance(db, s["pool"], 0)
+
+
+def test_publishing_capacity_wakes_only_matching_transfer_waiters(client, db):
+    from akus.models import WorkJob
+    from akus.worker import tick
+
+    left, right = setup(client), setup(client)
+    waiting = []
+    for fixture in (left, right):
+        aid, headers = draft(client, fixture)
+        assert submit(client, aid, headers).status_code == 200
+        reschedule(client, fixture)
+        waiting.append(aid)
+    before = set(db.scalars(select(WorkJob.id)))
+    new_pool = target(client, left)
+    jobs = [job for job in db.scalars(select(WorkJob)) if job.id not in before]
+    assert len(jobs) == 1 and jobs[0].key.split(":")[1] == waiting[0]
+    with client.app.state.sessions() as work:
+        assert tick(work, jobs[0].id)
+        assert not tick(work, jobs[0].id)
+    assert_balance(db, left["pool"], 0)
+    assert_balance(db, new_pool, 1)
+    assert_balance(db, right["pool"], 1)
+
+
+def test_first_publication_vs_cross_year_revision_cannot_lose_wakeup(client, db, settings):
+    from akus.catalog import service as catalog
+    from akus.catalog.schemas import QuotaWrite, SnapshotAccept
+    from akus.models import WorkJob
+    from akus.quotas import service as quota
+    from akus.worker import tick
+
+    s = setup(client)
+    aid, h = draft(client, s)
+    assert submit(client, aid, h).status_code == 200
+    _, off, accept = observe(client, s)
+    publish = QuotaWrite.model_validate(
+        SOURCE
+        | {
+            "topic_id": s["topic"],
+            "academic_year_id": s["next_year"],
+            "maximum": 1,
+            "publish": True,
+        }
+    )
+    result = parallel(
+        client,
+        [
+            (
+                actor_token(client, "admin"),
+                lambda c, a: catalog.accept_snapshot(
+                    c, a, uuid4(), UUID(off["id"]), SnapshotAccept.model_validate(accept), settings
+                ),
+            ),
+            (
+                actor_token(client, "hod"),
+                lambda c, a: quota.write_pool(c, a, uuid4(), UUID(s["dept"]), publish),
+            ),
+        ],
+    )
+    assert result == ["OK", "OK"]
+    for jid in db.scalars(
+        select(WorkJob.id).where(
+            WorkJob.key.like("recheck:" + aid + ":%"), WorkJob.state == "PENDING"
+        )
+    ):
+        with client.app.state.sessions() as worker:
+            tick(worker, jid)
+    dest = db.scalar(
+        select(QuotaPool.id).where(
+            QuotaPool.department_id == UUID(s["dept"]),
+            QuotaPool.topic_id == UUID(s["topic"]),
+            QuotaPool.academic_year_id == UUID(s["next_year"]),
+        )
+    )
+    assert_balance(db, s["pool"], 0)
+    assert_balance(db, str(dest), 1)

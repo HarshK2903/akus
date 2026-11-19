@@ -198,6 +198,14 @@ export type Movement = {
   recorded_at: string;
 };
 export type ApplicationRecord = {
+  actual_exam?: string;
+  annual_compliance?: string;
+  participation?: ParticipationRecord;
+  draft_revisions?: {
+    version: number;
+    recorded_at: string;
+    declarations: Record<string, unknown>;
+  }[];
   id: string;
   person_id: string;
   applicant: string;
@@ -210,6 +218,7 @@ export type ApplicationRecord = {
   version: number;
   next_office: string | null;
   submitted_at: string | null;
+  enrollment_deadline_passed: boolean;
   can_review: boolean;
   own: boolean;
   source_eligible: boolean;
@@ -225,6 +234,7 @@ export type ApplicationRecord = {
   } | null;
   allocation: { state: string; version: number; pool: Pool } | null;
   declarations: {
+    academic_relevance?: string;
     score_sharing_yes: boolean;
     not_yet_enrolled: boolean;
     prior_attempt: string;
@@ -258,4 +268,32 @@ export type ApplicationRecord = {
     facts: Record<string, unknown>;
     created_at: string;
   }[];
+};
+
+export type EnrollmentEvidence = {
+  id: string;
+  version: number;
+  enrolled_at: string | null;
+  enrolled_on: string | null;
+  source_reference: string;
+  document_digest: string;
+  observed_at: string;
+  recorded_at: string;
+  reason: string;
+  outcome?: string;
+  chronology?: string;
+  claim_id?: string;
+};
+export type ParticipationRecord = {
+  claim_version: number;
+  finding_version: number;
+  claims: EnrollmentEvidence[];
+  findings: EnrollmentEvidence[];
+  verified_submission_first: boolean;
+  pending_withdrawal: {
+    id: string;
+    reason: string;
+    source_reference: string;
+    recorded_at: string;
+  } | null;
 };

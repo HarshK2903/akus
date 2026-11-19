@@ -12,8 +12,8 @@
     "e2e": "playwright test",
     "preview": "vite preview --host 127.0.0.1",
     "api:types": "openapi-typescript ../../docs/openapi.json -o src/lib/schema.d.ts",
-    "format": "prettier --write src e2e *.ts *.js *.json",
-    "format:check": "prettier --check src e2e *.ts *.js *.json"
+    "format": "prettier --write src e2e qa *.ts *.js *.json",
+    "format:check": "prettier --check src e2e qa *.ts *.js *.json"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.0",

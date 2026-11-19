@@ -164,3 +164,15 @@ closes its pending work items without deciding those policies or verifying a cla
 Q04 verified enrolled-before-start release and late/prior-result evidence paths remain
 future implementation, not permission to infer verification. The source-specific
 withdrawal correction uses accepted unchanged commencement; it creates no new policy.
+
+## Phase 4 authority update, 2026-11-19
+
+For Q19/Q20, the current department HoD or acting HoD can independently authenticate the person's actual external enrollment date for the exact offering. A late final decision may rely on a documented official extension. Current HoD may verify a prior unsuccessful result under Q30. Official references, observation times and findings stay versioned. General verification, contested certificate revocation, emerging-technology exceptions and final conflict-free integrity disposition still require confirmed authority. See docs/policy/ENROLLMENT_AUTHORITY_2026-11-19.md.
+
+## Phase 5 operating boundaries
+
+Q44/Q47 chronology closure uses the current distinct department HoD or acting HoD. A formal HR source authorizes classification of a permanent departure. General certificate authentication, negative enrollment roster authentication, subject relevance and final integrity adjudication have separate scopes. The implemented services require a documented effective designation for the exact case. The local operational database receives no such appointments by default. An earlier approval, ordinary staff role or Admin permission supplies none of these authorities. Evidence omissions and conflicting sources stay pending.
+
+After an already released seat, correction of the effective HR end or official start requires controlled reconciliation. An authentic late certificate changes only eligible historical recognition. Reissuing a signed report, multiple-subject reuse, retroactive topic movement, deadline remediation and the final remedy for a blocked year transfer still require the applicable institutional decision.
+
+0016 preserves already adjudicated historical subject obligations separately. Without a matching archived institutional ruling, even a verified timely relevant Silver certificate stays OBLIGATION_ACCEPTANCE_POLICY_PENDING_IO02 for subject fulfillment. This leaves the general teaching acceptance rule open. The archive starts empty and the application cannot turn raw teaching data into a formal ruling.

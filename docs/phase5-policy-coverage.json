@@ -1,0 +1,23 @@
+{
+  "9": "A published annual topic cap cannot drop below current occupancy. Changes wake only seats waiting for capacity in this department/topic/year. test_admission.py covers quota reduction and first publication racing the verified reschedule.",
+  "17": "Current office follows pending task. Previous decisions keep their original reviewer and office. Current coverage and both external cutoffs are visible in review-office-alerts. test_hod_rotation_during_pending_review_preserves_drc_decision_and_seat verifies the vacancy, all three denials and the newly appointed acting HoD.",
+  "18": "Vacancy preserves the held seat. Durable scoped office notices and published dates are covered in test_exception_cases.py. Admin and Principal cannot substitute.",
+  "22": "Later verified early enrollment opens a case and suspends recognition. Current allocation and approval history remain visible. Phase 5 browser dossier.",
+  "23": "Case-specific formally designated independent reviewer may invalidate. One ledger release from current pool. A pending separation task links the invalidation without manufacturing a chronology finding. Repeated processing cannot release twice. Prior participant/approver may not decide. No role-wide mandate.",
+  "33": "Prior certificate correction opens the newer case. Distinct adjudication, preserved evidence/approval history and original certificate.",
+  "34": "Upheld case resolves only that application; it keeps its seat and is eligible for independent assessment. General active compliance/evidence engine is Phase 6.",
+  "35": "Historical Q48 assessment selects official July\u2013June year of actual exam, independent of scheduled pool and issuance. Active compliance engine is Phase 6.",
+  "36": "Historical annual report allows one qualifying course of at least eight weeks or two distinct four-week canonical courses in the actual exam year.",
+  "37": "Historical report groups four-week evidence by actual academic year and distinct canonical course. Duplicate or cross-year pairing cannot satisfy the obligation.",
+  "38": "Genuine qualifying historical annual certification can count below Silver. Score threshold enforced separately for each subject.",
+  "41": "Permanent HR order freezes episode-level first assignment, deadline and status. Late verification adds a separate assessment without post-departure overdue marks.",
+  "42": "Rehire starts new episode/teaching clock. Former frozen assessment and lifetime certified canonical no-repeat remain attached to the correct records.",
+  "43": "Pre-enrollment and pre-commencement release via confirmed chronology or separately appointed independent negative-roster check. Mere absence stays pending.",
+  "44": "Verified enrollment before pre-start departure holds until current department HoD/acting HoD documents closure. A late date-only enrollment source is sufficient when the days establish the order; ambiguous same-day evidence stays held. See PostgreSQL branch/replay/denial tests.",
+  "45": "Permanent post-start separation releases current pool, including after migration. Distinct from retained voluntary withdrawal.",
+  "46": "Uses departure effective time and verified commencement, preserving recorded source and actual later adjudication time.",
+  "47": "Date-only same-day case remains counted for current HoD. Precise order or documented indeterminacy closes with immutable decision and one release.",
+  "48": "Case-specific authentic pre-separation exam/certificate and participation evidence can reassess historical annual completion. No reactivation. Earlier as-of query preserved.",
+  "49": "One relevant verified Silver result may confirm a frozen episode-specific obligation with an independent, documented pre-existing institutional ruling. A teaching row alone leaves IO-02 pending. Separate later relevance assessment supported; second subject is policy pending.",
+  "50": "Verified actual exam date determines deadline inclusion, separately from issuance and review time. Exact boundary, late, below threshold, and unknown chronology are tested."
+}

@@ -3135,6 +3135,1334 @@
         }
       }
     },
+    "/api/v1/applications/{app_id}/enrollment-claims": {
+      "post": {
+        "tags": [
+          "Applications and quota reconciliation"
+        ],
+        "summary": "Enrollment Claim",
+        "operationId": "enrollment_claim_api_v1_applications__app_id__enrollment_claims_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "App Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrollmentProof"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/applications/{app_id}/verify-enrollment": {
+      "post": {
+        "tags": [
+          "Applications and quota reconciliation"
+        ],
+        "summary": "Verify Enrollment",
+        "operationId": "verify_enrollment_api_v1_applications__app_id__verify_enrollment_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "App Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrollmentVerify"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/applications/{app_id}/withdrawal-requests": {
+      "post": {
+        "tags": [
+          "Applications and quota reconciliation"
+        ],
+        "summary": "Request Withdrawal",
+        "operationId": "request_withdrawal_api_v1_applications__app_id__withdrawal_requests_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "App Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestWithdrawal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/applications/{app_id}/withdrawal-decision": {
+      "post": {
+        "tags": [
+          "Applications and quota reconciliation"
+        ],
+        "summary": "Decide Withdrawal",
+        "operationId": "decide_withdrawal_api_v1_applications__app_id__withdrawal_decision_post",
+        "parameters": [
+          {
+            "name": "app_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "App Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideWithdrawal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/outcome-verifications": {
+      "get": {
+        "tags": [
+          "Prior attempts and independent outcome verification"
+        ],
+        "summary": "Listing",
+        "operationId": "listing_api_v1_outcome_verifications_get",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 200,
+              "default": "",
+              "title": "Search"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "newest",
+                "oldest"
+              ],
+              "type": "string",
+              "default": "newest",
+              "title": "Order"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 25,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Listing Api V1 Outcome Verifications Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Prior attempts and independent outcome verification"
+        ],
+        "summary": "Record",
+        "operationId": "record_api_v1_outcome_verifications_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttemptWrite"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/previous-attempts": {
+      "get": {
+        "tags": [
+          "Prior attempts and independent outcome verification"
+        ],
+        "summary": "Listing",
+        "operationId": "listing_api_v1_previous_attempts_get",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 200,
+              "default": "",
+              "title": "Search"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "newest",
+                "oldest"
+              ],
+              "type": "string",
+              "default": "newest",
+              "title": "Order"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 25,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Listing Api V1 Previous Attempts Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/outcome-verifications/{attempt_id}": {
+      "get": {
+        "tags": [
+          "Prior attempts and independent outcome verification"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_api_v1_outcome_verifications__attempt_id__get",
+        "parameters": [
+          {
+            "name": "attempt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Attempt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Detail Api V1 Outcome Verifications  Attempt Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/previous-attempts/{attempt_id}": {
+      "get": {
+        "tags": [
+          "Prior attempts and independent outcome verification"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_api_v1_previous_attempts__attempt_id__get",
+        "parameters": [
+          {
+            "name": "attempt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Attempt Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Detail Api V1 Previous Attempts  Attempt Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/outcome-verifications/{attempt_id}/decision": {
+      "post": {
+        "tags": [
+          "Prior attempts and independent outcome verification"
+        ],
+        "summary": "Decide",
+        "operationId": "decide_api_v1_outcome_verifications__attempt_id__decision_post",
+        "parameters": [
+          {
+            "name": "attempt_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Attempt Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutcomeDecision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/employment-episodes/{eid}/permanent-separation": {
+      "post": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Permanent",
+        "operationId": "permanent_api_v1_admin_employment_episodes__eid__permanent_separation_post",
+        "parameters": [
+          {
+            "name": "eid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Eid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/separation-cases": {
+      "get": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Listing",
+        "operationId": "listing_api_v1_separation_cases_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "OPEN",
+                "RESOLVED",
+                "ALL"
+              ],
+              "type": "string",
+              "default": "OPEN",
+              "title": "Status"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Listing Api V1 Separation Cases Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integrity-cases": {
+      "get": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Listing",
+        "operationId": "listing_api_v1_integrity_cases_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "OPEN",
+                "RESOLVED",
+                "ALL"
+              ],
+              "type": "string",
+              "default": "OPEN",
+              "title": "Status"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Listing Api V1 Integrity Cases Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/separation-cases/{cid}": {
+      "get": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_api_v1_separation_cases__cid__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Detail Api V1 Separation Cases  Cid  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integrity-cases/{cid}": {
+      "get": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_api_v1_integrity_cases__cid__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Detail Api V1 Integrity Cases  Cid  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/separation-cases/{cid}/decision": {
+      "post": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Decision",
+        "operationId": "decision_api_v1_separation_cases__cid__decision_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Closure"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integrity-cases/{cid}/decision": {
+      "post": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Decision",
+        "operationId": "decision_api_v1_integrity_cases__cid__decision_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Closure"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/separation-cases/{cid}/historical-review": {
+      "get": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Historical Report",
+        "operationId": "historical_report_api_v1_separation_cases__cid__historical_review_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Historical Report Api V1 Separation Cases  Cid  Historical Review Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Verify Historical",
+        "operationId": "verify_historical_api_v1_separation_cases__cid__historical_review_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CertificateProof"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/review-office-alerts": {
+      "get": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Office Alerts",
+        "operationId": "office_alerts_api_v1_review_office_alerts_get",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "vacant_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Vacant Only"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Office Alerts Api V1 Review Office Alerts Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/separation-cases/{cid}/roster-finding": {
+      "post": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Absence",
+        "operationId": "absence_api_v1_separation_cases__cid__roster_finding_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RosterProof"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/separation-cases/{cid}/historical-review/subject": {
+      "post": {
+        "tags": [
+          "Exceptional cases"
+        ],
+        "summary": "Historical Subject",
+        "operationId": "historical_subject_api_v1_separation_cases__cid__historical_review_subject_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectProof"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health/live": {
       "get": {
         "summary": "Live",
@@ -3633,6 +4961,63 @@
         ],
         "title": "AppointmentView"
       },
+      "AttemptWrite": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "offering_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Offering Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "asserted_outcome": {
+            "type": "string",
+            "enum": [
+              "NO_VALID_CERT",
+              "VALID_CERT",
+              "UNRESOLVED"
+            ],
+            "title": "Asserted Outcome"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "offering_id",
+          "expected_version",
+          "asserted_outcome",
+          "document_digest",
+          "observed_at"
+        ],
+        "title": "AttemptWrite"
+      },
       "AuthConfig": {
         "properties": {
           "demo_enabled": {
@@ -3679,6 +5064,225 @@
           "file"
         ],
         "title": "Body_stage_import_api_v1_admin_imports_post"
+      },
+      "CertificateProof": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "certificate_key": {
+            "type": "string",
+            "maxLength": 220,
+            "minLength": 3,
+            "pattern": "^\\S(.*\\S)?$",
+            "title": "Certificate Key"
+          },
+          "actual_exam_on": {
+            "type": "string",
+            "format": "date",
+            "title": "Actual Exam On"
+          },
+          "actual_exam_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Exam At"
+          },
+          "issued_on": {
+            "type": "string",
+            "format": "date",
+            "title": "Issued On"
+          },
+          "score_percent": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Score Percent"
+          },
+          "subject_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Id"
+          },
+          "relevance_basis": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1500,
+                "minLength": 5
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance Basis"
+          },
+          "checked_person_offering_certificate": {
+            "type": "boolean",
+            "const": true,
+            "title": "Checked Person Offering Certificate"
+          },
+          "verified_exam_and_score_sharing": {
+            "type": "boolean",
+            "const": true,
+            "title": "Verified Exam And Score Sharing"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "document_digest",
+          "observed_at",
+          "certificate_key",
+          "actual_exam_on",
+          "issued_on",
+          "score_percent",
+          "checked_person_offering_certificate",
+          "verified_exam_and_score_sharing"
+        ],
+        "title": "CertificateProof"
+      },
+      "Closure": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "expected_event_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Expected Event Id"
+          },
+          "finding": {
+            "type": "string",
+            "enum": [
+              "Q44",
+              "INDETERMINATE",
+              "BEFORE_START",
+              "AFTER_START",
+              "UPHOLD",
+              "INVALIDATE"
+            ],
+            "title": "Finding"
+          },
+          "independently_checked": {
+            "type": "boolean",
+            "const": true,
+            "title": "Independently Checked"
+          },
+          "commencement_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Commencement At"
+          },
+          "separation_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Separation At"
+          },
+          "enrollment_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrollment At"
+          },
+          "enrollment_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrollment On"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "document_digest",
+          "observed_at",
+          "expected_event_id",
+          "finding",
+          "independently_checked"
+        ],
+        "title": "Closure"
       },
       "CommandResult": {
         "properties": {
@@ -3773,6 +5377,56 @@
         ],
         "title": "CourseWrite"
       },
+      "DecideWithdrawal": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "AUTHORIZE",
+              "DENY"
+            ],
+            "title": "Decision"
+          },
+          "independently_checked": {
+            "type": "boolean",
+            "const": true,
+            "title": "Independently Checked"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "request_id",
+          "expected_version",
+          "decision",
+          "independently_checked"
+        ],
+        "title": "DecideWithdrawal"
+      },
       "Declarations": {
         "properties": {
           "score_sharing_yes": {
@@ -3804,6 +5458,12 @@
             "type": "boolean",
             "title": "Acknowledgement",
             "default": false
+          },
+          "academic_relevance": {
+            "type": "string",
+            "maxLength": 4000,
+            "title": "Academic Relevance",
+            "default": ""
           }
         },
         "additionalProperties": false,
@@ -3930,6 +5590,191 @@
           "declarations"
         ],
         "title": "DraftWrite"
+      },
+      "EnrollmentExtension": {
+        "properties": {
+          "valid_through": {
+            "type": "string",
+            "format": "date",
+            "title": "Valid Through"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "independently_checked": {
+            "type": "boolean",
+            "const": true,
+            "title": "Independently Checked"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "valid_through",
+          "document_digest",
+          "observed_at",
+          "independently_checked"
+        ],
+        "title": "EnrollmentExtension"
+      },
+      "EnrollmentProof": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "enrolled_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrolled At"
+          },
+          "enrolled_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrolled On"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "expected_version",
+          "document_digest",
+          "observed_at"
+        ],
+        "title": "EnrollmentProof"
+      },
+      "EnrollmentVerify": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "enrolled_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrolled At"
+          },
+          "enrolled_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrolled On"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "claim_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Claim Id"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "UNRESOLVED",
+              "REJECTED"
+            ],
+            "title": "Outcome"
+          },
+          "independently_authenticated": {
+            "type": "boolean",
+            "const": true,
+            "title": "Independently Authenticated"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "expected_version",
+          "document_digest",
+          "observed_at",
+          "claim_id",
+          "outcome",
+          "independently_authenticated"
+        ],
+        "title": "EnrollmentVerify"
       },
       "EpisodeView": {
         "properties": {
@@ -4448,6 +6293,145 @@
         ],
         "title": "OfferingFetch"
       },
+      "Order": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "effective_on": {
+            "type": "string",
+            "format": "date",
+            "title": "Effective On"
+          },
+          "effective_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective At"
+          },
+          "permanent_order_confirmed": {
+            "type": "boolean",
+            "const": true,
+            "title": "Permanent Order Confirmed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "document_digest",
+          "observed_at",
+          "effective_on",
+          "permanent_order_confirmed"
+        ],
+        "title": "Order"
+      },
+      "OutcomeDecision": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "evidence_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Evidence Id"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Version"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "NO_VALID_CERT",
+              "VALID_CERT",
+              "UNRESOLVED"
+            ],
+            "title": "Outcome"
+          },
+          "concluded_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Concluded On"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "independently_authenticated_person_and_run": {
+            "type": "boolean",
+            "const": true,
+            "title": "Independently Authenticated Person And Run"
+          },
+          "conclusive_official_result": {
+            "type": "boolean",
+            "title": "Conclusive Official Result"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "evidence_id",
+          "expected_version",
+          "outcome",
+          "document_digest",
+          "observed_at",
+          "independently_authenticated_person_and_run",
+          "conclusive_official_result"
+        ],
+        "title": "OutcomeDecision"
+      },
       "PolicyHelp": {
         "properties": {
           "id": {
@@ -4758,6 +6742,41 @@
         ],
         "title": "ReferenceWrite"
       },
+      "RequestWithdrawal": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Version"
+          },
+          "voluntary_request": {
+            "type": "boolean",
+            "const": true,
+            "title": "Voluntary Request"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "expected_version",
+          "voluntary_request"
+        ],
+        "title": "RequestWithdrawal"
+      },
       "Review": {
         "properties": {
           "reason": {
@@ -4784,6 +6803,16 @@
               "REJECT"
             ],
             "title": "Decision"
+          },
+          "enrollment_extension": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EnrollmentExtension"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -4795,6 +6824,59 @@
           "decision"
         ],
         "title": "Review"
+      },
+      "RosterProof": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "expected_event_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Expected Event Id"
+          },
+          "checked_complete_person_offering_roster": {
+            "type": "boolean",
+            "const": true,
+            "title": "Checked Complete Person Offering Roster"
+          },
+          "absence_through": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Absence Through"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "document_digest",
+          "observed_at",
+          "expected_event_id",
+          "checked_complete_person_offering_roster",
+          "absence_through"
+        ],
+        "title": "RosterProof"
       },
       "ScheduleClaim": {
         "properties": {
@@ -5130,6 +7212,66 @@
           "offices"
         ],
         "title": "StaffSummary"
+      },
+      "SubjectProof": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 5,
+            "title": "Reason"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Source Reference"
+          },
+          "document_digest": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Document Digest"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "finding_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Finding Id"
+          },
+          "subject_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Subject Id"
+          },
+          "relevance_basis": {
+            "type": "string",
+            "maxLength": 1500,
+            "minLength": 5,
+            "title": "Relevance Basis"
+          },
+          "checked_subject_relevance": {
+            "type": "boolean",
+            "const": true,
+            "title": "Checked Subject Relevance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reason",
+          "source_reference",
+          "document_digest",
+          "observed_at",
+          "finding_id",
+          "subject_id",
+          "relevance_basis",
+          "checked_subject_relevance"
+        ],
+        "title": "SubjectProof"
       },
       "Submit": {
         "properties": {

@@ -21,3 +21,6 @@
 - Run build, lint, typecheck, migrations, backend tests, UI tests and browser smoke tests regularly; record actual commands and results, not aspirational 'passed' claims.
 - Do not delete specs, secret-scan output, audit facts, or existing project functionality. No destructive operations, credential exposure, deployment or external account changes without explicit permission.
 - Before the end of each slice, summarize changed files, verified tests, demo steps, blockers and next slice; continue to the next unfinished item when explicitly asked.
+
+## Confirmed Phase 4 authority clarification
+- `docs/policy/ENROLLMENT_AUTHORITY_2026-11-19.md` records user confirmation that current department HoD/acting HoD may independently authenticate person-specific external enrollment dates for Q19/Q20. Preserve actual precision, evidence and office history; no self-verification or invented chronology. This does not resolve other verification or integrity authorities.

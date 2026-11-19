@@ -49,12 +49,23 @@ def main() -> None:
     engine, factory = database(settings.database_url)
     logging.basicConfig(level=logging.INFO)
     try:
+        last_scan = -60.0
         while True:
             try:
+                if time.monotonic() - last_scan >= 60:
+                    from akus.exceptions.reviewer import notify_changes
+                    from akus.exceptions.service import scan_due
+
+                    with factory.begin() as db:
+                        scan_due(db, settings)
+                        notify_changes(db)
+                    last_scan = time.monotonic()
                 for _ in range(20):
                     with factory() as db:
                         if not tick(db):
                             break
+                else:
+                    continue  # Backlog remains possible; start the next bounded batch immediately.
             except Exception as exc:
                 logging.error("worker_tick_failed type=%s", type(exc).__name__)
             time.sleep(5)

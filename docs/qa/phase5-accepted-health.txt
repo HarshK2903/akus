@@ -1,0 +1,80 @@
+NAME                   IMAGE                                                                     COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+akus-local-api-1       akus-local-api                                                            "uvicorn akus.main:c…"   api       About a minute ago   Up About a minute (healthy)   
+akus-local-db-1        postgres:16                                                               "docker-entrypoint.s…"   db        3 days ago           Up 6 hours (healthy)          5432/tcp
+akus-local-migrate-1   sha256:60affa418fba32549e2f06c7b512820fa0badfd74558105f2cbeee145759a951   "sh -c 'alembic -c a…"   migrate   5 hours ago          Exited (0) 5 hours ago        
+akus-local-proxy-1     caddy:2-alpine                                                            "caddy run --config …"   proxy     3 days ago           Up 6 hours                    443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1       akus-local-web                                                            "caddy run --config …"   web       5 hours ago          Up 5 hours                    80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1    akus-local-worker                                                         "python -m akus.work…"   worker    About a minute ago   Up About a minute             
+akus-local_akus_pg 2026-11-16T00:36:02+05:30
+0016_archived_obligations (head)
+No new upgrade operations detected.
+BEGIN
+        version_num        
+---------------------------
+ 0016_archived_obligations
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          22
+(1 row)
+
+    state     | applications 
+--------------+--------------
+ APPROVED     |            5
+ DRAFT        |            5
+ UNDER_REVIEW |           46
+ WITHDRAWN    |           18
+(4 rows)
+
+COMMIT
+ external_oidc_links 
+---------------------
+                   0
+(1 row)
+
+ integrity_mandates | evidence_mandates | archived_obligations 
+--------------------+-------------------+----------------------
+                  0 |                 0 |                    0
+(1 row)
+
+    name    |  heartbeat_age  
+------------+-----------------
+ foundation | 00:00:04.549602
+(1 row)
+
+{"status":"ready","database":"connected","schema_version":"0016_archived_obligations"}
+{"demo_enabled":true,"google_enabled":false,"institution_label":"Local demonstration institution"}
+Frontend HTTP 200
+74636c4f4ea2a53226f837d16a2e9a3e112438321d7aae84050dfe08c2fc2f41  apps/api/akus/exceptions/service.py
+74636c4f4ea2a53226f837d16a2e9a3e112438321d7aae84050dfe08c2fc2f41  /app/apps/api/akus/exceptions/service.py

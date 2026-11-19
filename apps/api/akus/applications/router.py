@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, date, datetime
 from typing import Any
 from uuid import UUID
 
@@ -28,6 +28,7 @@ from akus.applications.schemas import (
 from akus.catalog import common
 from akus.catalog.models import Course, Offering
 from akus.catalog.router import Key, mutation_guard, offering_view
+from akus.catalog.service import snapshot
 from akus.people.models import Person
 from akus.people.schemas import CommandResult
 from akus.quotas.models import QuotaPool
@@ -81,7 +82,17 @@ def app_view(
     from akus.applications.personal_schedule import current as current_personal_schedule
 
     personal = current_personal_schedule(db, app.id)
+    original_cutoff = submitted.facts["metadata"].get("enrollment_ends_on") if submitted else None
+    current_source = snapshot(db, offering) if offering and app.state == "UNDER_REVIEW" else None
+    current_cutoff = (
+        current_source.metadata_json.get("enrollment_ends_on") if current_source else None
+    )
     result: dict[str, Any] = {
+        "enrollment_deadline_passed": app.state == "UNDER_REVIEW"
+        and any(
+            day and service.today() > date.fromisoformat(day)
+            for day in (original_cutoff, current_cutoff)
+        ),
         "id": app.id,
         "person_id": app.person_id,
         "applicant": person.display_name if person else None,
@@ -129,7 +140,23 @@ def app_view(
         ],
     }
     if detail:
+        from akus.applications import participation
+        from akus.applications.workflow_models import DraftRevision
+        from akus.exceptions.history import report
+
+        historical = report(db, app, datetime.now(UTC)) if app.state == "SEPARATED" else {}
+        finding = historical.get("finding")
+        suspended = any(c.kind == "INTEGRITY" and c.status == "OPEN" for c in cases)
         result |= {
+            "participation": participation.view(db, app),
+            "draft_revisions": [
+                {"version": r.version, "recorded_at": r.recorded_at, "declarations": r.declarations}
+                for r in db.scalars(
+                    select(DraftRevision)
+                    .where(DraftRevision.application_id == app.id)
+                    .order_by(DraftRevision.version.desc())
+                )
+            ],
             "declarations": app.declarations,
             "offering": offering_view(
                 db, actor, request, offering, app.department_id, authorized_history=True
@@ -161,8 +188,14 @@ def app_view(
                     .limit(100)
                 )
             ],
-            "actual_exam": "NOT_VERIFIED",
-            "annual_compliance": "NOT_ASSESSED",
+            "actual_exam": finding["actual_exam_on"] if finding else "NOT_VERIFIED",
+            "annual_compliance": "SUSPENDED"
+            if suspended
+            else "INELIGIBLE"
+            if app.state == "INVALIDATED"
+            else historical.get("annual", {}).get(finding["academic_year"], "NOT_ASSESSED")
+            if finding
+            else "NOT_ASSESSED",
         }
     return result
 
@@ -374,3 +407,68 @@ def verify_schedule(
     from akus.applications.personal_schedule import verify
 
     return verify(db, actor, idempotency_key, app_id, body)
+
+
+from akus.applications import participation  # noqa: E402
+from akus.applications.participation_schemas import (  # noqa: E402
+    DecideWithdrawal,
+    EnrollmentProof,
+    EnrollmentVerify,
+    RequestWithdrawal,
+)
+
+
+@router.post("/applications/{app_id}/enrollment-claims", response_model=CommandResult)
+def enrollment_claim(
+    app_id: UUID,
+    body: EnrollmentProof,
+    request: Request,
+    db: DB,
+    actor: Current,
+    idempotency_key: Key,
+) -> CommandResult:
+    mutation_guard(request, actor)
+    return participation.claim(db, actor, idempotency_key, app_id, body)
+
+
+@router.post("/applications/{app_id}/verify-enrollment", response_model=CommandResult)
+def verify_enrollment(
+    app_id: UUID,
+    body: EnrollmentVerify,
+    request: Request,
+    db: DB,
+    actor: Current,
+    idempotency_key: Key,
+) -> CommandResult:
+    mutation_guard(request, actor)
+    return participation.verify(db, actor, idempotency_key, app_id, body)
+
+
+@router.post("/applications/{app_id}/withdrawal-requests", response_model=CommandResult)
+def request_withdrawal(
+    app_id: UUID,
+    body: RequestWithdrawal,
+    request: Request,
+    db: DB,
+    actor: Current,
+    idempotency_key: Key,
+) -> CommandResult:
+    mutation_guard(request, actor)
+    return participation.request_withdrawal(
+        db, actor, idempotency_key, app_id, body, request.app.state.settings
+    )
+
+
+@router.post("/applications/{app_id}/withdrawal-decision", response_model=CommandResult)
+def decide_withdrawal(
+    app_id: UUID,
+    body: DecideWithdrawal,
+    request: Request,
+    db: DB,
+    actor: Current,
+    idempotency_key: Key,
+) -> CommandResult:
+    mutation_guard(request, actor)
+    return participation.decide_withdrawal(
+        db, actor, idempotency_key, app_id, body, request.app.state.settings
+    )

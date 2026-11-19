@@ -1,0 +1,348 @@
+ Container akus-local-api-run-ac478d955ee3 Creating 
+ Container akus-local-api-run-ac478d955ee3 Created 
+All checks passed!
+89 files already formatted
+Success: no issues found in 62 source files
+No new upgrade operations detected.
+........................................................................ [ 30%]
+.....................F.................................................. [ 61%]
+........................................................................ [ 91%]
+....................                                                     [100%]
+=================================== FAILURES ===================================
+___ test_hod_rotation_during_pending_review_preserves_drc_decision_and_seat ____
+
+self = <sqlalchemy.engine.base.Connection object at 0x717d2f4c47d0>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x717d2ee7fc50>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x717d2fe284d0>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x717d2ef2de50>
+parameters = [{'valid_until': datetime.datetime(2026, 11, 19, 11, 29, 10, 196639, tzinfo=datetime.timezone.utc), 'office_appointments_id': UUID('e107683d-24e1-581e-aa6a-a44dd12d79cf')}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            self._log_parameters(
+                effective_parameters, stats, ismulti=context.executemany
+            )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2000: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=db user=akus_demo database=akus_phase5_acceptance_departures_test) at 0x717d377f0590>
+query = 'UPDATE office_appointments SET valid_until=%(valid_until)s::TIMESTAMP WITH TIME ZONE WHERE office_appointments.id = %(office_appointments_id)s::UUID'
+params = {'valid_until': datetime.datetime(2026, 11, 19, 11, 29, 10, 196639, tzinfo=datetime.timezone.utc), 'office_appointments_id': UUID('e107683d-24e1-581e-aa6a-a44dd12d79cf')}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.RaiseException: Only versioned shortening or explicit supersession is permitted
+E           CONTEXT:  PL/pgSQL function protect_issued_office() line 21 at RAISE
+
+/usr/local/lib/python3.13/site-packages/psycopg/cursor.py:117: RaiseException
+
+The above exception was the direct cause of the following exception:
+
+client = <starlette.testclient.TestClient object at 0x717d37406ad0>
+db = <sqlalchemy.orm.session.Session object at 0x717d2d11c410>
+settings = Settings(nptel_snapshot_max_age_seconds=3600, env='test', demo_enabled=True, database_url='postgresql+psycopg://akus_d...stitution', google_client_id='', google_client_secret=SecretStr(''), google_redirect_uri='', session_key=SecretStr(''))
+
+    def test_hod_rotation_during_pending_review_preserves_drc_decision_and_seat(client, db, settings):
+        from sqlalchemy.orm import Session
+        from starlette.exceptions import HTTPException
+        from test_admission import actor_token
+    
+        from akus.access import authority
+        from akus.applications.schemas import Review
+        from akus.applications.workflow_models import ReviewDecision
+        from akus.exceptions import reviewer
+        from akus.models import AuthSession
+        from akus.people.models import OfficeAppointment
+    
+        s = setup(client)
+        aid, h = draft(client, s)
+        assert submit(client, aid, h).status_code == 200
+        reviewpath = "/applications/" + aid + "/review"
+        assert (
+            post(
+                client,
+                reviewpath,
+                SOURCE | {"decision": "APPROVE", "expected_version": 2},
+                login(client, "drc"),
+            ).status_code
+            == 200
+        )
+        replacement, _, _ = faculty(db, s)
+        tokens = {k: actor_token(client, k) for k in ("hod", "admin", "principal", replacement)}
+        # Actual committed subcommands use savepoints on this single outer PG
+        # transaction so other tests keep their effective source appointments.
+        with client.app.state.engine.connect() as connection:
+            outer = connection.begin()
+            try:
+                with Session(bind=connection, join_transaction_mode="create_savepoint") as tx:
+    
+                    def actor(key):
+                        live = tx.get(AuthSession, tokens[key])
+                        return authority(tx, tx.get(DemoIdentity, live.identity_id), live)
+    
+                    app = tx.get(Application, UUID(aid))
+                    prior = tx.scalar(
+                        select(ReviewDecision).where(ReviewDecision.application_id == app.id)
+                    )
+                    old = tx.get(OfficeAppointment, UUID(reviewer.sources(tx, app)["appointment_id"]))
+                    now = datetime.now(UTC)
+                    old.valid_until = now
+>                   tx.flush()
+
+apps/api/tests/test_exception_cases.py:837: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4360: in flush
+    self._flush(objects)
+/usr/local/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4495: in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+/usr/local/lib/python3.13/site-packages/sqlalchemy/orm/session.py:4456: in _flush
+    flush_context.execute()
+/usr/local/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:465: in execute
+    rec.execute(self)
+/usr/local/lib/python3.13/site-packages/sqlalchemy/orm/unitofwork.py:641: in execute
+    util.preloaded.orm_persistence.save_obj(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:86: in save_obj
+    _emit_update_statements(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/orm/persistence.py:913: in _emit_update_statements
+    c = connection.execute(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1464: in execute
+    return meth(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1686: in _execute_clauseelement
+    ret = self._execute_context(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/base.py:1891: in _execute_context
+    return self._exec_single_context(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2019: in _exec_single_context
+    self._handle_dbapi_exception(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2381: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/base.py:2000: in _exec_single_context
+    self.dialect.do_execute(
+/usr/local/lib/python3.13/site-packages/sqlalchemy/engine/default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=db user=akus_demo database=akus_phase5_acceptance_departures_test) at 0x717d377f0590>
+query = 'UPDATE office_appointments SET valid_until=%(valid_until)s::TIMESTAMP WITH TIME ZONE WHERE office_appointments.id = %(office_appointments_id)s::UUID'
+params = {'valid_until': datetime.datetime(2026, 11, 19, 11, 29, 10, 196639, tzinfo=datetime.timezone.utc), 'office_appointments_id': UUID('e107683d-24e1-581e-aa6a-a44dd12d79cf')}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.ProgrammingError: (psycopg.errors.RaiseException) Only versioned shortening or explicit supersession is permitted
+E           CONTEXT:  PL/pgSQL function protect_issued_office() line 21 at RAISE
+E           [SQL: UPDATE office_appointments SET valid_until=%(valid_until)s::TIMESTAMP WITH TIME ZONE WHERE office_appointments.id = %(office_appointments_id)s::UUID]
+E           [parameters: {'valid_until': datetime.datetime(2026, 11, 19, 11, 29, 10, 196639, tzinfo=datetime.timezone.utc), 'office_appointments_id': UUID('e107683d-24e1-581e-aa6a-a44dd12d79cf')}]
+E           (Background on this error at: https://sqlalche.me/e/20/f405)
+
+/usr/local/lib/python3.13/site-packages/psycopg/cursor.py:117: ProgrammingError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "aa42d3e0-e742-42ad-aa99-10a1642068f2"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a19dea21-65e1-4ea8-90d8-818316526124"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0429647e-240b-421f-969d-81347922657a"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "66fd8c74-4cf0-46be-b69b-4ce023cb5f72"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b4776c22-1395-4096-986c-978f1fda4255"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "e22f680c-6224-4773-a19d-dfd1c1221ff8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "065810d2-55fe-4361-b0ee-7964f9f6c25e"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "83d52996-6f44-475f-a05f-8df1417f4ec7"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "6c5ff1f5-a8dd-4aed-ac01-72be196da139"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "924adc65-33be-4c00-83d7-cede5eb0fec2"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "2db07707-e339-42af-8924-42e98b8d92fa"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "12e60a1d-ed8c-4e28-851b-6f956f549960"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4aa49097-f23a-4cea-8ec3-b2074bc2761d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3d07d05c-da4a-4d01-8812-37dde6c43d08"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "36375fe7-01a6-436b-951d-55d7ea42828c"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ed291a37-b758-4a47-9373-30c96be5d21f"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "35218083-6e86-48cd-a26d-63abcf9baeaa"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "c0c31b6f-2cf9-4725-845a-0d1c94a0a920"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ad29a4d4-eb30-4679-be5a-81009646b40d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a1ebb070-8033-4e77-9e40-e7676b95ca53"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9877b246-166d-4e6f-bdfb-b814fbdcc317"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4d3eb97e-e7ca-4f42-bc0d-a0e1adf3d90f"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "238c4854-8497-4675-a37a-1a0719fe9493"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "aa42d3e0-e742-42ad-aa99-10a1642068f2"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a19dea21-65e1-4ea8-90d8-818316526124"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0429647e-240b-421f-969d-81347922657a"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "66fd8c74-4cf0-46be-b69b-4ce023cb5f72"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b4776c22-1395-4096-986c-978f1fda4255"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "e22f680c-6224-4773-a19d-dfd1c1221ff8"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "065810d2-55fe-4361-b0ee-7964f9f6c25e"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "83d52996-6f44-475f-a05f-8df1417f4ec7"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "6c5ff1f5-a8dd-4aed-ac01-72be196da139"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "924adc65-33be-4c00-83d7-cede5eb0fec2"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "2db07707-e339-42af-8924-42e98b8d92fa"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "12e60a1d-ed8c-4e28-851b-6f956f549960"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4aa49097-f23a-4cea-8ec3-b2074bc2761d"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3d07d05c-da4a-4d01-8812-37dde6c43d08"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "36375fe7-01a6-436b-951d-55d7ea42828c"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ed291a37-b758-4a47-9373-30c96be5d21f"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "35218083-6e86-48cd-a26d-63abcf9baeaa"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "c0c31b6f-2cf9-4725-845a-0d1c94a0a920"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ad29a4d4-eb30-4679-be5a-81009646b40d"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a1ebb070-8033-4e77-9e40-e7676b95ca53"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9877b246-166d-4e6f-bdfb-b814fbdcc317"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4d3eb97e-e7ca-4f42-bc0d-a0e1adf3d90f"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "238c4854-8497-4675-a37a-1a0719fe9493"}
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+tests/test_exception_cases.py::test_separation_branches_and_current_seat[Q43]
+  /usr/local/lib/python3.13/site-packages/alembic/config.py:604: DeprecationWarning: No path_separator found in configuration; falling back to legacy splitting on spaces, commas, and colons for prepend_sys_path.  Consider adding path_separator=os to Alembic config.
+    util.warn_deprecated(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_exception_cases.py::test_hod_rotation_during_pending_review_preserves_drc_decision_and_seat
+1 failed, 235 passed, 3 warnings in 86.49s (0:01:26)
+

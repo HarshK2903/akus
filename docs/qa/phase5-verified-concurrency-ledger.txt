@@ -1,0 +1,52 @@
+BEGIN
+        version_num        
+---------------------------
+ 0016_archived_obligations
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          87
+(1 row)
+
+      state       | applications 
+------------------+--------------
+ APPROVED         |           30
+ DRAFT            |          125
+ OUTCOME_RECORDED |            6
+ REJECTED         |           18
+ UNDER_REVIEW     |          262
+ WITHDRAWN        |           54
+(6 rows)
+
+COMMIT

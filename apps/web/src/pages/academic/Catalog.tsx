@@ -168,8 +168,12 @@ export function ProviderSources({ versions = false }: { versions?: boolean }) {
         description="Public academic metadata only. Manual fetches preserve observations; accepting a source never proves personal enrollment or a certificate."
       />
       <p className="academic-links">
-        <Link to="/admin/nptel-sync">Fetch official source</Link>
-        <Link to="/admin/nptel-offerings">Metadata versions</Link>
+        <Link to={`/admin/nptel-sync?${params.toString()}`}>
+          Fetch official source
+        </Link>
+        <Link to={`/admin/nptel-offerings?${params.toString()}`}>
+          Metadata versions
+        </Link>
         <Link to="/admin/catalog/new">Record canonical course</Link>
       </p>
       <Field
@@ -611,6 +615,9 @@ export function OfferingDetail() {
                 to={`/app/applications/new/eligibility?offering=${o.id}`}
               >
                 Application admission
+              </Link>
+              <Link to={`/app/previous-attempts/new/${o.id}`}>
+                Report a prior attempt
               </Link>
               {!o.topic && o.snapshot_id && (
                 <button

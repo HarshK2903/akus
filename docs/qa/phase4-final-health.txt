@@ -1,0 +1,36 @@
+NAME                   IMAGE                COMMAND                  SERVICE   CREATED              STATUS                          PORTS
+akus-local-api-1       akus-local-api       "uvicorn akus.main:c…"   api       About a minute ago   Up About a minute (healthy)     
+akus-local-db-1        postgres:16          "docker-entrypoint.s…"   db        3 days ago           Up 13 hours (healthy)           5432/tcp
+akus-local-migrate-1   akus-local-migrate   "sh -c 'alembic -c a…"   migrate   About a minute ago   Exited (0) About a minute ago   
+akus-local-proxy-1     caddy:2-alpine       "caddy run --config …"   proxy     3 days ago           Up 13 hours                     443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1       akus-local-web       "caddy run --config …"   web       About a minute ago   Up About a minute               80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1    akus-local-worker    "python -m akus.work…"   worker    About a minute ago   Up About a minute               
+akus-local_akus_pg 2026-11-16T00:36:02+05:30
+0012_prior_outcomes (head)
+No new upgrade operations detected.
+     version_num     
+---------------------
+ 0012_prior_outcomes
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ external_identity_links 
+-------------------------
+                       0
+(1 row)
+
+    name    |  heartbeat_age  
+------------+-----------------
+ foundation | 00:00:00.770541
+(1 row)
+
+{"status":"ready","database":"connected","schema_version":"0012_prior_outcomes"}{"demo_enabled":true,"google_enabled":false,"institution_label":"Local demonstration institution"} Frontend HTTP 200

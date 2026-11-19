@@ -1,3 +1,4 @@
+import { PermanentOrder } from "./academic/Exceptions";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -188,6 +189,7 @@ export function SourceCorrection() {
           </table>
         </div>
       </section>
+      <PermanentOrder episodes={data.episodes} />
       {notice && (
         <p role="status" className="success-notice">
           {notice}

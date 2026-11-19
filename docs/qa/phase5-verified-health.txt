@@ -1,0 +1,88 @@
+NAME                   IMAGE                                                                     COMMAND                  SERVICE   CREATED          STATUS                   PORTS
+akus-local-api-1       akus-local-api                                                            "uvicorn akus.main:c…"   api       3 minutes ago    Up 3 minutes (healthy)   
+akus-local-db-1        postgres:16                                                               "docker-entrypoint.s…"   db        3 days ago       Up 6 hours (healthy)     5432/tcp
+akus-local-migrate-1   sha256:60affa418fba32549e2f06c7b512820fa0badfd74558105f2cbeee145759a951   "sh -c 'alembic -c a…"   migrate   6 hours ago      Exited (0) 6 hours ago   
+akus-local-proxy-1     caddy:2-alpine                                                            "caddy run --config …"   proxy     3 days ago       Up 6 hours               443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1       akus-local-web                                                            "caddy run --config …"   web       10 minutes ago   Up 9 minutes             80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1    akus-local-worker                                                         "python -m akus.work…"   worker    3 minutes ago    Up 3 minutes             
+akus-local_akus_pg 2026-11-16T00:36:02+05:30
+0016_archived_obligations (head)
+No new upgrade operations detected.
+BEGIN
+        version_num        
+---------------------------
+ 0016_archived_obligations
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          28
+(1 row)
+
+    state     | applications 
+--------------+--------------
+ APPROVED     |            9
+ DRAFT        |            5
+ UNDER_REVIEW |           61
+ WITHDRAWN    |           23
+(4 rows)
+
+COMMIT
+ external_oidc_links 
+---------------------
+                   0
+(1 row)
+
+ integrity_mandates | evidence_mandates | archived_obligations 
+--------------------+-------------------+----------------------
+                  0 |                 0 |                    0
+(1 row)
+
+    name    |  heartbeat_age  
+------------+-----------------
+ foundation | 00:00:03.318475
+(1 row)
+
+{"status":"ready","database":"connected","schema_version":"0016_archived_obligations"}
+{"demo_enabled":true,"google_enabled":false,"institution_label":"Local demonstration institution"}
+Frontend HTTP 200
+4706b38c460099547a193495232500cfbab3de5d0d504082d1a59f15c2978bb5  apps/api/akus/applications/service.py
+4706b38c460099547a193495232500cfbab3de5d0d504082d1a59f15c2978bb5  /app/apps/api/akus/applications/service.py
+4a81228a010cbcc50b9586798f71f8395285da371667ae083fea70fb9dd60610  apps/api/akus/exceptions/service.py
+4a81228a010cbcc50b9586798f71f8395285da371667ae083fea70fb9dd60610  /app/apps/api/akus/exceptions/service.py
+a2192c817fb3c084848283da05831f631c12851153521ed2e48747c66460e543  apps/api/akus/exceptions/history.py
+a2192c817fb3c084848283da05831f631c12851153521ed2e48747c66460e543  /app/apps/api/akus/exceptions/history.py
+92b3f61a9a45dee19f4cc4b461f0ff19e09f0927b973498bf83ee164a1ebe5d6  apps/api/akus/quotas/service.py
+92b3f61a9a45dee19f4cc4b461f0ff19e09f0927b973498bf83ee164a1ebe5d6  /app/apps/api/akus/quotas/service.py
+148e7feb91e1ab5e2403c2baaa661c64e9a9255a4d5007bd564531bc95e9fab4  apps/api/akus/worker.py
+148e7feb91e1ab5e2403c2baaa661c64e9a9255a4d5007bd564531bc95e9fab4  /app/apps/api/akus/worker.py

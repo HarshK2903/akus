@@ -78,9 +78,20 @@ test("Admin creates source records, appoints a DRC, ends authority and sees immu
     .click();
   await expect(page).toHaveURL(/\/employment$/);
   await expect(
-    page
-      .getByRole("region", { name: "Employment history", exact: true })
-      .getByRole("cell", { name: "2026-07-01", exact: true }),
+    page.getByRole("heading", { name: "Staff source management", exact: true }),
+  ).toBeVisible();
+  const employment = page.getByRole("region", {
+    name: "Employment episode register",
+    exact: true,
+  });
+  const sourceRow = employment.getByRole("row").filter({
+    has: page.getByRole("cell", {
+      name: "LOCAL_E2E_STAFF_ORDER",
+      exact: true,
+    }),
+  });
+  await expect(
+    sourceRow.getByRole("cell", { name: "2026-07-01", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("link", { name: "Record appointment", exact: true })
@@ -154,12 +165,13 @@ test("Principal reads all departments with no source write controls; Faculty can
 }) => {
   await signIn(page, "principal");
   await page.goto("/people/staff");
-  await expect(
-    page.getByRole("link", { name: "Omar Das (acting HoD)", exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "Mira Rao", exact: true }),
-  ).toBeVisible();
+  const search = page.getByRole("searchbox", {
+    name: "Search name or permanent staff key",
+  });
+  for (const name of ["Omar Das (acting HoD)", "Mira Rao"]) {
+    await search.fill(name);
+    await expect(page.getByRole("link", { name, exact: true })).toBeVisible();
+  }
   await expect(
     page.getByRole("link", { name: "Add staff record" }),
   ).toHaveCount(0);

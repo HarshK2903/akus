@@ -1,3 +1,13 @@
+import {
+  AttemptList,
+  AttemptDetail,
+  NewAttempt,
+} from "./pages/academic/Outcomes";
+import {
+  ExceptionDetail,
+  ExceptionList,
+  OfficeAlerts,
+} from "./pages/academic/Exceptions";
 import React from "react";
 import {
   Applications,
@@ -65,7 +75,44 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/admin/home"
               element={<RoleDashboard role="ADMIN" />}
             />
+            <Route
+              path="/hod/integrity"
+              element={<ExceptionList kind="integrity" />}
+            />
+            <Route
+              path="/hod/integrity/:caseId"
+              element={<ExceptionDetail kind="integrity" />}
+            />
+            <Route
+              path="/hod/separation-cases"
+              element={<ExceptionList kind="separation" />}
+            />
+            <Route
+              path="/hod/separation-cases/:caseId"
+              element={<ExceptionDetail kind="separation" />}
+            />
+            <Route
+              path="/app/review-office-alerts"
+              element={<OfficeAlerts />}
+            />
             <Route path="/app/system" element={<Overview />} />
+            <Route path="/app/previous-attempts" element={<AttemptList />} />
+            <Route
+              path="/app/previous-attempts/new/:offeringId"
+              element={<NewAttempt />}
+            />
+            <Route
+              path="/app/previous-attempts/:attemptId"
+              element={<AttemptDetail />}
+            />
+            <Route
+              path="/hod/outcome-verifications"
+              element={<AttemptList inbox />}
+            />
+            <Route
+              path="/hod/outcome-verifications/:attemptId"
+              element={<AttemptDetail inbox />}
+            />
             <Route path="/app/catalog" element={<Catalog />} />
             <Route path="/app/catalog/:courseId" element={<CourseDetail />} />
             <Route
@@ -154,6 +201,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/app/applications/new/*"
               element={<ApplicationDraft />}
             />
+            {["offering", "eligibility", "evidence", "review"].map((step) => (
+              <Route
+                key={step}
+                path={`/app/applications/new/${step}`}
+                element={<ApplicationDraft />}
+              />
+            ))}
             <Route
               path="/app/applications/:appId"
               element={<ApplicationDetail />}
@@ -164,6 +218,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             />
             <Route
               path="/app/applications/:appId/history"
+              element={<ApplicationDetail />}
+            />
+            <Route
+              path="/app/applications/:appId/evidence"
+              element={<ApplicationDetail />}
+            />
+            <Route
+              path="/app/participation/:appId"
               element={<ApplicationDetail />}
             />
             <Route path="/drc/reviews/:appId" element={<ApplicationDetail />} />

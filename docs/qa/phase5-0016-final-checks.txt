@@ -1,0 +1,150 @@
+ Container akus-local-api-run-f84e73d1d3d1 Creating 
+ Container akus-local-api-run-f84e73d1d3d1 Created 
+All checks passed!
+89 files already formatted
+Success: no issues found in 62 source files
+No new upgrade operations detected.
+........................................................................ [ 30%]
+.....................F.................................................. [ 61%]
+........................................................................ [ 91%]
+....................                                                     [100%]
+=================================== FAILURES ===================================
+___ test_hod_rotation_during_pending_review_preserves_drc_decision_and_seat ____
+
+client = <starlette.testclient.TestClient object at 0x7f3d2832de10>
+db = <sqlalchemy.orm.session.Session object at 0x7f3d20f6d450>
+settings = Settings(nptel_snapshot_max_age_seconds=3600, env='test', demo_enabled=True, database_url='postgresql+psycopg://akus_d...stitution', google_client_id='', google_client_secret=SecretStr(''), google_redirect_uri='', session_key=SecretStr(''))
+
+    def test_hod_rotation_during_pending_review_preserves_drc_decision_and_seat(client, db, settings):
+        from sqlalchemy.orm import Session
+        from starlette.exceptions import HTTPException
+        from test_admission import actor_token
+    
+        from akus.access import authority
+        from akus.applications.schemas import Review
+        from akus.applications.workflow_models import ReviewDecision
+        from akus.exceptions import reviewer
+        from akus.models import AuthSession
+        from akus.people import service as people
+        from akus.people.models import OfficeAppointment
+        from akus.people.schemas import AppointmentCreate, AppointmentEnd
+    
+        s = setup(client)
+        aid, h = draft(client, s)
+        assert submit(client, aid, h).status_code == 200
+        reviewpath = "/applications/" + aid + "/review"
+        assert (
+            post(
+                client,
+                reviewpath,
+                SOURCE | {"decision": "APPROVE", "expected_version": 2},
+                login(client, "drc"),
+            ).status_code
+            == 200
+        )
+        replacement, _, _ = faculty(db, s)
+        tokens = {k: actor_token(client, k) for k in ("hod", "admin", "principal", replacement)}
+        # Actual committed subcommands use savepoints on this single outer PG
+        # transaction so other tests keep their effective source appointments.
+        with client.app.state.engine.connect() as connection:
+            outer = connection.begin()
+            try:
+                with Session(bind=connection, join_transaction_mode="create_savepoint") as tx:
+    
+                    def actor(key):
+                        live = tx.get(AuthSession, tokens[key])
+                        return authority(tx, tx.get(DemoIdentity, live.identity_id), live)
+    
+                    app = tx.get(Application, UUID(aid))
+                    prior = tx.scalar(
+                        select(ReviewDecision).where(ReviewDecision.application_id == app.id)
+                    )
+                    old = tx.get(OfficeAppointment, UUID(reviewer.sources(tx, app)["appointment_id"]))
+                    people.end_appointment(
+                        tx,
+                        actor("admin"),
+                        uuid4(),
+                        old.id,
+                        AppointmentEnd(
+                            expected_version=old.version,
+                            reason="LOCAL_TEST documented end of appointment",
+                        ),
+                    )
+                    assert reviewer.sources(tx, app)["status"] == "VACANT"
+                    body = Review.model_validate(
+                        SOURCE | {"decision": "APPROVE", "expected_version": 3}
+                    )
+                    for role in ("hod", "admin", "principal"):
+>                       with pytest.raises(HTTPException, match="CURRENT_REVIEW_OFFICE_REQUIRED"):
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                       AssertionError: Regex pattern did not match.
+E                         Expected regex: 'CURRENT_REVIEW_OFFICE_REQUIRED'
+E                         Actual message: '403: APPLICATION_ACCESS_DENIED'
+
+apps/api/tests/test_exception_cases.py:852: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9a46df37-3b23-4a05-bff8-0d3c66ee31ee"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "06340761-ba4d-4e6e-ad17-9f60947e36a6"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bb01fb78-a327-4b7e-a71b-cff2dcc86fb5"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a72cf184-e68e-448c-b759-57a855267dd5"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "078e8c7a-7acc-48ca-b91d-6e265b9e9864"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "a4b15597-cc8e-4583-b358-e0debd9ec722"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "5dd44087-ae53-4181-9be3-d0440a71d5fc"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "9bdcb187-36ab-43dc-a0ea-5e3c02cbe887"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9c884625-2a36-4f87-984e-de4a009a1482"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "800c787c-805f-47a8-bcfa-d11ec1af35f8"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "fbb1b577-1791-403d-a745-f25009773d7e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "02972a67-c29e-4039-a525-ffe9d954f88e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "eead8d8a-f86b-489b-bb03-bc61ebfda32f"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "28e29637-b81a-407e-8dbd-9d6c696e9ce8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "e8e54e88-26fb-4ae6-b5c0-ea2e6db1eb0e"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "e1c8700d-7ae0-4bca-90bb-9a4d0ff0fb55"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f45044ec-1641-4805-85a8-b67d263ad9d2"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7ec4fbbe-5283-45c1-b303-e75ce069b32a"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ef359afe-497a-49d8-9507-38b25fd7caf6"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7d51a3d4-2723-4990-90a7-c1c3f388c8a9"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ffcf6706-9d4f-4665-8e13-c33f5e310a98"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9d2774c2-8eec-4fdb-8ddb-02c2417e2a31"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "50fd0579-cc3b-493a-bdd8-982310494688"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9a46df37-3b23-4a05-bff8-0d3c66ee31ee"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "06340761-ba4d-4e6e-ad17-9f60947e36a6"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bb01fb78-a327-4b7e-a71b-cff2dcc86fb5"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a72cf184-e68e-448c-b759-57a855267dd5"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "078e8c7a-7acc-48ca-b91d-6e265b9e9864"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "a4b15597-cc8e-4583-b358-e0debd9ec722"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "5dd44087-ae53-4181-9be3-d0440a71d5fc"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "9bdcb187-36ab-43dc-a0ea-5e3c02cbe887"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9c884625-2a36-4f87-984e-de4a009a1482"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "800c787c-805f-47a8-bcfa-d11ec1af35f8"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "fbb1b577-1791-403d-a745-f25009773d7e"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "02972a67-c29e-4039-a525-ffe9d954f88e"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "eead8d8a-f86b-489b-bb03-bc61ebfda32f"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "28e29637-b81a-407e-8dbd-9d6c696e9ce8"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "e8e54e88-26fb-4ae6-b5c0-ea2e6db1eb0e"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "e1c8700d-7ae0-4bca-90bb-9a4d0ff0fb55"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f45044ec-1641-4805-85a8-b67d263ad9d2"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7ec4fbbe-5283-45c1-b303-e75ce069b32a"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ef359afe-497a-49d8-9507-38b25fd7caf6"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7d51a3d4-2723-4990-90a7-c1c3f388c8a9"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ffcf6706-9d4f-4665-8e13-c33f5e310a98"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9d2774c2-8eec-4fdb-8ddb-02c2417e2a31"}
+INFO     akus:main.py:75 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "50fd0579-cc3b-493a-bdd8-982310494688"}
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+tests/test_exception_cases.py::test_separation_branches_and_current_seat[Q43]
+  /usr/local/lib/python3.13/site-packages/alembic/config.py:604: DeprecationWarning: No path_separator found in configuration; falling back to legacy splitting on spaces, commas, and colons for prepend_sys_path.  Consider adding path_separator=os to Alembic config.
+    util.warn_deprecated(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_exception_cases.py::test_hod_rotation_during_pending_review_preserves_drc_decision_and_seat
+1 failed, 235 passed, 3 warnings in 82.82s (0:01:22)
+

@@ -1,0 +1,17 @@
+{
+  "4": "Q04 request, current HoD finding/authorization, release from current charged pool, identical-key replay and transfer race in test_participation.py.",
+  "19": "Flag elapsed cutoff and hold seat. Final HoD must verify submission-first enrollment or document a current official extension. test_participation.py.",
+  "20": "Verified enrollment after valid submission permits ordinary approval, including when the published deadline passed. test_participation.py.",
+  "21": "Pre-submission enrollment blocks submission and held seat. Same-day date-only evidence cannot establish order. test_participation.py.",
+  "22": "Hold and recognition suspension on independently verified early enrollment. Formal disposition pending authority.",
+  "23": "Formal invalidation requires ratified reviewer or appointment. No authority inferred.",
+  "24": "Fresh independent admission after rejection reruns canonical, enrollment, date, source and capacity gates. test_participation.py.",
+  "25": "Fresh admission after withdrawal requires no enrollment and pre-commencement. test_participation.py.",
+  "26": "A person can hold distinct canonical courses concurrently. test_participation.py.",
+  "27": "Canonical active uniqueness across exact runs. Real PostgreSQL race in test_admission.py.",
+  "28": "Verified valid certificate permanently bars same-person canonical repeats regardless of score. test_outcomes.py.",
+  "29": "Unresolved prior outcomes block admission. Verified no-certificate finding permits fresh consideration. test_outcomes.py.",
+  "30": "Current distinct department HoD verifies exact-person/run evidence and can leave it unresolved. Immutable history. test_outcomes.py and phase4.spec.ts.",
+  "33": "Provider correction after newer approval opens integrity review, suspends recognition and retains the seat. Concurrent correction versus approval is covered. Disposition awaits independent authority.",
+  "34": "Later compliance assessment and narrow upheld exception require authorized review and verified achievement in subsequent phases."
+}

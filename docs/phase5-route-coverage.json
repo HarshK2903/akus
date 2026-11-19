@@ -1,0 +1,27 @@
+{
+  "ADM-04": [
+    "pages/SourceCorrection.tsx, pages/academic/Exceptions.tsx",
+    "admin/staff/{id}/sources, admin/employment-episodes/{id}/permanent-separation",
+    "Employment corrections and explicit sourced permanent order. Covered by people.spec.ts and phase5.spec.ts."
+  ],
+  "HOD-17": [
+    "pages/academic/Exceptions.tsx",
+    "integrity-cases",
+    "Scoped pageable case list, status filter and linked dossier."
+  ],
+  "HOD-18": [
+    "pages/academic/Exceptions.tsx",
+    "integrity-cases/{id}, integrity-cases/{id}/decision",
+    "Versioned evidence, current/original pool, case-specific independent authorization and audited uphold/invalidate."
+  ],
+  "HOD-19": [
+    "pages/academic/Exceptions.tsx",
+    "separation-cases",
+    "Department and oversight inbox for proven permanent departures and pending chronology."
+  ],
+  "HOD-20": [
+    "pages/academic/Exceptions.tsx",
+    "separation-cases/{id}/decision, roster-finding, historical-review, historical-review/subject",
+    "Effective-time evidence, HoD review, authoritative releases, frozen subjects and retrospective assessments with as-of replay."
+  ]
+}

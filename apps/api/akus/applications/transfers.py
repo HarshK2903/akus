@@ -104,7 +104,9 @@ def reconcile(
                 db, app, "QUOTA_TRANSFER", "TERMINAL_RETAINED_POLICY_PENDING", {}, source.id
             )
         return
-    if not service.applicant_still_eligible(db, app):
+    from akus.exceptions.service import active_order
+
+    if active_order(db, app) or not service.applicant_still_eligible(db, app):
         service.case(
             db, app, "SOURCE_TRANSITION", "APPLICANT_SOURCE_CHANGE_POLICY_PENDING", {}, source.id
         )
@@ -221,7 +223,7 @@ def reconcile(
         "QUOTA_TRANSFERRED",
         facts | {"movement_id": str(movement), "policy": "V2.3"},
     )
-    service.queue_recheck(db)
+    service.queue_recheck(db, current)
 
 
 def schedule_accepted(db: Session, offering: Offering, actor: Actor) -> None:

@@ -1,0 +1,13 @@
+
+> akus-web@0.1.0 e2e
+> playwright test phase5.spec.ts
+
+
+Running 2 tests using 1 worker
+
+(node:354029) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/phase5.spec.ts:29:1 › discovered enrollment chronology holds a counted seat and can be inspected by HoD and Principal (4.2s)
+  ✓  2 e2e/phase5.spec.ts:106:1 › HR records a sourced permanent order on a dedicated synthetic former staff episode (3.6s)
+
+  2 passed (8.6s)

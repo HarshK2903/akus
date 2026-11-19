@@ -1,14 +1,11 @@
 # Requirements → code → API → tests
 
-2026-11-18. Complete source inventory: spec-inventory.md. Local Phase 2 and expanded
-Phase 3 slices are tested; mandatory live Google UAT remains BLOCKED. This is not
-80-page or full academic workflow completion. Detailed boundaries: Phase 2 and
-Phase 3 checklists in codex/. Actual commands/results/logs: ../TEST_RESULTS.md.
+2026-11-19. Phase 5 exceptional-case coverage and executed commands are recorded in codex/PHASE5_CHECKLIST.md and ../TEST_RESULTS.md. The source inventory is in spec-inventory.md. The local Phase 2–5 checklists in codex/ identify the tested workflows and outstanding institutional decisions. Live institutional Google acceptance remains externally blocked.
 
 ## Executed vertical slices
 
 Paths below are relative to apps/api/akus unless frontend-prefixed. Backend tests are
-in apps/api/tests; browser tests in apps/web/e2e. All use real PostgreSQL; OIDC protocol
+in apps/api/tests; browser tests in apps/web/e2e and apps/web/qa. All use real PostgreSQL; OIDC protocol
 fixtures are isolated test-only generated signatures/HTTP responses, not real sign-ins.
 
 | Requirement/source | Code/schema | API/UI | Executed tests |
@@ -25,6 +22,10 @@ fixtures are isolated test-only generated signatures/HTTP responses, not real si
 | Five role-specific dashboards | sources/router.py; web/pages/Dashboards.tsx | dashboard, academic/integration/{area} | role routing/exemption/denials, no fake academic state; five-role responsive axe/browser |
 | Current auth after transaction locks | people/service.py lock_command | all source/import/account mutations | session revocation after read, current grant recheck, command/commit races |
 | Responsive usable forms and navigation | web/src/components, pages, styles.css | all source workflows plus foundation | people.spec.ts, phase2.spec.ts at 1440/390/320; foundation also 1024/768; actual screenshots |
+
+Phase 5 quota event coverage includes a first pool publication racing a missing destination, scoped worker wakeups and exactly-once release across concurrent exception cases. The immutable ledger is reconciled with current allocations using scripts/verify-quota.sql.
+
+Phase 5 employment, integrity, retrospective credit and office-alert evidence: [Phase 5 checklist](codex/PHASE5_CHECKLIST.md).
 
 Phase 3 code/schema/API/race evidence: [Phase 3 checklist](codex/PHASE3_CHECKLIST.md).
 Source/identity writes take an exclusive authority gate; academic commands take its
@@ -55,17 +56,17 @@ routes support the inventory and do not inflate its count.
 | FAC-03 | `/app/catalog/:courseId` | `pages/academic/Catalog.tsx` / nptel/courses/{id} | VERIFIED canonical identity, exact offerings and provenance | 3 |
 | FAC-04 | `/app/offerings/:offeringId` | `pages/academic/Catalog.tsx` / nptel/offerings/{id}; nptel/mapping-requests | VERIFIED exact source/dates/topic/pool/blockers, admission and mapping request | 3 |
 | FAC-05 | `/app/applications` | `pages/academic/Applications.tsx` / applications | VERIFIED scoped drafts/submissions, current allocation and cases | 4 |
-| FAC-06 | `/app/applications/new/offering` | `pages/academic/Applications.tsx` / nptel/offerings; applications | PARTIAL: catalog-to-draft selection; full evidence wizard later | 4 |
-| FAC-07 | `/app/applications/new/eligibility` | `pages/academic/Applications.tsx` / applications; applications/{id}/submit | VERIFIED safe first-attempt declarations/reservation; evidence-dependent branches blocked | 4 |
-| FAC-08 | `/app/applications/new/evidence` | `pages/academic/Applications.tsx` / applications/new wildcard | NOT COMPLETE: no evidence upload; wildcard does not satisfy evidence-page acceptance | 4 |
-| FAC-09 | `/app/applications/new/review` | `pages/academic/Applications.tsx` / applications/{id}; applications/{id}/submit | PARTIAL: review/confirmation on draft detail, not a separate wizard step | 4 |
-| FAC-10 | `/app/applications/:applicationId` | `pages/academic/Applications.tsx` / applications/{id}; review; withdraw; schedule-claims | VERIFIED ordinary decisions, withdrawal and personal schedule claims; broader lifecycle later | 4 |
+| FAC-06 | `/app/applications/new/offering` | `pages/academic/Applications.tsx` / applications; applications/{id}/submit; applications/{id}/review | Selected exact offering, catalog and saved draft navigation | 4 |
+| FAC-07 | `/app/applications/new/eligibility` | `pages/academic/Applications.tsx` / applications; applications/{id}/submit; applications/{id}/review | Versioned declarations and required academic relevance | 4 |
+| FAC-08 | `/app/applications/new/evidence` | `pages/academic/Applications.tsx` / applications; applications/{id}/submit; applications/{id}/review | Archive evidence and chronology. Private file handling belongs to Phase 6 | 4 |
+| FAC-09 | `/app/applications/new/review` | `pages/academic/Applications.tsx` / applications; applications/{id}/submit; applications/{id}/review | Review step, immutable submission and held-seat receipt in application detail | 4 |
+| FAC-10 | `/app/applications/:applicationId` | `pages/academic/Applications.tsx` / applications; applications/{id}/submit; applications/{id}/review | Review, deadline flag, retention and HoD withdrawal decision | 4 |
 | FAC-11 | `/app/applications/:applicationId/quota` | `pages/academic/Applications.tsx` / applications/{id} | VERIFIED original/current/official years, allocation and immutable movements | 4 |
-| FAC-12 | `/app/applications/:applicationId/evidence` | None | NOT IMPLEMENTED | 4 |
+| FAC-12 | `/app/applications/:applicationId/evidence` | `pages/academic/Participation.tsx` / applications/{id}; enrollment-claims; verify-enrollment | Source reference/digest, precision, claims, independent findings. Private binary and actual-exam evidence remain Phase 6. | 4 |
 | FAC-13 | `/app/applications/:applicationId/history` | `pages/academic/Applications.tsx` / applications/{id} | VERIFIED submission/source/movement/decision history; later evidence events absent | 4 |
-| FAC-14 | `/app/participation/:applicationId` | None | NOT IMPLEMENTED | 6 |
-| FAC-15 | `/app/previous-attempts` | None | NOT IMPLEMENTED | 6 |
-| FAC-16 | `/app/previous-attempts/:attemptId` | None | NOT IMPLEMENTED | 6 |
+| FAC-14 | `/app/participation/:applicationId` | `pages/academic/Participation.tsx` / applications/{id}; enrollment-claims; verify-enrollment | Source reference/digest, precision, claims, independent findings. Private binary and actual-exam evidence remain Phase 6. | 6 |
+| FAC-15 | `/app/previous-attempts` | `pages/academic/Outcomes.tsx` / previous-attempts; outcome-verifications/{id}/decision | Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts. | 6 |
+| FAC-16 | `/app/previous-attempts/:attemptId` | `pages/academic/Outcomes.tsx` / previous-attempts; outcome-verifications/{id}/decision | Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts. | 6 |
 | FAC-17 | `/app/compliance/annual` | None | NOT IMPLEMENTED | 6 |
 | FAC-18 | `/app/compliance/annual/:yearId` | None | NOT IMPLEMENTED | 6 |
 | FAC-19 | `/app/compliance/silver` | None | NOT IMPLEMENTED | 6 |
@@ -88,12 +89,12 @@ routes support the inventory and do not inflate its count.
 | HOD-12 | `/hod/quotas/:poolId/ledger` | `pages/academic/Governance.tsx` / quotas/{id}?as_of=... | VERIFIED ledger/current reconciliation and as-of API; UI shows latest 200 movements | 3 |
 | HOD-13 | `/hod/quota-transfers` | `pages/academic/Applications.tsx` / applications?reconciliation=true | VERIFIED open transfer/policy cases and retained occupancy; broader inbox filtering later | 5 |
 | HOD-14 | `/hod/quota-transfers/:caseId` | `pages/academic/Applications.tsx` / quota-transfer-cases/{id}; applications/{id}/reconcile | VERIFIED scoped deep link, original/current facts, target quota link, recheck and audit | 5 |
-| HOD-15 | `/hod/outcome-verifications` | None | NOT IMPLEMENTED | 6 |
-| HOD-16 | `/hod/outcome-verifications/:caseId` | None | NOT IMPLEMENTED | 6 |
-| HOD-17 | `/hod/integrity` | None | NOT IMPLEMENTED | 5 |
-| HOD-18 | `/hod/integrity/:caseId` | None | NOT IMPLEMENTED | 5 |
-| HOD-19 | `/hod/separation-cases` | None | NOT IMPLEMENTED | 7 |
-| HOD-20 | `/hod/separation-cases/:caseId` | None | NOT IMPLEMENTED | 7 |
+| HOD-15 | `/hod/outcome-verifications` | `pages/academic/Outcomes.tsx` / previous-attempts; outcome-verifications/{id}/decision | Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts. | 6 |
+| HOD-16 | `/hod/outcome-verifications/:caseId` | `pages/academic/Outcomes.tsx` / previous-attempts; outcome-verifications/{id}/decision | Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts. | 6 |
+| HOD-17 | `/hod/integrity` | `pages/academic/Exceptions.tsx` / integrity-cases | Scoped pageable case list, status filter and linked dossier. | 5 |
+| HOD-18 | `/hod/integrity/:caseId` | `pages/academic/Exceptions.tsx` / integrity-cases/{id}, integrity-cases/{id}/decision | Versioned evidence, current/original pool, case-specific independent authorization and audited uphold/invalidate. | 5 |
+| HOD-19 | `/hod/separation-cases` | `pages/academic/Exceptions.tsx` / separation-cases | Department and oversight inbox for proven permanent departures and pending chronology. | 5 |
+| HOD-20 | `/hod/separation-cases/:caseId` | `pages/academic/Exceptions.tsx` / separation-cases/{id}/decision, roster-finding, historical-review, historical-review/subject | Effective-time evidence, HoD review, authoritative releases, frozen subjects and retrospective assessments with as-of replay. | 5 |
 | HOD-21 | `/hod/reports/annual` | None | NOT IMPLEMENTED | 6 |
 | HOD-22 | `/hod/reports/silver` | None | NOT IMPLEMENTED | 6 |
 | HOD-23 | `/hod/reports/applications` | None | NOT IMPLEMENTED | 6 |
@@ -110,7 +111,7 @@ routes support the inventory and do not inflate its count.
 | ADM-01 | `/admin/home` | `pages/Dashboards.tsx` / dashboard; admin/nptel/provider-fetches | VERIFIED sources/imports/accounts and real public provider fetch | 2 |
 | ADM-02 | `/admin/staff` | `pages/StaffDirectory.tsx, StaffNew.tsx` / people/staff, admin/staff | VERIFIED scoped search/create; Google linking separate | 2 |
 | ADM-03 | `/admin/staff/:staffId` | `pages/StaffRecord.tsx, SourceCorrection.tsx` / people/staff/{id}, people/staff/{id}/sources | VERIFIED source detail/corrections; private attachments and identity merge not implemented | 2 |
-| ADM-04 | `/admin/staff/:staffId/employment` | `pages/SourceCorrection.tsx` / admin/staff/{id}/sources | VERIFIED episode/rehire corrections; academic impact/evidence attachments later | 2 |
+| ADM-04 | `/admin/staff/:staffId/employment` | `pages/SourceCorrection.tsx, pages/academic/Exceptions.tsx` / admin/staff/{id}/sources, admin/employment-episodes/{id}/permanent-separation | Employment corrections and explicit sourced permanent order. Covered by people.spec.ts and phase5.spec.ts. | 2 |
 | ADM-05 | `/admin/appointments` | `pages/Appointments.tsx, AppointmentNew.tsx, AppointmentRecord.tsx, SourceCorrection.tsx` / people/appointments, admin/appointments, admin/staff/{id}/sources | VERIFIED create/end/correct/supersede and DB exclusion; active-case impacts later | 2 |
 | ADM-06 | `/admin/teaching-assignments` | `pages/Teaching.tsx` / teaching, admin/teaching | VERIFIED create/filter/correct/void/timeline; IO-02 POLICY_PENDING, compliance not assessed | 2 |
 | ADM-07 | `/admin/academic-reference` | `pages/ReferenceSetup.tsx` / sources/reference, admin/reference | VERIFIED canonical references/alias corrections; subject merge POLICY_PENDING | 2 |
@@ -125,7 +126,7 @@ routes support the inventory and do not inflate its count.
 
 All Q01–Q50 remain reconciled in POLICY_REGISTER.md; planned domain acceptances are
 in POLICY_TEST_TRACEABILITY.md. Actual application and quota races are mapped in the Phase 3 checklist.
-Source tests alone do not prove quota or review correctness. Q39/Q40/Q42 source dates are tested; Silver compliance assessment is not.
+Phase 5 adds frozen episode status and historical Silver assessment. Active annual and subject fulfillment workflows belong to Phase 6.
 
 A01–A08/I01–I18, J1–J16, UX-01–25, T-Q01–50, T-AMEND-01–10,
 T-V2.4-TOPIC-MAP-01–05, T-ANNUAL-TOPIC-01–07, T-QUOTA-XFER-01–05 and C01–C50

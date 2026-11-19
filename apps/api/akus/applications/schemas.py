@@ -16,6 +16,7 @@ class Declarations(BaseModel):
     )
     emerging_technology_exception: bool = False
     acknowledgement: bool = False
+    academic_relevance: str = Field(default="", max_length=4000)
 
 
 class DraftWrite(BaseModel):
@@ -33,9 +34,26 @@ class Submit(BaseModel):
     mapping_revision_id: UUID | None = None
 
 
+class EnrollmentExtension(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    valid_through: date
+    document_digest: str = Field(pattern=r"^[a-f0-9]{64}$")
+    observed_at: datetime
+    independently_checked: Literal[True]
+
+    @model_validator(mode="after")
+    def actual_observation(self) -> "EnrollmentExtension":
+        if self.observed_at.tzinfo is None or self.observed_at > datetime.now(UTC):
+            raise ValueError("An actual timezone-aware observation is required")
+        return self
+
+
 class Review(Decision):
     expected_version: int = Field(ge=1)
     decision: Literal["APPROVE", "REJECT"]
+    enrollment_extension: EnrollmentExtension | None = Field(
+        default=None, exclude_if=lambda value: value is None
+    )
 
 
 class Withdraw(Decision):

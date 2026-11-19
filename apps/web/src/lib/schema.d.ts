@@ -927,6 +927,348 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/applications/{app_id}/enrollment-claims": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Enrollment Claim */
+    post: operations["enrollment_claim_api_v1_applications__app_id__enrollment_claims_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/applications/{app_id}/verify-enrollment": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Verify Enrollment */
+    post: operations["verify_enrollment_api_v1_applications__app_id__verify_enrollment_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/applications/{app_id}/withdrawal-requests": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Request Withdrawal */
+    post: operations["request_withdrawal_api_v1_applications__app_id__withdrawal_requests_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/applications/{app_id}/withdrawal-decision": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Decide Withdrawal */
+    post: operations["decide_withdrawal_api_v1_applications__app_id__withdrawal_decision_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/outcome-verifications": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Listing */
+    get: operations["listing_api_v1_outcome_verifications_get"];
+    put?: never;
+    /** Record */
+    post: operations["record_api_v1_outcome_verifications_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/previous-attempts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Listing */
+    get: operations["listing_api_v1_previous_attempts_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/outcome-verifications/{attempt_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Detail */
+    get: operations["detail_api_v1_outcome_verifications__attempt_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/previous-attempts/{attempt_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Detail */
+    get: operations["detail_api_v1_previous_attempts__attempt_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/outcome-verifications/{attempt_id}/decision": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Decide */
+    post: operations["decide_api_v1_outcome_verifications__attempt_id__decision_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/admin/employment-episodes/{eid}/permanent-separation": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Permanent */
+    post: operations["permanent_api_v1_admin_employment_episodes__eid__permanent_separation_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/separation-cases": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Listing */
+    get: operations["listing_api_v1_separation_cases_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/integrity-cases": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Listing */
+    get: operations["listing_api_v1_integrity_cases_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/separation-cases/{cid}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Detail */
+    get: operations["detail_api_v1_separation_cases__cid__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/integrity-cases/{cid}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Detail */
+    get: operations["detail_api_v1_integrity_cases__cid__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/separation-cases/{cid}/decision": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Decision */
+    post: operations["decision_api_v1_separation_cases__cid__decision_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/integrity-cases/{cid}/decision": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Decision */
+    post: operations["decision_api_v1_integrity_cases__cid__decision_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/separation-cases/{cid}/historical-review": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Historical Report */
+    get: operations["historical_report_api_v1_separation_cases__cid__historical_review_get"];
+    put?: never;
+    /** Verify Historical */
+    post: operations["verify_historical_api_v1_separation_cases__cid__historical_review_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/review-office-alerts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Office Alerts */
+    get: operations["office_alerts_api_v1_review_office_alerts_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/separation-cases/{cid}/roster-finding": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Absence */
+    post: operations["absence_api_v1_separation_cases__cid__roster_finding_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/separation-cases/{cid}/historical-review/subject": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Historical Subject */
+    post: operations["historical_subject_api_v1_separation_cases__cid__historical_review_subject_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/health/live": {
     parameters: {
       query?: never;
@@ -1219,6 +1561,32 @@ export interface components {
       /** Status */
       status: string;
     };
+    /** AttemptWrite */
+    AttemptWrite: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /**
+       * Offering Id
+       * Format: uuid
+       */
+      offering_id: string;
+      /** Expected Version */
+      expected_version: number;
+      /**
+       * Asserted Outcome
+       * @enum {string}
+       */
+      asserted_outcome: "NO_VALID_CERT" | "VALID_CERT" | "UNRESOLVED";
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+    };
     /** AuthConfig */
     AuthConfig: {
       /** Demo Enabled */
@@ -1239,6 +1607,93 @@ export interface components {
       source_reference: string;
       /** File */
       file: string;
+    };
+    /** CertificateProof */
+    CertificateProof: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /** Certificate Key */
+      certificate_key: string;
+      /**
+       * Actual Exam On
+       * Format: date
+       */
+      actual_exam_on: string;
+      /** Actual Exam At */
+      actual_exam_at?: string | null;
+      /**
+       * Issued On
+       * Format: date
+       */
+      issued_on: string;
+      /** Score Percent */
+      score_percent: number;
+      /** Subject Id */
+      subject_id?: string | null;
+      /** Relevance Basis */
+      relevance_basis?: string | null;
+      /**
+       * Checked Person Offering Certificate
+       * @constant
+       */
+      checked_person_offering_certificate: true;
+      /**
+       * Verified Exam And Score Sharing
+       * @constant
+       */
+      verified_exam_and_score_sharing: true;
+    };
+    /** Closure */
+    Closure: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /**
+       * Expected Event Id
+       * Format: uuid
+       */
+      expected_event_id: string;
+      /**
+       * Finding
+       * @enum {string}
+       */
+      finding:
+        | "Q44"
+        | "INDETERMINATE"
+        | "BEFORE_START"
+        | "AFTER_START"
+        | "UPHOLD"
+        | "INVALIDATE";
+      /**
+       * Independently Checked
+       * @constant
+       */
+      independently_checked: true;
+      /** Commencement At */
+      commencement_at?: string | null;
+      /** Separation At */
+      separation_at?: string | null;
+      /** Enrollment At */
+      enrollment_at?: string | null;
+      /** Enrollment On */
+      enrollment_on?: string | null;
     };
     /** CommandResult */
     CommandResult: {
@@ -1273,6 +1728,30 @@ export interface components {
        */
       description: string;
     };
+    /** DecideWithdrawal */
+    DecideWithdrawal: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /**
+       * Request Id
+       * Format: uuid
+       */
+      request_id: string;
+      /** Expected Version */
+      expected_version: number;
+      /**
+       * Decision
+       * @enum {string}
+       */
+      decision: "AUTHORIZE" | "DENY";
+      /**
+       * Independently Checked
+       * @constant
+       */
+      independently_checked: true;
+    };
     /** Declarations */
     Declarations: {
       /**
@@ -1302,6 +1781,11 @@ export interface components {
        * @default false
        */
       acknowledgement: boolean;
+      /**
+       * Academic Relevance
+       * @default
+       */
+      academic_relevance: string;
     };
     /** DemoLogin */
     DemoLogin: {
@@ -1347,6 +1831,81 @@ export interface components {
       id?: string | null;
       /** Expected Version */
       expected_version?: number | null;
+    };
+    /** EnrollmentExtension */
+    EnrollmentExtension: {
+      /**
+       * Valid Through
+       * Format: date
+       */
+      valid_through: string;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /**
+       * Independently Checked
+       * @constant
+       */
+      independently_checked: true;
+    };
+    /** EnrollmentProof */
+    EnrollmentProof: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Expected Version */
+      expected_version: number;
+      /** Enrolled At */
+      enrolled_at?: string | null;
+      /** Enrolled On */
+      enrolled_on?: string | null;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+    };
+    /** EnrollmentVerify */
+    EnrollmentVerify: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Expected Version */
+      expected_version: number;
+      /** Enrolled At */
+      enrolled_at?: string | null;
+      /** Enrolled On */
+      enrolled_on?: string | null;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /**
+       * Claim Id
+       * Format: uuid
+       */
+      claim_id: string;
+      /**
+       * Outcome
+       * @enum {string}
+       */
+      outcome: "VERIFIED" | "UNRESOLVED" | "REJECTED";
+      /**
+       * Independently Authenticated
+       * @constant
+       */
+      independently_authenticated: true;
     };
     /** EpisodeView */
     EpisodeView: {
@@ -1572,6 +2131,67 @@ export interface components {
       /** Provider Id */
       provider_id: string;
     };
+    /** Order */
+    Order: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /**
+       * Effective On
+       * Format: date
+       */
+      effective_on: string;
+      /** Effective At */
+      effective_at?: string | null;
+      /**
+       * Permanent Order Confirmed
+       * @constant
+       */
+      permanent_order_confirmed: true;
+    };
+    /** OutcomeDecision */
+    OutcomeDecision: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /**
+       * Evidence Id
+       * Format: uuid
+       */
+      evidence_id: string;
+      /** Expected Version */
+      expected_version: number;
+      /**
+       * Outcome
+       * @enum {string}
+       */
+      outcome: "NO_VALID_CERT" | "VALID_CERT" | "UNRESOLVED";
+      /** Concluded On */
+      concluded_on?: string | null;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /**
+       * Independently Authenticated Person And Run
+       * @constant
+       */
+      independently_authenticated_person_and_run: true;
+      /** Conclusive Official Result */
+      conclusive_official_result: boolean;
+    };
     /** PolicyHelp */
     PolicyHelp: {
       /** Id */
@@ -1683,6 +2303,20 @@ export interface components {
       /** Subject Id */
       subject_id?: string | null;
     };
+    /** RequestWithdrawal */
+    RequestWithdrawal: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Expected Version */
+      expected_version: number;
+      /**
+       * Voluntary Request
+       * @constant
+       */
+      voluntary_request: true;
+    };
     /** Review */
     Review: {
       /** Reason */
@@ -1696,6 +2330,37 @@ export interface components {
        * @enum {string}
        */
       decision: "APPROVE" | "REJECT";
+      enrollment_extension?:
+        components["schemas"]["EnrollmentExtension"] | null;
+    };
+    /** RosterProof */
+    RosterProof: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /**
+       * Expected Event Id
+       * Format: uuid
+       */
+      expected_event_id: string;
+      /**
+       * Checked Complete Person Offering Roster
+       * @constant
+       */
+      checked_complete_person_offering_roster: true;
+      /**
+       * Absence Through
+       * Format: date-time
+       */
+      absence_through: string;
     };
     /**
      * ScheduleClaim
@@ -1818,6 +2483,37 @@ export interface components {
       employment_status: string;
       /** Offices */
       offices: string[];
+    };
+    /** SubjectProof */
+    SubjectProof: {
+      /** Reason */
+      reason: string;
+      /** Source Reference */
+      source_reference: string;
+      /** Document Digest */
+      document_digest: string;
+      /**
+       * Observed At
+       * Format: date-time
+       */
+      observed_at: string;
+      /**
+       * Finding Id
+       * Format: uuid
+       */
+      finding_id: string;
+      /**
+       * Subject Id
+       * Format: uuid
+       */
+      subject_id: string;
+      /** Relevance Basis */
+      relevance_basis: string;
+      /**
+       * Checked Subject Relevance
+       * @constant
+       */
+      checked_subject_relevance: true;
     };
     /** Submit */
     Submit: {
@@ -3909,6 +4605,789 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["VerifySchedule"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  enrollment_claim_api_v1_applications__app_id__enrollment_claims_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        app_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EnrollmentProof"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  verify_enrollment_api_v1_applications__app_id__verify_enrollment_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        app_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["EnrollmentVerify"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  request_withdrawal_api_v1_applications__app_id__withdrawal_requests_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        app_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RequestWithdrawal"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  decide_withdrawal_api_v1_applications__app_id__withdrawal_decision_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        app_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["DecideWithdrawal"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  listing_api_v1_outcome_verifications_get: {
+    parameters: {
+      query?: {
+        search?: string;
+        order?: "newest" | "oldest";
+        offset?: number;
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  record_api_v1_outcome_verifications_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AttemptWrite"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  listing_api_v1_previous_attempts_get: {
+    parameters: {
+      query?: {
+        search?: string;
+        order?: "newest" | "oldest";
+        offset?: number;
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  detail_api_v1_outcome_verifications__attempt_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        attempt_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  detail_api_v1_previous_attempts__attempt_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        attempt_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  decide_api_v1_outcome_verifications__attempt_id__decision_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        attempt_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["OutcomeDecision"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  permanent_api_v1_admin_employment_episodes__eid__permanent_separation_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        eid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Order"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  listing_api_v1_separation_cases_get: {
+    parameters: {
+      query?: {
+        status?: "OPEN" | "RESOLVED" | "ALL";
+        offset?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  listing_api_v1_integrity_cases_get: {
+    parameters: {
+      query?: {
+        status?: "OPEN" | "RESOLVED" | "ALL";
+        offset?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  detail_api_v1_separation_cases__cid__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  detail_api_v1_integrity_cases__cid__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  decision_api_v1_separation_cases__cid__decision_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Closure"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  decision_api_v1_integrity_cases__cid__decision_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Closure"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  historical_report_api_v1_separation_cases__cid__historical_review_get: {
+    parameters: {
+      query?: {
+        as_of?: string | null;
+      };
+      header?: never;
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  verify_historical_api_v1_separation_cases__cid__historical_review_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CertificateProof"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  office_alerts_api_v1_review_office_alerts_get: {
+    parameters: {
+      query?: {
+        offset?: number;
+        vacant_only?: boolean;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  absence_api_v1_separation_cases__cid__roster_finding_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RosterProof"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CommandResult"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  historical_subject_api_v1_separation_cases__cid__historical_review_subject_post: {
+    parameters: {
+      query?: never;
+      header: {
+        "Idempotency-Key": string;
+      };
+      path: {
+        cid: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SubjectProof"];
       };
     };
     responses: {

@@ -1,0 +1,166 @@
+ Image akus-local-web Building 
+ Image akus-local-migrate Building 
+ Image akus-local-api Building 
+ Image akus-local-worker Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.85kB done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 430B done
+#2 DONE 0.0s
+
+#3 [web internal] load build definition from web.Dockerfile
+#3 transferring dockerfile: 324B done
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for docker.io/library/caddy:2-alpine
+#4 DONE 0.0s
+
+#5 [migrate internal] load metadata for docker.io/library/python:3.13-slim
+#5 ...
+
+#6 [web internal] load metadata for docker.io/library/node:24-slim
+#6 DONE 1.7s
+
+#5 [worker internal] load metadata for docker.io/library/python:3.13-slim
+#5 DONE 1.7s
+
+#7 [migrate internal] load .dockerignore
+#7 transferring context: 208B done
+#7 DONE 0.0s
+
+#8 [worker 1/6] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#8 DONE 0.0s
+
+#9 [web build 1/6] FROM docker.io/library/node:24-slim@sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54
+#9 DONE 0.0s
+
+#10 [web stage-1 1/3] FROM docker.io/library/caddy:2-alpine
+#10 DONE 0.0s
+
+#11 [worker internal] load build context
+#11 transferring context: 165.56kB 0.0s done
+#11 DONE 0.0s
+
+#12 [web internal] load build context
+#12 transferring context: 186.28kB done
+#12 DONE 0.0s
+
+#13 [migrate 3/6] COPY apps/api/requirements.lock /app/requirements.lock
+#13 CACHED
+
+#14 [migrate 2/6] WORKDIR /app
+#14 CACHED
+
+#15 [migrate 4/6] RUN pip install --no-cache-dir -r requirements.lock
+#15 CACHED
+
+#16 [web build 2/6] WORKDIR /web
+#16 CACHED
+
+#17 [web build 3/6] COPY apps/web/package*.json ./
+#17 CACHED
+
+#18 [web build 4/6] RUN npm ci --no-fund --no-audit
+#18 CACHED
+
+#19 [worker 5/6] COPY apps/api /app/apps/api
+#19 DONE 0.1s
+
+#20 [web build 5/6] COPY apps/web ./
+#20 DONE 0.1s
+
+#21 [worker 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#21 0.985 Obtaining file:///app/apps/api
+#21 0.987   Installing build dependencies: started
+#21 3.236   Installing build dependencies: finished with status 'done'
+#21 3.237   Checking if build backend supports build_editable: started
+#21 3.545   Checking if build backend supports build_editable: finished with status 'done'
+#21 3.546   Getting requirements to build editable: started
+#21 3.879   Getting requirements to build editable: finished with status 'done'
+#21 3.880   Preparing editable metadata (pyproject.toml): started
+#21 4.090   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#21 4.097 Building wheels for collected packages: akus-api
+#21 4.098   Building editable for akus-api (pyproject.toml): started
+#21 4.341   Building editable for akus-api (pyproject.toml): finished with status 'done'
+#21 4.342   Created wheel for akus-api: filename=akus_api-0.1.0-0.editable-py3-none-any.whl size=2875 sha256=f8fabad872eecf17a65a994692820c4f7bfcca6dec5549ad5d7cd1579cff49f8
+#21 4.342   Stored in directory: /tmp/pip-ephem-wheel-cache-smmtxvpe/wheels/b1/8f/6c/228667c2da5e253868149b5f65557add9c4fbba2f70f6f297e
+#21 4.344 Successfully built akus-api
+#21 4.356 Installing collected packages: akus-api
+#21 4.374 Successfully installed akus-api-0.1.0
+#21 4.374 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#21 4.375 
+#21 4.375 [notice] A new release of pip is available: 26.2.2 -> 26.3
+#21 4.375 [notice] To update, run: pip install --upgrade pip
+#21 DONE 4.5s
+
+#22 [worker] exporting to image
+#22 exporting layers 0.1s done
+#22 writing image sha256:10049dcb8e43c5c37a990265dbf8ef36a036a2ca65a54325cba8c0fd8fa7b7fa done
+#22 naming to docker.io/library/akus-local-worker 0.0s done
+#22 DONE 0.1s
+
+#23 [migrate] exporting to image
+#23 exporting layers 0.1s done
+#23 writing image sha256:753c15a063e2e12aee5b7db9b07f3e12ddf2b6e84c52fac567c87a831917f71a 0.0s done
+#23 naming to docker.io/library/akus-local-migrate 0.0s done
+#23 DONE 0.1s
+
+#24 [api] exporting to image
+#24 exporting layers 0.1s done
+#24 writing image sha256:6bd7ad4e46146550696a893f071287b4ba89ccc3765f56dd0339bc8e92949e0f done
+#24 naming to docker.io/library/akus-local-api 0.0s done
+#24 DONE 0.1s
+
+#25 [worker] resolving provenance for metadata file
+#25 DONE 0.0s
+
+#26 [api] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#27 [migrate] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#28 [web build 6/6] RUN npm run build
+#28 0.495 
+#28 0.495 > akus-web@0.1.0 build
+#28 0.495 > tsc -b && vite build
+#28 0.495 
+#28 4.898 vite v7.3.8 building client environment for production...
+#28 4.951 transforming...
+#28 6.876 ✓ 1722 modules transformed.
+#28 7.077 rendering chunks...
+#28 7.086 computing gzip size...
+#28 7.101 dist/index.html                   0.52 kB │ gzip:   0.34 kB
+#28 7.101 dist/assets/index-jtCSFyMV.css   20.07 kB │ gzip:   4.86 kB
+#28 7.101 dist/assets/index-BlcvKMuL.js   532.30 kB │ gzip: 153.42 kB
+#28 7.101 
+#28 7.101 (!) Some chunks are larger than 500 kB after minification. Consider:
+#28 7.101 - Using dynamic import() to code-split the application
+#28 7.101 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+#28 7.101 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+#28 7.101 ✓ built in 2.18s
+#28 DONE 7.2s
+
+#10 [web stage-1 1/3] FROM docker.io/library/caddy:2-alpine
+#10 CACHED
+
+#29 [web stage-1 2/3] COPY --from=build /web/dist /srv
+#29 DONE 0.0s
+
+#30 [web stage-1 3/3] COPY infra/Caddy.web /etc/caddy/Caddyfile
+#30 DONE 0.0s
+
+#31 [web] exporting to image
+#31 exporting layers 0.0s done
+#31 writing image sha256:d6e462c29b565953ffb1b3095853ed1c05409e7b2deacf40dee7ca982c9c2eb9 done
+#31 naming to docker.io/library/akus-local-web done
+#31 DONE 0.1s
+
+#32 [web] resolving provenance for metadata file
+#32 DONE 0.0s
+ Image akus-local-api Built 
+ Image akus-local-worker Built 
+ Image akus-local-migrate Built 
+ Image akus-local-web Built 

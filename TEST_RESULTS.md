@@ -1,3 +1,43 @@
+# Phase 5 verified results · 2026-11-19
+
+| Gate | Observed result | Evidence under docs/qa |
+|---|---|---|
+| Recovery | 0016 upgrade had completed. The interrupted gate finished with 235 passed and one failed assertion about the former HoD's exact denial. The corrected targeted rotation test passed. | phase5-0016-final-checks.txt, phase5-0016-start.txt, phase5-office-rotation-recovery.txt |
+| Final backend and concurrency | `AKUS_TEST_DATABASE_NAME=akus_phase5_acceptance_test scripts/check-docker.sh` passed all 242 PostgreSQL tests in 115.50s, with 3 deprecation warnings. Ruff check/format passed for 89 Python files. Mypy passed on 62 source files. Alembic detected no schema drift. | phase5-verified-checks.txt |
+| Final frontend | The combined run identified a Prettier issue in the edited browser test. After formatting, the separate final run passed ESLint, TypeScript including isolated browser tests, Prettier, 2 Vitest tests and the Vite production build. | phase5-verified-frontend.txt |
+| Docker images and startup | API, worker, migrate and web built. Runtime services refreshed without replacing PostgreSQL. Original volume creation time retained. Running source hashes matched the checkout. | phase5-verified-build.txt, phase5-verified-start.txt, phase5-verified-health.txt |
+| Compiled frontend/browser | 38/38 Playwright tests passed. The 20-second transfer assertion and current-pool withdrawal passed on the retained demo data. The new case routes had no axe violations or horizontal overflow at 320, 390 and 1440 px. | phase5-browser-acceptance.txt, phase5-integrity-320.png, phase5-separation-390.png |
+| Isolated authenticated browser | 3/3 passed using the same compiled UI, a separate test database, normal demo sign-in and actual guarded writes. Saved a Q47 closure, verified an archived certificate and reconstructed the earlier report, and saved a Q44 day-precision enrollment with no exact time. | phase5-browser-case-acceptance.txt, phase5-q47-detail-320.png |
+| Read-only consistency | `scripts/verify-quota.sql` reported zero on all six mismatch counters in all three databases. The operational DB contained 28 transfer movements. The retained departure DB included 122 separated and 10 invalidated applications. The standard concurrency DB contained 87 transfer movements. | phase5-verified-health.txt, phase5-verified-departure-ledger.txt, phase5-verified-concurrency-ledger.txt |
+| Security and traceability | Anonymous/Faculty list denials and CSRF plus foreign-Origin denials on six write routes passed. The local pattern scan found zero matches in 107 source/config files. The spec inventory verified 80 target routes, 50 historic policies and 27 policy entries. | phase5-verified-authorization.txt, phase5-verified-security-scan.md, phase5-verified-spec.txt |
+
+The live API reported ready, the frontend returned HTTP 200 and the worker had a recent heartbeat. Google sign-in was disabled with zero institutional identity links. Synthetic case appointments and historical obligation rulings were confined to isolated test databases. Institutional account-holder sign-ins are still outstanding.
+
+The backend warnings concern FastAPI/Starlette TestClient, Authlib’s HTTPX integration and Alembic path configuration. Vite emitted its bundle-size advisory. Earlier logs preserve intermediate failures, including directory first-page assumptions, a stale employment-page selector and unrelated quota-worker wakeups. The corrected employment workflow waits for the destination heading and verifies the exact dated row inside its episode register.
+
+---
+
+# Phase 4 final local verification · 2026-11-19
+
+| Executed gate | Observed result | Evidence under docs/qa |
+|---|---|---|
+| Recovered original Phase 4 workflow and catalog check | 7 affected browser journeys passed after the draft route and search-filter repairs | phase4-workflow-browser-pass.txt |
+| First 0012 full gate on existing isolated test DB | 204 backend tests passed, mypy passed on 55 modules and Alembic found no schema drift | phase4-outcome-first-checks.txt |
+| Extension and correction race checks | 206 backend tests passed. Prettier reported the browser test under edit. Formatted the file and repeated the full gate | phase4-recovery-checks.txt |
+| Final scripts/check-docker.sh using akus_phase4_forward_test | **210 backend passed, 2 warnings, 60.63 seconds**. Ruff check and format passed (77 files), mypy passed (55 modules). Forward upgrade and drift checks passed. ESLint, TypeScript, Prettier, **2 Vitest tests** and Vite production build passed | phase4-final-checks.txt |
+| docker compose build api migrate worker web, then up -d | Four images built, migration exited 0, API and DB healthy, worker/web/proxy running on existing volume | phase4-final-build.txt, phase4-final-start.txt, phase4-final-health.txt |
+| Full Playwright against compiled Docker/Caddy app | **36 passed (1.3 minutes)** including the filtered HoD prior-result inbox, immutable evidence revisions, later correction, enrollment findings, current-pool withdrawal, mobile layouts and axe checks | phase4-final-browser.txt, phase4-prior-outcome-390.png, phase4-participation-{320,390,1440}.png |
+| Live read-only SQL, HTTP and Alembic | 0012_prior_outcomes at head, no drift, 0 inconsistent pools, 0 invalid transfer pairs, worker heartbeat under one second old at observation. Frontend HTTP 200 and readiness reported connected | phase4-final-health.txt |
+| Requirements inventory and traceability | Master and embedded blueprint retained. Inventory verified 80 pages, 50 historic policies and 27 policy-register entries | scripts/spec_inventory.py --check, docs/traceability.md, docs/POLICY_TEST_TRACEABILITY.md |
+
+The PostgreSQL tests exercise independent transactions for last-seat admission, concurrent canonical applications, source changes, withdrawal versus transfer, receipt replay and prior certificate correction versus final approval. A correction that wins first prevents approval. A correction that arrives after approval opens an integrity hold and retains the seat. Pre-start withdrawn and rejected applications can be followed by independent eligible submissions. Distinct courses can remain active concurrently. Source evidence on another run cannot be hidden by starting a new draft.
+
+Backend warnings came from the installed Starlette/Authlib HTTP client deprecations. Vite reported a 520 kB minified bundle warning. Browser tests use labelled local accounts, synthetic offerings and documentary references. Real Google sign-in remains unverified. General evidence and final integrity authority remain subject to institutional policy.
+
+Reproduce with `AKUS_TEST_DATABASE_NAME=akus_phase4_forward_test scripts/check-docker.sh`, then `AKUS_E2E_URL=http://127.0.0.1:8080 PLAYWRIGHT_BROWSERS_PATH="$PWD/.local/browsers" npm --prefix apps/web run e2e` on the existing Compose installation. Repeated browser runs add labelled demo data. Earlier failure logs remain in docs/qa.
+
+---
+
 # Observed verification — Phase 3 recovery, 2026-11-18
 
 **Local catalog/topic/quota + expanded admission/reschedule acceptance passed.**
@@ -276,3 +316,13 @@ Warnings: Starlette emits a deprecation notice for its httpx TestClient adapter 
 Not verified / not implemented: remote CI execution; real Google OIDC; institutional effective-dated authority and complete role isolation; catalog/provider verification; topic mappings/quotas/submissions/approvals; quota races and cross-year transfers; evidence/annual/Silver/separation workflows; full 80-route coverage; production TLS/security hardening; screen-reader/manual full WCAG conformance; backup/restore. These require later phases, not fake passing tests.
 
 Toolchain observed: Python 3.13.7, Node 24.22.1, npm 11.19.1, PostgreSQL 16.15; FastAPI 0.163.1, SQLAlchemy 2.0.57, Psycopg 3.3.9, Alembic 1.20.1, Vite 7.3.8. Exact dependency locks are checked into source. Docker 29.8.0 and Compose 5.5.1 available with narrow execution permission.
+
+Phase 5 targeted exception suite: 7 passed against isolated PostgreSQL, including current-pool balance after concurrent rescheduling and separation. See docs/qa/phase5-separation-tests.txt.
+
+The 0014 acceptance run in docs/qa/phase5-acceptance-checks.txt passed 221 backend tests in 71.68 seconds, 2 frontend tests, Ruff, mypy, Alembic upgrade/drift, ESLint, TypeScript, Prettier and Vite. It includes a decisive pre-separation exam, a below-Silver authentic certificate, a later exam, and a date-only ambiguous exam. Each test compared an earlier report and the current allocation. Docker image build and startup logs are phase5-build.txt and phase5-start.txt.
+
+0015 release candidate: 234 backend tests and 2 frontend tests passed in phase5-release-checks.txt. The compiled Docker app passed 38 Playwright tests plus 2 isolated full form submissions. The preceding phase5-final-checks.txt recorded 225 passing backend tests and a Prettier failure in the new browser spec. The release run verified the formatting fix.
+
+Recovery reproduced the completed office-rotation failure from phase5-0016-final-checks.txt. After the appointment ends, the former HoD is refused at dossier access, whereas Admin and Principal are refused academic write permission. The test now asserts both exact 403 outcomes, the unchanged pending task and seat, and a successful formally appointed acting HoD decision. The targeted test passed, followed by 236 backend tests and 2 frontend tests. A subsequent 238-test run includes both integrity/separation dispositions. Logs are phase5-office-rotation-recovery.txt, phase5-resume-checks.txt and phase5-accepted-backend.txt.
+
+The first date-precision run passed 240 backend tests. Its full browser run passed 36 of 38. The Principal test expected named staff on the first page of a growing directory. A cross-year transfer eventually reconciled, after the 20-second browser assertion expired. Read-only inspection found 1,299 completed quota jobs and open enrollment/integrity cases. The repaired gate preserves the timeout, searches the directory through its normal UI, scopes capacity wakeups and exercises the missing-target publication race. The earlier failed log remains at docs/qa/phase5-final-acceptance-browser.txt.

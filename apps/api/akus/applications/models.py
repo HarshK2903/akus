@@ -37,7 +37,9 @@ class Application(Base):
     submitted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     __table_args__ = (
-        CheckConstraint("state IN ('DRAFT','UNDER_REVIEW','APPROVED','REJECTED','WITHDRAWN')"),
+        CheckConstraint(
+            "state IN ('DRAFT','UNDER_REVIEW','APPROVED','REJECTED','WITHDRAWN','OUTCOME_RECORDED','SEPARATED','INVALIDATED')"
+        ),
         Index(
             "one_active_canonical_application",
             "person_id",

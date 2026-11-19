@@ -1,0 +1,66 @@
+ Container akus-local-api-run-156a7f6879d8 Creating 
+ Container akus-local-api-run-156a7f6879d8 Created 
+All checks passed!
+77 files already formatted
+Success: no issues found in 55 source files
+No new upgrade operations detected.
+........................................................................ [ 34%]
+........................................................................ [ 68%]
+..................................................................       [100%]
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+210 passed, 2 warnings in 60.63s (0:01:00)
+
+> akus-web@0.1.0 lint
+> eslint .
+
+
+> akus-web@0.1.0 typecheck
+> tsc -b
+
+
+> akus-web@0.1.0 format:check
+> prettier --check src e2e *.ts *.js *.json
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> akus-web@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /media/bugulnoz/New Volume/2/akus/apps/web
+
+ ✓ src/pages/Help.test.tsx (2 tests) 161ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  07:53:37
+   Duration  1.26s (transform 64ms, setup 129ms, collect 179ms, tests 161ms, environment 411ms, prepare 124ms)
+
+
+> akus-web@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.8 building client environment for production...
+transforming...
+✓ 1721 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.52 kB │ gzip:   0.34 kB
+dist/assets/index-jtCSFyMV.css   20.07 kB │ gzip:   4.86 kB
+dist/assets/index-CkNhINtQ.js   520.32 kB │ gzip: 150.66 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.69s

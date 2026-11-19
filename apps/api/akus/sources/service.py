@@ -167,6 +167,14 @@ def teaching_view(db: Session, record: TeachingAssignment) -> dict[str, Any]:
             deadline = first.replace(year=first.year + 2)
         except ValueError:
             pass  # P-54, never invent Feb 28 / March 1.
+    frozen = None
+    if episode.ends_before and episode.ends_before <= datetime.now(ZoneInfo("Asia/Kolkata")).date():
+        from akus.exceptions.history import episode_report
+
+        archived = episode_report(db, episode.id, None, datetime.now(ZoneInfo("Asia/Kolkata")))
+        frozen = next(
+            (s for s in archived["subjects"] if s["subject_id"] == str(record.subject_id)), None
+        )
     return {
         "id": record.id,
         "external_key": record.external_key,
@@ -190,7 +198,15 @@ def teaching_view(db: Session, record: TeachingAssignment) -> dict[str, Any]:
         "provisional_deadline": deadline,
         "acceptance": "POLICY_PENDING:IO-02",
         "deadline_policy": "POLICY_PENDING:P-54" if first and not deadline else "Q39/Q40/Q42",
-        "compliance": "NOT_ASSESSED",
+        "status_at_separation": frozen["status_at_separation"] if frozen else None,
+        "compliance": frozen.get(
+            "reassessment",
+            frozen["status_at_separation"]
+            if frozen.get("archived_obligation_id")
+            else "NOT_ASSESSED",
+        )
+        if frozen
+        else "NOT_ASSESSED",
         "episode_closed": bool(
             episode.ends_before
             and episode.ends_before <= datetime.now(ZoneInfo("Asia/Kolkata")).date()

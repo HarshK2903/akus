@@ -1,9 +1,11 @@
+import { Participation } from "./Participation";
 import { useQuery } from "@tanstack/react-query";
 import {
   Link,
   useNavigate,
   useOutletContext,
   useParams,
+  useLocation,
   useSearchParams,
 } from "react-router-dom";
 import { type Identity } from "../../lib/api";
@@ -89,6 +91,9 @@ export function Applications({
                   <td>
                     <Link to={`/app/applications/${a.id}`}>{a.course}</Link>
                     <p>{a.applicant}</p>
+                    {a.enrollment_deadline_passed && (
+                      <Badge tone="warning">Enrollment cutoff passed</Badge>
+                    )}
                     <small>{a.provider_id}</small>
                   </td>
                   <td>
@@ -149,9 +154,44 @@ export function Applications({
   );
 }
 
+function DraftNavigation({
+  offering,
+  draft,
+}: {
+  offering: string;
+  draft?: string;
+}) {
+  const query = draft ? `draft=${draft}` : `offering=${offering}`;
+  return (
+    <nav className="academic-links" aria-label="Application steps">
+      <Link to={`/app/applications/new/offering?${query}`}>1. Offering</Link>
+      <Link to={`/app/applications/new/eligibility?${query}`}>
+        2. Eligibility
+      </Link>
+      {draft && (
+        <>
+          <Link to={`/app/applications/new/evidence?${query}`}>
+            3. Evidence
+          </Link>
+          <Link to={`/app/applications/new/review?${query}`}>
+            4. Review and submit
+          </Link>
+        </>
+      )}
+    </nav>
+  );
+}
+
 export function ApplicationDraft() {
   const [params] = useSearchParams();
-  const offeringId = params.get("offering");
+  const draftId = params.get("draft");
+  const step = useLocation().pathname.split("/").pop();
+  const draftQuery = useQuery({
+    queryKey: ["application-draft", draftId],
+    queryFn: () => api<ApplicationRecord>(`/applications/${draftId}`),
+    enabled: !!draftId,
+  });
+  const offeringId = draftQuery.data?.offering_id || params.get("offering");
   const navigate = useNavigate();
   const context = useContextData();
   const query = useQuery({
@@ -159,7 +199,9 @@ export function ApplicationDraft() {
     queryFn: () => api<Offering>(`/nptel/offerings/${offeringId}`),
     enabled: !!offeringId,
   });
-  const save = useCommand((id) => navigate(`/app/applications/${id}`));
+  const save = useCommand((id) =>
+    navigate(`/app/applications/new/evidence?draft=${id}`),
+  );
   if (context.data && !context.data.can_apply)
     return (
       <>
@@ -171,6 +213,27 @@ export function ApplicationDraft() {
           HoD and Principal offices are NPTEL-exempt. Oversight does not grant
           applicant authority.
         </p>
+      </>
+    );
+  if (draftId && draftQuery.isPending) return <Loading />;
+  if (draftQuery.error)
+    return (
+      <ErrorState
+        error={draftQuery.error}
+        retry={() => void draftQuery.refetch()}
+      />
+    );
+  if (
+    draftQuery.data &&
+    (!draftQuery.data.own || draftQuery.data.state !== "DRAFT")
+  )
+    return (
+      <>
+        <PageHeader
+          title="Draft editing unavailable"
+          description="Submitted facts remain immutable."
+        />
+        <Link to={`/app/applications/${draftId}`}>View application</Link>
       </>
     );
   if (!offeringId)
@@ -193,12 +256,80 @@ export function ApplicationDraft() {
     );
   if (!query.data || !context.data) return null;
   const o = query.data;
+  const saved = draftQuery.data;
+  const navigation = (
+    <DraftNavigation offering={o.id} draft={draftId || undefined} />
+  );
+  if (step === "review" && draftId)
+    return (
+      <>
+        {navigation}
+        <ApplicationDetail draftId={draftId} />
+      </>
+    );
+  if (step === "evidence" && saved)
+    return (
+      <>
+        <PageHeader
+          title="Application evidence and chronology"
+          description="Preserve official source references and distinguish assertions from independent findings."
+        />
+        {navigation}
+        <section className="panel prose">
+          <h2>Before valid submission</h2>
+          <p>
+            No external enrollment is expected before submission. Record any
+            contrary evidence truthfully; it will block retrospective
+            submission. Prior-result checks are separate from this offering's
+            enrollment.
+          </p>
+          <p>
+            Binary document upload is not available in this phase. Official
+            archive references, checksums and observation times remain
+            auditable.
+          </p>
+          <Link
+            className="button primary"
+            to={`/app/applications/new/review?draft=${saved.id}`}
+          >
+            Continue to review
+          </Link>
+        </section>
+        <Participation app={saved} canVerify={false} />
+      </>
+    );
+  if (step === "offering")
+    return (
+      <>
+        <PageHeader
+          title="Selected exact offering"
+          description="The provider run and canonical course are distinct identities. Drafts reserve no capacity."
+        />
+        {navigation}
+        <section className="panel prose">
+          <h2>{o.metadata?.title || o.provider_id}</h2>
+          {o.metadata && <Dates metadata={o.metadata} />}
+          <Link to="/app/catalog">
+            Choose a different offering as a new draft
+          </Link>
+          <p>
+            <Link
+              className="button primary"
+              to={`/app/applications/new/eligibility?${draftId ? `draft=${draftId}` : `offering=${o.id}`}`}
+            >
+              Continue to eligibility
+            </Link>
+          </p>
+        </section>
+      </>
+    );
   return (
     <>
       <PageHeader
         title="New application · eligibility declarations"
         description="Save a draft first, then inspect the submission snapshot. Unresolved evidence never creates a seat."
       />
+      {navigation}
       <Link to={`/app/offerings/${o.id}`}>← Exact offering</Link>
       <section className="panel prose section-gap">
         <h2>{o.metadata?.title || o.provider_id}</h2>
@@ -220,7 +351,11 @@ export function ApplicationDraft() {
                 path: "/applications",
                 body: {
                   offering_id: o.id,
+                  ...(saved
+                    ? { id: saved.id, expected_version: saved.version }
+                    : {}),
                   declarations: {
+                    academic_relevance: f.get("academic_relevance"),
                     score_sharing_yes: f.has("sharing"),
                     not_yet_enrolled: f.has("not_enrolled"),
                     prior_attempt: f.get("prior"),
@@ -232,23 +367,42 @@ export function ApplicationDraft() {
             }}
           >
             <h2>Truthful declarations</h2>
+            <label className="source-field">
+              Academic relevance to your teaching or discipline
+              <textarea
+                name="academic_relevance"
+                required
+                maxLength={4000}
+                defaultValue={saved?.declarations.academic_relevance || ""}
+              />
+            </label>
             <p>
               These are your declarations, not verified provider evidence. NPTEL
               enrollment must occur after valid AKUS submission. Unknown prior
               outcomes require HoD verification in the evidence workflow.
             </p>
             <label className="checkbox-label">
-              <input name="sharing" type="checkbox" /> I will select Yes for
-              NPTEL score sharing.
+              <input
+                name="sharing"
+                type="checkbox"
+                defaultChecked={saved?.declarations.score_sharing_yes}
+              />{" "}
+              I will select Yes for NPTEL score sharing.
             </label>
             <label className="checkbox-label">
-              <input name="not_enrolled" type="checkbox" /> I have not already
-              enrolled externally in this offering.
+              <input
+                name="not_enrolled"
+                type="checkbox"
+                defaultChecked={saved?.declarations.not_yet_enrolled}
+              />{" "}
+              I have not already enrolled externally in this offering.
             </label>
             <SelectField
               label="Previous attempts at this canonical course"
               name="prior"
-              defaultValue="OUTCOME_UNVERIFIED"
+              defaultValue={
+                saved?.declarations.prior_attempt || "OUTCOME_UNVERIFIED"
+              }
             >
               <option value="OUTCOME_UNVERIFIED">
                 Earlier result unknown / verification required
@@ -261,13 +415,23 @@ export function ApplicationDraft() {
               </option>
             </SelectField>
             <label className="checkbox-label">
-              <input name="exception" type="checkbox" /> This application
-              requires an emerging technology exception.
+              <input
+                name="exception"
+                type="checkbox"
+                defaultChecked={
+                  saved?.declarations.emerging_technology_exception
+                }
+              />{" "}
+              This application requires an emerging technology exception.
             </label>
             <label className="checkbox-label">
-              <input name="acknowledge" type="checkbox" /> I confirm these
-              declarations and understand that evidence discrepancies require
-              review.
+              <input
+                name="acknowledge"
+                type="checkbox"
+                defaultChecked={saved?.declarations.acknowledgement}
+              />{" "}
+              I confirm these declarations and understand that evidence
+              discrepancies require review.
             </label>
             <CommandError error={save.error} />
             <button className="primary" disabled={save.isPending}>
@@ -316,10 +480,14 @@ export function MovementTable({ items }: { items: Movement[] }) {
 
 export function ApplicationDetail({
   caseView = false,
+  draftId,
 }: {
   caseView?: boolean;
+  draftId?: string;
 }) {
-  const { appId, caseId } = useParams();
+  const { appId: routeAppId, caseId } = useParams();
+  const appId = draftId || routeAppId;
+  const navigate = useNavigate();
   const context = useContextData();
   const query = useQuery({
     queryKey: ["application", appId, caseId],
@@ -328,7 +496,7 @@ export function ApplicationDetail({
         caseView ? `/quota-transfer-cases/${caseId}` : `/applications/${appId}`,
       ),
   });
-  const submit = useCommand();
+  const submit = useCommand((id) => navigate(`/app/applications/${id}`));
   const action = useCommand();
   const mapping = useCommand();
   const reportSchedule = useCommand();
@@ -361,6 +529,7 @@ export function ApplicationDetail({
       <div className="overview-grid">
         <section className="panel prose">
           <h2>Application status</h2>
+          <p>{a.declarations?.academic_relevance}</p>
           <Badge>{a.state}</Badge>
           <p>
             {a.next_office
@@ -371,15 +540,28 @@ export function ApplicationDetail({
             Submitted:{" "}
             {a.submitted_at ? instant(a.submitted_at) : "Not submitted"}
           </p>
-          {!a.source_eligible && (
-            <p role="alert">
-              Applicant source records changed. Academic consequences require
-              controlled review; counted capacity remains protected.
-            </p>
-          )}
+          {!a.source_eligible &&
+            ["UNDER_REVIEW", "APPROVED"].includes(a.state) && (
+              <p role="alert">
+                Applicant source records changed. Academic consequences require
+                controlled review; counted capacity remains protected.
+              </p>
+            )}
           <p>
-            Actual examination and certificate: <strong>not verified</strong>.
-            Annual compliance is not assessed from a scheduled exam date.
+            {a.actual_exam && a.actual_exam !== "NOT_VERIFIED" ? (
+              <>
+                Verified actual examination · <strong>{a.actual_exam}</strong>
+              </>
+            ) : (
+              <>
+                Actual examination and certificate:{" "}
+                <strong>not verified</strong>.
+              </>
+            )}{" "}
+            {a.annual_compliance && a.annual_compliance !== "NOT_ASSESSED"
+              ? "Annual recognition · " +
+                a.annual_compliance.replaceAll("_", " ")
+              : "Annual compliance is not assessed from a scheduled exam date."}
           </p>
         </section>
         <section className="panel prose">
@@ -472,10 +654,8 @@ export function ApplicationDetail({
               </div>
             ))}
           </dl>
-          <Link
-            to={`/app/applications/new/eligibility?offering=${a.offering_id}`}
-          >
-            Start a corrected draft
+          <Link to={`/app/applications/new/eligibility?draft=${a.id}`}>
+            Edit this saved draft
           </Link>
           {o?.blockers.map((b) => (
             <p key={b} role="status">
@@ -533,6 +713,12 @@ export function ApplicationDetail({
           </form>
         </section>
       )}
+      {a.enrollment_deadline_passed && (
+        <p className="panel prose">
+          Enrollment cutoff passed. The seat stays held. Final approval requires
+          a verified enrollment or a current official extension.
+        </p>
+      )}
       {a.can_review && (
         <section className="panel prose section-gap">
           <h2>Current office decision</h2>
@@ -546,6 +732,20 @@ export function ApplicationDetail({
                 body: {
                   expected_version: a.version,
                   decision: f.get("decision"),
+                  ...(f.get("decision") === "APPROVE" && f.has("extension")
+                    ? {
+                        enrollment_extension: {
+                          valid_through: f.get("valid_through"),
+                          document_digest: f.get("extension_digest"),
+                          observed_at: f.get("extension_observed")
+                            ? new Date(
+                                String(f.get("extension_observed")),
+                              ).toISOString()
+                            : null,
+                          independently_checked: true,
+                        },
+                      }
+                    : {}),
                   ...reasonFields(f),
                 },
               });
@@ -559,6 +759,33 @@ export function ApplicationDetail({
                 Reject and release the current seat
               </option>
             </SelectField>
+            {a.enrollment_deadline_passed &&
+              a.next_office === "HOD" &&
+              !a.participation?.verified_submission_first && (
+                <fieldset>
+                  <legend>Official enrollment extension</legend>
+                  <label className="checkbox-label">
+                    <input type="checkbox" name="extension" />I verified a
+                    current official extension for this person and offering.
+                  </label>
+                  <Field
+                    name="valid_through"
+                    label="Extension valid through"
+                    type="date"
+                  />
+                  <Field
+                    name="extension_observed"
+                    label="Extension evidence observed at (local time)"
+                    type="datetime-local"
+                    step="1"
+                  />
+                  <Field
+                    name="extension_digest"
+                    label="Extension document SHA-256"
+                    pattern="[a-f0-9]{64}"
+                  />
+                </fieldset>
+              )}
             <SourceFields />
             <label className="checkbox-label">
               <input type="checkbox" required /> I confirm this decision and its
@@ -808,6 +1035,52 @@ export function ApplicationDetail({
             </form>
           </section>
         )}
+      {a.own && a.state === "DRAFT" && (
+        <p>
+          <Link to={`/app/applications/new/eligibility?draft=${a.id}`}>
+            Edit and resume saved draft
+          </Link>
+        </p>
+      )}
+      {a.own && ["REJECTED", "WITHDRAWN"].includes(a.state) && (
+        <section className="panel prose section-gap">
+          <h2>New independent application</h2>
+          <p>
+            The closed record will remain unchanged. A fresh application must
+            pass current enrollment, commencement, quota and canonical-course
+            checks.
+          </p>
+          <Link
+            to={`/app/applications/new/eligibility?offering=${a.offering_id}`}
+          >
+            Start a new application for this offering
+          </Link>
+        </section>
+      )}
+      <Participation
+        app={a}
+        canVerify={
+          !a.own && context.data.hod_departments.includes(a.department_id)
+        }
+      />
+      {!!a.draft_revisions?.length && (
+        <section className="panel prose section-gap">
+          <h2>Saved draft history</h2>
+          {a.draft_revisions.map((r) => (
+            <details key={r.version}>
+              <summary>
+                Revision {r.version} · {instant(r.recorded_at)}
+              </summary>
+              <p>
+                {String(
+                  r.declarations.academic_relevance ||
+                    "Academic relevance not recorded",
+                )}
+              </p>
+            </details>
+          ))}
+        </section>
+      )}
       <History events={a.history} />
       <section className="panel prose section-gap">
         <h2>In-app notifications</h2>

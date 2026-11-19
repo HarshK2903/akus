@@ -1,0 +1,10 @@
+Anonymous integrity inbox denied (401)
+Faculty denied /integrity-cases 403
+Faculty denied /separation-cases 403
+Faculty denied /review-office-alerts 403
+Missing CSRF and foreign Origin denied /admin/employment-episodes/{id}/permanent-separation
+Missing CSRF and foreign Origin denied /integrity-cases/{id}/decision
+Missing CSRF and foreign Origin denied /separation-cases/{id}/decision
+Missing CSRF and foreign Origin denied /separation-cases/{id}/roster-finding
+Missing CSRF and foreign Origin denied /separation-cases/{id}/historical-review
+Missing CSRF and foreign Origin denied /separation-cases/{id}/historical-review/subject

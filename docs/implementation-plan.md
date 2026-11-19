@@ -55,14 +55,26 @@ retained *_test databases; never reset/truncate audit or delete Docker volumes.
 Migrations 0001–0006 are preserved. Additions: 0007 catalog/mapping/annual pools,
 0008 admission/allocation/transfer ledger, 0009 permanent quota identity/balanced pair,
 0010 immutable person-specific schedule findings and evidence-bound movements.
-Current head: 0010_personal_schedule. Generated OpenAPI/TypeScript contract is refreshed.
+Phase 3 checkpoint head was 0010_personal_schedule. Generated OpenAPI/TypeScript contract is refreshed.
 
 Source-only exam-date conflict does not invalidate an unchanged verified commencement
 for lawful withdrawal. Any newer conflicting commencement, stale/unavailable source or
 unverified enrollment exception still blocks. Offering/app locks serialize transfer and
 release, and withdrawal records the accepted commencement source/digest/date.
 
-Next implement the remaining Phase 4 evidence-dependent vertical slice, then Phase 5
-exceptional lifecycle and Phase 6 assessment. Real Google UAT proceeds independently
+Forward migrations 0011 and 0012 add versioned enrollment, withdrawal, review and prior-outcome facts.
+The authenticated API rechecks current office authority at decision time. Prior-outcome
+changes use the exclusive source gate so admission and final approval see a consistent
+permanent-person and canonical-course history. Submitted snapshots record the prior finding IDs.
+Core Phase 4 acceptance and the local demonstration are in codex/PHASE4_CHECKLIST.md.
+The approved next phase is Phase 5 exceptional cases, followed by Phase 6 evidence and assessment. Real Google UAT proceeds independently
 when authorized configuration/account holders are available; never use demo results as
 real institutional acceptance. POLICY_PENDING is preserved for unratified decisions.
+
+## Phase 5 implementation
+
+Migrations 0013 through 0016 add permanent HR orders, frozen employment snapshots, immutable case events, separate evidence designations and historical certificate findings. The separate archived obligation source preserves IO-02. Existing admission snapshots, quota allocation and movement tables remain authoritative. The departure worker and source commands serialize with approval and transfer decisions. Office vacancy never delegates an academic decision to the HR operator.
+
+The historical review stores the verified exam and issuance dates independently of the quota schedule. A later subject-relevance finding can update the latest view while the original certificate finding and earlier as-of reports stay available. Dedicated routes and tests are indexed in [the Phase 5 checklist](codex/PHASE5_CHECKLIST.md). Phase 6 covers the broader evidence, active annual and Silver workflows.
+
+Capacity changes now enqueue transfer rechecks only for counted applications waiting on the affected department, canonical topic and destination year. First publication takes the source-authority gate before the pool lock, which orders publication against creation of a missing-target case. The worker starts its next bounded batch immediately after a full batch. Existing ledger, receipt and historical work rows remain intact.

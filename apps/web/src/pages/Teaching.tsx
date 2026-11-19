@@ -244,7 +244,17 @@ export function TeachingDetail() {
             <dt>Acceptance</dt>
             <dd>POLICY_PENDING · IO-02</dd>
             <dt>Assessment</dt>
-            <dd>Not assessed</dd>
+            <dd>
+              {t.compliance === "NOT_ASSESSED"
+                ? "Not assessed"
+                : t.compliance.replaceAll("_", " ")}
+            </dd>
+            {t.status_at_separation && (
+              <>
+                <dt>Frozen at permanent separation</dt>
+                <dd>{t.status_at_separation.replaceAll("_", " ")}</dd>
+              </>
+            )}
           </dl>
           <p>
             Repeated teaching within one employment episode preserves the

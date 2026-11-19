@@ -79,8 +79,44 @@ export function Shell() {
           <BookOpen size={18} />
           Course catalog
         </NavLink>
+        {person.roles?.some((r) =>
+          ["HOD", "PRINCIPAL", "ADMIN"].includes(r),
+        ) && (
+          <NavLink
+            to="/app/review-office-alerts"
+            onClick={() => setOpen(false)}
+          >
+            <BookOpen size={18} />
+            Review office alerts
+          </NavLink>
+        )}
+        {person.roles?.some((r) => r === "HOD" || r === "PRINCIPAL") && (
+          <>
+            <NavLink to="/hod/separation-cases" onClick={() => setOpen(false)}>
+              <BookOpen size={18} />
+              Separation cases
+            </NavLink>
+            <NavLink to="/hod/integrity" onClick={() => setOpen(false)}>
+              <ShieldCheck size={18} />
+              Integrity reviews
+            </NavLink>
+          </>
+        )}
+        {person.applicant_eligible && (
+          <NavLink to="/app/previous-attempts" onClick={() => setOpen(false)}>
+            <BookOpen size={18} />
+            My prior attempts
+          </NavLink>
+        )}
         {person.roles?.includes("HOD") && (
           <>
+            <NavLink
+              to="/hod/outcome-verifications"
+              onClick={() => setOpen(false)}
+            >
+              <BookOpen size={18} />
+              Prior-result verification
+            </NavLink>
             <NavLink to="/hod/topic-mappings" onClick={() => setOpen(false)}>
               <BookOpen size={18} />
               Topic mappings

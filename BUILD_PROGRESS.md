@@ -1,3 +1,29 @@
+# Phase 5 local acceptance passed · 2026-11-19
+
+The running application is available at http://127.0.0.1:8080 on the original akus-local_akus_pg volume. API readiness reports PostgreSQL connected at 0016_archived_obligations. The API, worker, frontend and proxy are running. The existing migration job exited successfully. The repository remains on main; the earlier uncommitted implementation is preserved.
+
+**Verified** — 242 PostgreSQL tests, 2 frontend tests, 38 standard Playwright journeys and 3 additional isolated browser submissions. The latter exercise Q47 closure, historical certificate verification with as-of replay, and Q44 closure from a late date-only enrollment document. Ruff, mypy, frontend lint/format/typecheck, production builds and live migration drift passed. Live reconciliation covered 28 transfer movements with zero inconsistent pools, invalid transfer pairs, per-application balance mismatches, terminal release mismatches, exceptional decision mismatches or stale terminal separation tasks. The same counters were zero on both retained test databases.
+
+The final fixes preserve the former HoD's loss of access, link a superseded separation task to an independent integrity invalidation, retain source date precision, and scope worker wakeups to actual capacity waiters. Case history, denied writes and replay are tested. See [the Phase 5 checklist](docs/codex/PHASE5_CHECKLIST.md) and [verification evidence](TEST_RESULTS.md).
+
+**Pending** — Real Google sign-in requires approved OAuth configuration, authoritative staff records and voluntary account-holder participation. Policies for retroactive topic moves, blocked-transfer final disposition, multiple-subject reuse and teaching acceptance remain open. General verification and integrity adjudication require documented authority. The next approved phase is Phase 6 evidence and compliance.
+
+---
+
+# Phase 4 local acceptance passed · 2026-11-19
+
+The Docker application is available at http://127.0.0.1:8080. Recovered the uncommitted Phase 4 work on main at 4743023. The existing database and original akus-local_akus_pg volume were retained. Migrations 0011_application_workflow and 0012_prior_outcomes are applied. No downgrade, volume deletion or database reset occurred.
+
+Faculty can resume versioned drafts, submit against an annual department/topic pool and follow DRC → HoD review. DRC applicants route directly to the current distinct HoD. Reviewers can resolve enrollment chronology at the source's actual precision. A pending seat survives the enrollment deadline. Late final approval requires verified enrollment after submission or a documented official extension. An enrolled applicant can request pre-start withdrawal. A current HoD decision releases the currently charged seat once. Post-start voluntary withdrawal retains it.
+
+Faculty and DRC applicants can report a prior offering from the catalog and revise the evidence. The HoD verification inbox supports search, sorting and case deep links. Independent findings bind the permanent person, exact run, canonical course, source digest and office. Unresolved outcomes block reservation. A verified unsuccessful attempt permits fresh consideration. A valid certificate bars future repeats. Corrections preserve history and an affected newer approval enters a recognition hold with its counted seat retained. A submitted snapshot identifies the prior findings used at admission.
+
+The final PostgreSQL suite passed 210 tests. Both frontend unit tests and all 36 browser tests passed, including responsive and accessibility checks. Docker, migration drift, worker heartbeat, API readiness and live quota reconciliation passed. The repaired catalog search persists across provider tabs. Detailed evidence and known warnings are in TEST_RESULTS.md. Demo steps and boundaries are in docs/codex/PHASE4_CHECKLIST.md.
+
+Next approved work is Phase 5 authority rotation, deadline reminders and exceptional-case processing. Independent integrity disposition and emerging-technology authority still require institutional direction. Private document storage, actual examination and annual/Silver assessment belong to Phase 6. Live Google UAT remains externally blocked. The current runtime reports google_enabled=false and zero external identity links. The approved OAuth configuration, institutional records and five voluntary account-holder sign-ins remain required.
+
+---
+
 # AKUS Phase 3 — verified local checkpoint, 2026-11-18
 
 **Phase 3 catalog/topic/annual-quota core and the continuation's admission/transfer
@@ -140,3 +166,13 @@ Demo: sign in as **Nila Shah · Admin** → Source imports → upload a LOCAL/DE
 ## Persistent resume instructions
 
 Read AGENTS, PHASE2_COMPLETION, BUILD_PHASES, this file, TEST_RESULTS, `docs/codex/PHASE2_CHECKLIST.md`, traceability and POLICY_GAPS before editing. Actual files remain the checkpoint. The agent created no commit; preserve the observed `034f71a` checkpoint and later working-tree changes. The entire 2,607-line master was read in bounded sections; 80 route contracts and Q01–Q50 remain inventoried and explicitly distinguish planned work from tested code. Master/blueprint hashes are unchanged. Do not restart Phase 2 or bypass Google to close the remaining acceptance gate.
+
+Phase 5 separation milestone: seven isolated PostgreSQL tests passed after separating committed fictional staff fixtures from the baseline seed database. Historical assessments and full browser/runtime acceptance are in progress.
+
+The historical certificate and office coverage slice passed the 0014 gate (221 PostgreSQL tests, 2 Vitest). Docker rebuilt all four requested images and the original database migrated forward. The new case pages are available on the existing local web port.
+
+The 0015 gate covered 234 passing PostgreSQL tests, 2 Vitest tests, 38 Playwright tests against the normal Docker stack and 2 isolated Playwright tests of actual Q47 and retrospective certificate submissions. A final policy review added 0016, an additive archive of previously adjudicated obligations. It distinguishes genuinely confirmed historical obligations from teaching sources subject to IO-02. The final tests are running against akus_phase5_acceptance_test.
+
+The interrupted final check completed with 235 passes and one failure in the office rotation test. The recovered gate passed after testing the former HoD's exact loss of dossier access and the Admin/Principal academic-write denials. Regressions now cover concurrent separation/integrity dispositions and late enrollment documents with date-only precision. The final acceptance evidence is being collected in docs/qa/phase5-final-acceptance*.txt.
+
+On the retained demo database, browser repetition exposed two fixture-volume effects. A Principal directory test assumed the subjects were on the first page, and a quota publication enqueued rechecks for unrelated enrollment and integrity cases. The directory journey now searches by exact staff name. Capacity changes wake the affected transfer waiters and the worker drains successive full batches without the idle delay. Independent transactions exercise publication racing a missing destination. The original browser timeout and outcome assertions are preserved.

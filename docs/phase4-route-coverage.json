@@ -1,0 +1,57 @@
+{
+  "FAC-06": [
+    "pages/academic/Applications.tsx",
+    "applications; applications/{id}/submit; applications/{id}/review",
+    "Selected exact offering, catalog and saved draft navigation"
+  ],
+  "FAC-07": [
+    "pages/academic/Applications.tsx",
+    "applications; applications/{id}/submit; applications/{id}/review",
+    "Versioned declarations and required academic relevance"
+  ],
+  "FAC-08": [
+    "pages/academic/Applications.tsx",
+    "applications; applications/{id}/submit; applications/{id}/review",
+    "Archive evidence and chronology. Private file handling belongs to Phase 6"
+  ],
+  "FAC-09": [
+    "pages/academic/Applications.tsx",
+    "applications; applications/{id}/submit; applications/{id}/review",
+    "Review step, immutable submission and held-seat receipt in application detail"
+  ],
+  "FAC-10": [
+    "pages/academic/Applications.tsx",
+    "applications; applications/{id}/submit; applications/{id}/review",
+    "Review, deadline flag, retention and HoD withdrawal decision"
+  ],
+  "FAC-12": [
+    "pages/academic/Participation.tsx",
+    "applications/{id}; enrollment-claims; verify-enrollment",
+    "Source reference/digest, precision, claims, independent findings. Private binary and actual-exam evidence remain Phase 6."
+  ],
+  "FAC-14": [
+    "pages/academic/Participation.tsx",
+    "applications/{id}; enrollment-claims; verify-enrollment",
+    "Source reference/digest, precision, claims, independent findings. Private binary and actual-exam evidence remain Phase 6."
+  ],
+  "FAC-15": [
+    "pages/academic/Outcomes.tsx",
+    "previous-attempts; outcome-verifications/{id}/decision",
+    "Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts."
+  ],
+  "FAC-16": [
+    "pages/academic/Outcomes.tsx",
+    "previous-attempts; outcome-verifications/{id}/decision",
+    "Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts."
+  ],
+  "HOD-15": [
+    "pages/academic/Outcomes.tsx",
+    "previous-attempts; outcome-verifications/{id}/decision",
+    "Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts."
+  ],
+  "HOD-16": [
+    "pages/academic/Outcomes.tsx",
+    "previous-attempts; outcome-verifications/{id}/decision",
+    "Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts."
+  ]
+}

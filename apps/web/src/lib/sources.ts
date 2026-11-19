@@ -55,6 +55,7 @@ export type Teaching = {
   acceptance: string;
   deadline_policy: string;
   compliance: string;
+  status_at_separation: string | null;
   episode_closed: boolean;
   history?: Revision[];
 };

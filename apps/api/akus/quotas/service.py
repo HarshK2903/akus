@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
@@ -19,6 +19,10 @@ from akus.quotas.models import QuotaPool, QuotaRevision
 def write_pool(
     db: Session, actor: Actor, key: UUID, department: UUID, body: QuotaWrite
 ) -> CommandResult:
+    # When a target pool is first published there is no old pool row to lock.
+    # Serialize publication with formation of the missing-target case so a
+    # publisher cannot miss an uncommitted waiter.
+    db.execute(text("SELECT pg_advisory_xact_lock(8210402)"))
     actor = common.refresh(db, actor, key)
     office = common.require_hod(actor, department)
     op = f"QUOTA_DECISION:{department}"
@@ -80,7 +84,7 @@ def write_pool(
     )
     from akus.applications.service import queue_recheck
 
-    queue_recheck(db)
+    queue_recheck(db, pool)
     return common.finish(
         db,
         actor,

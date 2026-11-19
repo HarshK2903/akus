@@ -1,0 +1,15 @@
+
+> akus-web@0.1.0 lint
+> eslint .
+
+
+> akus-web@0.1.0 typecheck
+> tsc -b
+
+
+> akus-web@0.1.0 format:check
+> prettier --check src e2e qa *.ts *.js *.json
+
+Checking formatting...
+[warn] qa/separation.spec.ts
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.

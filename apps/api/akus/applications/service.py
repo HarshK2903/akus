@@ -19,6 +19,7 @@ from akus.applications.models import (
     Submission,
 )
 from akus.applications.schemas import DraftWrite, Review, Submit, Withdraw
+from akus.applications.workflow_models import DraftRevision, EnrollmentClaim, ReviewDecision
 from akus.catalog import common
 from akus.catalog.models import MappingAnchor, Offering, ProviderSnapshot
 from akus.catalog.service import current_mapping, snapshot, source_usable, topic_candidates
@@ -65,6 +66,11 @@ def case(
     record.status, record.reason, record.context, record.snapshot_id = "OPEN", reason, data, source
     record.updated_at = datetime.now(UTC)
     notice(db, app, kind, {"reason": reason, **data})
+    if kind in {"INTEGRITY", "SEPARATION"}:
+        from akus.exceptions.service import append
+
+        db.flush()
+        append(db, record, "EVIDENCE_RECORDED", data | {"reason": reason})
 
 
 def resolve_case(db: Session, app: Application, kind: str, reason: str) -> None:
@@ -96,7 +102,9 @@ def resolve_released_cases(db: Session, app: Application) -> None:
     kinds = list(
         db.scalars(
             select(Reconciliation.kind).where(
-                Reconciliation.application_id == app.id, Reconciliation.status == "OPEN"
+                Reconciliation.application_id == app.id,
+                Reconciliation.status == "OPEN",
+                Reconciliation.kind.not_in(["INTEGRITY", "SOURCE_CORRECTION", "SEPARATION"]),
             )
         )
     )
@@ -173,12 +181,40 @@ def draft(db: Session, actor: Actor, key: UUID, body: DraftWrite) -> CommandResu
         )
         db.add(app)
         db.flush()
+    db.add(
+        DraftRevision(
+            application_id=app.id,
+            version=app.version,
+            actor_id=actor.person.id,
+            declarations=app.declarations,
+        )
+    )
     return common.finish(
         db, actor, key, op, body, app.id, {"declarations": app.declarations}, app.department_id
     )
 
 
-def prior_gate(db: Session, app: Application) -> None:
+def prior_gate(db: Session, app: Application) -> list[str]:
+    from akus.applications import outcomes
+
+    attempts = outcomes.assert_repeat_eligible(db, app)
+    # An actual enrollment assertion on another run is a known prior attempt,
+    # even if its application was later rejected or never progressed beyond draft.
+    enrolled_runs = db.scalars(
+        select(Application.offering_id)
+        .join(EnrollmentClaim, EnrollmentClaim.application_id == Application.id)
+        .where(
+            Application.person_id == app.person_id,
+            Application.course_id == app.course_id,
+            Application.offering_id != app.offering_id,
+        )
+        .distinct()
+    )
+    if any(
+        run not in attempts or not outcomes.conclusive_no_cert(db, attempts[run])
+        for run in enrolled_runs
+    ):
+        raise HTTPException(423, "PRIOR_OUTCOME_VERIFICATION_REQUIRED_Q29")
     previous = list(
         db.scalars(
             select(Application).where(
@@ -191,9 +227,11 @@ def prior_gate(db: Session, app: Application) -> None:
     )
     if any(p.state in {"UNDER_REVIEW", "APPROVED"} for p in previous):
         raise HTTPException(409, "ACTIVE_CANONICAL_COURSE_APPLICATION_EXISTS")
-    # Only pre-participation rejected/withdrawn attempts are safely eligible here.
-    # Prior results, certificates and enrollment evidence need their verification workflow.
+    # Every counted or past-exam prior run needs its own conclusive HoD finding.
     for p in previous:
+        attempt = attempts.get(p.offering_id)
+        if attempt and outcomes.conclusive_no_cert(db, attempt):
+            continue
         previous_submission = db.get(Submission, p.id)
         if previous_submission:
             exam = previous_submission.facts.get("metadata", {}).get("scheduled_exam_on")
@@ -204,8 +242,14 @@ def prior_gate(db: Session, app: Application) -> None:
             raise HTTPException(423, "PRIOR_OUTCOME_VERIFICATION_REQUIRED_Q29")
     if app.declarations["prior_attempt"] == "VALID_CERTIFICATE":
         raise HTTPException(409, "CANONICAL_COURSE_REPEAT_PROHIBITED_Q28")
-    if app.declarations["prior_attempt"] != "NONE_DECLARED":
+    if app.declarations["prior_attempt"] != "NONE_DECLARED" and not attempts:
         raise HTTPException(423, "PRIOR_OUTCOME_VERIFICATION_REQUIRED_Q29")
+    return [
+        str(finding.id)
+        for attempt in attempts.values()
+        if (finding := outcomes.latest_finding(db, attempt.id))
+        and finding.outcome == "NO_VALID_CERT"
+    ]
 
 
 def submit(
@@ -220,14 +264,24 @@ def submit(
     if app.person_id != actor.person.id or app.state != "DRAFT":
         raise HTTPException(403, "OWN_DRAFT_REQUIRED")
     check_version(app, body.expected_version)
+    from akus.exceptions.service import active_order
+
+    if active_order(db, app):
+        raise HTTPException(423, "PERMANENT_DEPARTURE_REQUIRES_NEW_EPISODE")
     if app.episode_id != actor.episode.id or app.department_id != actor.department.id:
         raise HTTPException(423, "SOURCE_CHANGE_REQUIRES_NEW_DRAFT")
     db.execute(
         text("SELECT pg_advisory_xact_lock(hashtextextended(:key,0))"),
         {"key": f"canonical:{app.person_id}:{app.course_id}"},
     )
-    prior_gate(db, app)
+    prior_findings = prior_gate(db, app)
     d = app.declarations
+    if not str(d.get("academic_relevance", "")).strip():
+        raise HTTPException(422, "ACADEMIC_RELEVANCE_REQUIRED")
+    from akus.applications import participation
+
+    if participation.known_enrollment(db, app):
+        raise HTTPException(409, "NPTEL_FIRST_ENROLLMENT_PROHIBITED_Q21")
     if not d["score_sharing_yes"] or not d["acknowledgement"]:
         raise HTTPException(422, "SCORE_SHARING_AND_DECLARATIONS_REQUIRED")
     if not d["not_yet_enrolled"]:
@@ -250,6 +304,16 @@ def submit(
     ]
     if any(metadata.get(k) is None for k in required):
         raise HTTPException(423, "VERIFIED_PROVIDER_DATES_REQUIRED")
+    if today() >= date.fromisoformat(metadata["starts_on"]) and db.scalar(
+        select(Application.id)
+        .where(
+            Application.person_id == app.person_id,
+            Application.offering_id == app.offering_id,
+            Application.state == "WITHDRAWN",
+        )
+        .limit(1)
+    ):
+        raise HTTPException(409, "REAPPLICATION_AFTER_COMMENCEMENT_PROHIBITED_Q25")
     if today() > date.fromisoformat(metadata["enrollment_ends_on"]) or today() > date.fromisoformat(
         metadata["exam_registration_ends_on"]
     ):
@@ -317,6 +381,7 @@ def submit(
                 "academic_year": year.label,
                 "policy": "V2.4/V2.3;Q02,Q21,Q27-Q29",
                 "route": route,
+                "prior_outcome_finding_ids": prior_findings,
                 "roles": actor.roles,
                 "declarations": d,
                 "external_participation": "DECLARED_NOT_ENROLLED_NOT_PROVIDER_VERIFIED",
@@ -397,14 +462,44 @@ def applicant_still_eligible(db: Session, app: Application) -> bool:
     )
 
 
-def queue_recheck(db: Session) -> None:
-    for app_id in db.scalars(
-        select(Reconciliation.application_id).where(Reconciliation.status == "OPEN").distinct()
-    ):
+def queue_recheck(db: Session, pool: QuotaPool) -> None:
+    """Notify seats waiting for capacity in this exact department/topic/year."""
+    if pool.status != "PUBLISHED" or pool.occupied >= pool.maximum:
+        return
+    year = db.get(AcademicYear, pool.academic_year_id)
+    assert year
+    wanted = Reconciliation.context["scheduled_exam_on"].astext
+    waiting = (
+        select(Reconciliation.application_id)
+        .join(Allocation, Allocation.application_id == Reconciliation.application_id)
+        .join(QuotaPool, QuotaPool.id == Allocation.pool_id)
+        .where(
+            Reconciliation.status == "OPEN",
+            Reconciliation.kind == "QUOTA_TRANSFER",
+            Reconciliation.reason.in_(
+                [
+                    "TARGET_YEAR_NOT_CONFIGURED",
+                    "TARGET_QUOTA_MISSING",
+                    "TARGET_QUOTA_UNPUBLISHED",
+                    "TARGET_QUOTA_FULL",
+                ]
+            ),
+            Allocation.state.in_(["HELD", "CONFIRMED"]),
+            QuotaPool.department_id == pool.department_id,
+            QuotaPool.topic_id == pool.topic_id,
+            or_(
+                Reconciliation.context["target_pool_id"].astext == str(pool.id),
+                wanted.between(year.starts_on.isoformat(), year.ends_on.isoformat()),
+            ),
+        )
+    )
+    for app_id in db.scalars(waiting):
         db.add(WorkJob(key=f"recheck:{app_id}:{uuid4()}", kind="QUOTA_RECHECK", state="PENDING"))
 
 
-def release(db: Session, app: Application, actor: Actor, reason: str, retain: bool = False) -> None:
+def release(
+    db: Session, app: Application, actor: Actor | None, reason: str, retain: bool = False
+) -> None:
     allocation = db.get(Allocation, app.id)
     if not allocation or allocation.state == "RELEASED":
         raise HTTPException(409, "COUNTED_ALLOCATION_REQUIRED")
@@ -425,12 +520,12 @@ def release(db: Session, app: Application, actor: Actor, reason: str, retain: bo
             kind=reason,
             personal_schedule_id=allocation.personal_schedule_id,
             snapshot_id=allocation.schedule_snapshot_id,
-            actor_id=actor.person.id,
+            actor_id=actor.person.id if actor else None,
         )
     )
     if not retain:
         resolve_released_cases(db, app)
-        queue_recheck(db)
+        queue_recheck(db, pool)
     notice(db, app, reason, {"pool_id": str(pool.id), "allocation": allocation.state})
 
 
@@ -456,15 +551,35 @@ def review(
     check_version(app, body.expected_version)
     if app.state != "UNDER_REVIEW":
         raise HTTPException(409, "APPLICATION_NOT_UNDER_REVIEW")
+    from akus.exceptions.service import active_order
+
+    if active_order(db, app):
+        raise HTTPException(423, "PERMANENT_SEPARATION_REVIEW_REQUIRED")
     if not applicant_still_eligible(db, app):
         raise HTTPException(423, "APPLICANT_SOURCE_CHANGE_POLICY_PENDING")
+    if body.enrollment_extension and (app.next_office != "HOD" or body.decision != "APPROVE"):
+        raise HTTPException(403, "EXTENSION_REQUIRES_FINAL_HOD_APPROVAL")
     if body.decision == "APPROVE":
+        from akus.applications import participation
+
+        participation.assert_review_chronology(db, app)
+        prior_gate(db, app)
         source = snapshot(db, offering)
         if not source or offering.source_status != "CURRENT" or not source_usable(source, cfg):
             raise HTTPException(423, "CURRENT_PROVIDER_SOURCE_REQUIRED")
         deadline = source.metadata_json.get("enrollment_ends_on")
-        if not deadline or today() > date.fromisoformat(deadline):
-            raise HTTPException(423, "VERIFIED_LATE_ENROLLMENT_PATH_REQUIRED_Q19")
+        if not deadline:
+            raise HTTPException(423, "VERIFIED_PROVIDER_DATES_REQUIRED")
+        submitted = db.get(Submission, app.id)
+        original = submitted.facts["metadata"]["enrollment_ends_on"] if submitted else None
+        cutoff_passed = any(
+            day and today() > date.fromisoformat(day) for day in (original, deadline)
+        )
+        # DRC may complete its academic step. Only the current final HoD can
+        # authenticate a still-open extension for this exact application.
+        if cutoff_passed and app.next_office == "HOD" and not participation.verified_after(db, app):
+            if not body.enrollment_extension or body.enrollment_extension.valid_through < today():
+                raise HTTPException(423, "VERIFIED_LATE_ENROLLMENT_PATH_REQUIRED_Q19")
         if app.next_office == "DRC_HEAD":
             app.next_office = "HOD"
         else:
@@ -475,6 +590,16 @@ def review(
     else:
         release(db, app, actor, "REJECT")
         app.state, app.next_office = "REJECTED", None
+    db.add(
+        ReviewDecision(
+            application_id=app.id,
+            actor_id=actor.person.id,
+            office_id=offices[0].id,
+            stage=offices[0].office,
+            decision=body.decision,
+            facts=body.model_dump(mode="json"),
+        )
+    )
     app.version += 1
     notice(
         db,
@@ -547,9 +672,21 @@ def withdraw(
         raise HTTPException(409, "ACTIVE_APPLICATION_REQUIRED")
     if not applicant_still_eligible(db, app):
         raise HTTPException(423, "APPLICANT_SOURCE_CHANGE_POLICY_PENDING")
+    if db.scalar(
+        select(Reconciliation.id).where(
+            Reconciliation.application_id == app.id,
+            Reconciliation.kind == "INTEGRITY",
+            Reconciliation.status == "OPEN",
+        )
+    ):
+        raise HTTPException(423, "INTEGRITY_AUTHORITY_POLICY_PENDING")
     source = verified_commencement(db, offering, cfg)
     retain = today() >= date.fromisoformat(source.metadata_json["starts_on"])
-    if not retain and not body.not_enrolled_declaration:
+    from akus.applications import participation
+
+    if not retain and (
+        not body.not_enrolled_declaration or participation.known_enrollment(db, app)
+    ):
         raise HTTPException(423, "HOD_VERIFIED_WITHDRAWAL_REQUIRED_Q04")
     release(db, app, actor, "WITHDRAW_RETAIN" if retain else "WITHDRAW_RELEASE", retain)
     app.state, app.next_office, app.version = "WITHDRAWN", None, app.version + 1

@@ -1,0 +1,127 @@
+
+> akus-web@0.1.0 e2e
+> playwright test
+
+
+Running 38 tests using 1 worker
+
+(node:361146) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/foundation.spec.ts:5:1 › sign-in, DB-backed navigation, reload, policy search, logout and denied deep link (1.2s)
+  ✓   2 e2e/foundation.spec.ts:58:3 › responsive foundation at 1440px with accessibility (1.2s)
+  ✓   3 e2e/foundation.spec.ts:58:3 › responsive foundation at 1024px with accessibility (1.1s)
+  ✓   4 e2e/foundation.spec.ts:58:3 › responsive foundation at 768px with accessibility (1.2s)
+  ✓   5 e2e/foundation.spec.ts:58:3 › responsive foundation at 390px with accessibility (1.1s)
+  ✓   6 e2e/foundation.spec.ts:58:3 › responsive foundation at 320px with accessibility (1.1s)
+  ✓   7 e2e/foundation.spec.ts:100:3 › drc demo uses appropriate home without academic actions (310ms)
+  ✓   8 e2e/foundation.spec.ts:100:3 › hod demo uses appropriate home without academic actions (315ms)
+  ✓   9 e2e/foundation.spec.ts:100:3 › principal demo uses appropriate home without academic actions (305ms)
+  ✓  10 e2e/foundation.spec.ts:100:3 › admin demo uses appropriate home without academic actions (346ms)
+  ✓  11 e2e/foundation.spec.ts:100:3 › acting-hod demo uses appropriate home without academic actions (307ms)
+  ✓  12 e2e/foundation.spec.ts:119:1 › backend failure and unknown URL are recoverable (1.8s)
+  ✓  13 e2e/people.spec.ts:42:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history (1.6s)
+  ✓  14 e2e/people.spec.ts:122:1 › overlapping DRC and cross-department acting HoD is visibly rejected without losing inputs (766ms)
+  ✘  15 e2e/people.spec.ts:152:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards (5.4s)
+(node:362047) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 e2e/people.spec.ts:185:1 › HoD sees only the office department, and rehire history retains two episodes (866ms)
+  ✓  17 e2e/people.spec.ts:223:3 › people workflows at 1440px with accessible forms and tables (3.6s)
+  ✓  18 e2e/people.spec.ts:223:3 › people workflows at 390px with accessible forms and tables (3.2s)
+  ✓  19 e2e/people.spec.ts:223:3 › people workflows at 320px with accessible forms and tables (3.2s)
+  ✓  20 e2e/people.spec.ts:265:1 › existing browser session gains and loses office scope from source changes (1.9s)
+  ✓  21 e2e/phase2.spec.ts:22:1 › Admin imports a CSV roster, reviews rows, commits once, and corrects the source name (1.4s)
+  ✓  22 e2e/phase2.spec.ts:75:1 › invalid roster rows remain visible after reload and cannot be committed (707ms)
+  ✓  23 e2e/phase2.spec.ts:101:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history (2.0s)
+  ✓  24 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 1440px (7.6s)
+  ✓  25 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 390px (6.0s)
+  ✓  26 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 320px (5.7s)
+  ✓  27 e2e/phase2.spec.ts:226:1 › Google configuration and account recovery routes are honest; academic pages enforce role scope (1.5s)
+  ✓  28 e2e/phase2.spec.ts:270:1 › canonical Admin reference and year routes persist changes and reject duplicate years (1.7s)
+  ✓  29 e2e/phase3.spec.ts:15:1 › catalog → applicant mapping intake → HoD decision → published annual quota, with scoped read oversight (2.5s)
+  ✘  30 e2e/phase3.spec.ts:77:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool (23.3s)
+(node:364800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  31 e2e/phase3.spec.ts:197:1 › DRC applicant receives direct HoD route without a self-review action (1.7s)
+  ✓  32 e2e/phase3.spec.ts:215:1 › HoD authenticates one applicant hall ticket without changing another applicant in the same offering (3.5s)
+  ✓  33 e2e/phase3.spec.ts:290:1 › Admin source workspace exposes exact offerings and immutable versions; Faculty has no source maintenance form (1.5s)
+  ✓  34 e2e/phase4.spec.ts:44:1 › saved draft resumes, preserves revisions, then enrollment verification and Q04 withdrawal release the seat (5.5s)
+  ✓  35 e2e/phase4.spec.ts:193:1 › an enrollment assertion does not authorize approval or private cross-person access (3.3s)
+  ✓  36 e2e/phase4.spec.ts:233:1 › an applicant reports a prior run, the current HoD verifies it, and a later certificate correction blocks repeat admission (4.5s)
+  ✓  37 e2e/phase5.spec.ts:29:1 › discovered enrollment chronology holds a counted seat and can be inspected by HoD and Principal (4.5s)
+  ✓  38 e2e/phase5.spec.ts:106:1 › HR records a sourced permanent order on a dedicated synthetic former staff episode (3.8s)
+
+
+  1) e2e/people.spec.ts:152:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('link', { name: 'Omar Das (acting HoD)', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('link', { name: 'Omar Das (acting HoD)', exact: true }) with timeout 5000ms
+      - waiting for getByRole('link', { name: 'Omar Das (acting HoD)', exact: true })
+
+
+      157 |   await expect(
+      158 |     page.getByRole("link", { name: "Omar Das (acting HoD)", exact: true }),
+    > 159 |   ).toBeVisible();
+          |     ^
+      160 |   await expect(
+      161 |     page.getByRole("link", { name: "Mira Rao", exact: true }),
+      162 |   ).toBeVisible();
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/people.spec.ts:159:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/people-Principal-reads-all-f7f0f--cannot-bypass-route-guards/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/people-Principal-reads-all-f7f0f--cannot-bypass-route-guards/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/people-Principal-reads-all-f7f0f--cannot-bypass-route-guards/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/people-Principal-reads-all-f7f0f--cannot-bypass-route-guards/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e/phase3.spec.ts:77:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "717c703e-cb89-559e-a087-82203e110352"
+    Received: "d0aa5c30-870d-5eda-a4d5-6adf53223046"
+
+    Call Log:
+    - Timeout 20000ms exceeded while waiting on the predicate
+
+      162 |       { timeout: 20000 },
+      163 |     )
+    > 164 |     .toBe(f.nextYear.id);
+          |      ^
+      165 |   await page.goto("/app/applications/" + aid + "/quota");
+      166 |   for (const width of [1440, 390, 320]) {
+      167 |     await page.setViewportSize({ width, height: 900 });
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase3.spec.ts:164:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    e2e/people.spec.ts:152:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards 
+    e2e/phase3.spec.ts:77:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool 
+  36 passed (1.9m)

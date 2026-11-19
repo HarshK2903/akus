@@ -1,0 +1,212 @@
+
+> akus-web@0.1.0 e2e
+> playwright test e2e/phase3.spec.ts e2e/phase4.spec.ts
+
+
+Running 7 tests using 1 worker
+
+(node:344018) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/phase3.spec.ts:15:1 › catalog → applicant mapping intake → HoD decision → published annual quota, with scoped read oversight (2.6s)
+  ✘  2 e2e/phase3.spec.ts:77:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool (30.1s)
+(node:344656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 e2e/phase3.spec.ts:197:1 › DRC applicant receives direct HoD route without a self-review action (30.1s)
+(node:345274) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 e2e/phase3.spec.ts:215:1 › HoD authenticates one applicant hall ticket without changing another applicant in the same offering (30.1s)
+(node:345874) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 e2e/phase3.spec.ts:290:1 › Admin source workspace exposes exact offerings and immutable versions; Faculty has no source maintenance form (1.7s)
+  ✘  6 e2e/phase4.spec.ts:41:1 › saved draft resumes, preserves revisions, then enrollment verification and Q04 withdrawal release the seat (5.9s)
+(node:346181) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  7 e2e/phase4.spec.ts:199:1 › an enrollment assertion does not authorize approval or private cross-person access (30.2s)
+
+
+  1) e2e/phase3.spec.ts:77:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Continue to review', exact: true })
+
+
+       at support/academic.ts:153
+
+      151 |   await page
+      152 |     .getByRole("link", { name: "Continue to review", exact: true })
+    > 153 |     .click();
+          |      ^
+      154 |   await expect(
+      155 |     page.getByRole("heading", { name: "Review and submit", exact: true }),
+      156 |   ).toBeVisible();
+        at submitApplication (/media/bugulnoz/New Volume/2/akus/apps/web/e2e/support/academic.ts:153:6)
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase3.spec.ts:81:15
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase3-faculty-submits-DRC-b91db-rawal-releases-current-pool/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e/phase3.spec.ts:197:1 › DRC applicant receives direct HoD route without a self-review action 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Continue to review', exact: true })
+
+
+       at support/academic.ts:153
+
+      151 |   await page
+      152 |     .getByRole("link", { name: "Continue to review", exact: true })
+    > 153 |     .click();
+          |      ^
+      154 |   await expect(
+      155 |     page.getByRole("heading", { name: "Review and submit", exact: true }),
+      156 |   ).toBeVisible();
+        at submitApplication (/media/bugulnoz/New Volume/2/akus/apps/web/e2e/support/academic.ts:153:6)
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase3.spec.ts:201:15
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase3-DRC-applicant-recei-f90cd-ithout-a-self-review-action/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase3-DRC-applicant-recei-f90cd-ithout-a-self-review-action/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase3-DRC-applicant-recei-f90cd-ithout-a-self-review-action/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase3-DRC-applicant-recei-f90cd-ithout-a-self-review-action/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) e2e/phase3.spec.ts:215:1 › HoD authenticates one applicant hall ticket without changing another applicant in the same offering 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Continue to review', exact: true })
+
+
+       at support/academic.ts:153
+
+      151 |   await page.getByRole("button", { name: "Save draft for review" }).click();
+      152 |   await page
+    > 153 |     .getByRole("link", { name: "Continue to review", exact: true })
+          |      ^
+      154 |     .click();
+      155 |   await expect(
+      156 |     page.getByRole("heading", { name: "Review and submit", exact: true }),
+        at submitApplication (/media/bugulnoz/New Volume/2/akus/apps/web/e2e/support/academic.ts:153:6)
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase3.spec.ts:219:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase3-HoD-authenticates-o-c80ea-licant-in-the-same-offering/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase3-HoD-authenticates-o-c80ea-licant-in-the-same-offering/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase3-HoD-authenticates-o-c80ea-licant-in-the-same-offering/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase3-HoD-authenticates-o-c80ea-licant-in-the-same-offering/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) e2e/phase4.spec.ts:41:1 › saved draft resumes, preserves revisions, then enrollment verification and Q04 withdrawal release the seat 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Academic relevance to your teaching or discipline')
+    Expected: "LOCAL_E2E initial teaching relevance"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('Academic relevance to your teaching or discipline') with timeout 5000ms
+      - waiting for getByLabel('Academic relevance to your teaching or discipline')
+        14 × locator resolved to <textarea required="" maxlength="4000" name="academic_relevance"></textarea>
+           - unexpected value ""
+
+
+      68 |   await page.getByRole("link", { name: "2. Eligibility", exact: true }).click();
+      69 |   await expect(
+    > 70 |     page.getByLabel("Academic relevance to your teaching or discipline"),
+         |     ^
+      71 |   ).toHaveValue("LOCAL_E2E initial teaching relevance");
+      72 |   await page
+      73 |     .getByLabel("Academic relevance to your teaching or discipline")
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase4.spec.ts:70:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase4-saved-draft-resumes-34111-withdrawal-release-the-seat/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase4-saved-draft-resumes-34111-withdrawal-release-the-seat/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase4-saved-draft-resumes-34111-withdrawal-release-the-seat/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase4-saved-draft-resumes-34111-withdrawal-release-the-seat/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) e2e/phase4.spec.ts:199:1 › an enrollment assertion does not authorize approval or private cross-person access 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Continue to review', exact: true })
+
+
+       at support/academic.ts:153
+
+      151 |   await page.getByRole("button", { name: "Save draft for review" }).click();
+      152 |   await page
+    > 153 |     .getByRole("link", { name: "Continue to review", exact: true })
+          |      ^
+      154 |     .click();
+      155 |   await expect(
+      156 |     page.getByRole("heading", { name: "Review and submit", exact: true }),
+        at submitApplication (/media/bugulnoz/New Volume/2/akus/apps/web/e2e/support/academic.ts:153:6)
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase4.spec.ts:203:15
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase4-an-enrollment-asser-b8e18-private-cross-person-access/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase4-an-enrollment-asser-b8e18-private-cross-person-access/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase4-an-enrollment-asser-b8e18-private-cross-person-access/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase4-an-enrollment-asser-b8e18-private-cross-person-access/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5 failed
+    e2e/phase3.spec.ts:77:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool 
+    e2e/phase3.spec.ts:197:1 › DRC applicant receives direct HoD route without a self-review action 
+    e2e/phase3.spec.ts:215:1 › HoD authenticates one applicant hall ticket without changing another applicant in the same offering 
+    e2e/phase4.spec.ts:41:1 › saved draft resumes, preserves revisions, then enrollment verification and Q04 withdrawal release the seat 
+    e2e/phase4.spec.ts:199:1 › an enrollment assertion does not authorize approval or private cross-person access 
+  2 passed (2.2m)
