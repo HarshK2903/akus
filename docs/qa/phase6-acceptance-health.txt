@@ -1,0 +1,32 @@
+NAME                              IMAGE                                                                     COMMAND                  SERVICE   CREATED              STATUS                          PORTS
+akus-local-api-1                  akus-local-api                                                            "uvicorn akus.main:c…"   api       About a minute ago   Up About a minute (healthy)     
+akus-local-api-run-4ce3eba34908   sha256:cf6e2be20b51ff5a1cfb4b96dcc4c9910fe3baf166a913d1e28afa9165fdabe1   "sh -c 'ruff check -…"   api       2 minutes ago        Up 2 minutes (unhealthy)        
+akus-local-db-1                   postgres:16                                                               "docker-entrypoint.s…"   db        4 days ago           Up 6 minutes (healthy)          5432/tcp
+akus-local-migrate-1              akus-local-migrate                                                        "sh -c 'alembic -c a…"   migrate   About a minute ago   Exited (0) About a minute ago   
+akus-local-proxy-1                caddy:2-alpine                                                            "caddy run --config …"   proxy     4 days ago           Up 6 minutes                    443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1                  akus-local-web                                                            "caddy run --config …"   web       11 hours ago         Up 6 minutes                    80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1               akus-local-worker                                                         "python -m akus.work…"   worker    About a minute ago   Up About a minute               
+akus-local_akus_pg mounted at /var/lib/postgresql/data
+Volume created 2026-11-16T00:36:02+05:30
+Frontend HTTP 200
+{"status":"ready","database":"connected","schema_version":"0018_exam_evidence"}0018_exam_evidence (head)
+No new upgrade operations detected.
+  heartbeat_age  
+-----------------
+ 00:00:04.560309
+(1 row)
+
+ institutional_identity_links 
+------------------------------
+                            0
+(1 row)
+
+ credential_designations 
+-------------------------
+                       0
+(1 row)
+
+548732f70f4ccd51596e4f77b5569a184291e9f8e53b736c7464241e95b24860  apps/api/akus/compliance/credentials.py
+74818c76c7672d65d47e060931064fb7c6c2a50e201472ca529364105e9a986f  apps/api/akus/compliance/assessment.py
+548732f70f4ccd51596e4f77b5569a184291e9f8e53b736c7464241e95b24860  apps/api/akus/compliance/credentials.py
+74818c76c7672d65d47e060931064fb7c6c2a50e201472ca529364105e9a986f  apps/api/akus/compliance/assessment.py

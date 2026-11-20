@@ -110,3 +110,19 @@ now have working pages. The earlier phase description above is retained for sour
 workflows; these academic integrations are no longer placeholders. Follow
 [NPTEL_PROVIDER_SETUP.md](NPTEL_PROVIDER_SETUP.md) for exact roles, steps, current
 manual hall-ticket verification and evidence/compliance boundaries.
+
+## Phase 6 certificate evidence and compliance reports
+
+Faculty and DRC Head can open **Certificate library** from the navigation or **Exam and certificate dossier** from a submitted application. Record the actual sitting, observation time in local time, source and reason. Supply either a private PDF up to 2 MiB or an official archive reference and its SHA-256. Each revision retains the original. The certificate dossier distinguishes applicant assertions, independent exam attendance, verification, rejection and official revocation. A confirmed attendance finding can remain pending a result.
+
+Independent verification requires a current application-specific institutional designation. Its source order must cover examination, issuer credential, numerical score and score-sharing checks. Subject relevance additionally requires a designation covering that canonical subject. The applicant and original application reviewers cannot verify their own case. No reviewer grants are seeded. An issuer correction should cite the corrected source, preserve the precision of the actual exam date and explain the change. The catalog preview cannot verify any personal result.
+
+**Compliance reports** opens the personal, departmental or institutional register appropriate to the signed-in office. Choose an employment episode, then an academic year or subject to inspect the contributing records. Annual credit uses one eligible course of at least eight weeks or two distinct four-week courses examined in the same July–June period. The subject detail shows first official assignment, original two-calendar-year deadline, score, relevance, monitoring and any frozen separation finding. A raw teaching import remains pending IO-02.
+
+The latest view recalculates from current authoritative records. **Save current observation** retains a dated copy for a participant or authorized department. Credential writes and teaching-source changes also capture observations in their database transactions. The Principal can read saved observations and filter the institution register by year or knowledge cutoff. A missing observation is displayed explicitly. An observation does not constitute formal institutional publication under P-53.
+
+### Private evidence storage
+
+PDF bytes are stored in PostgreSQL behind the authenticated API. AKUS checks the declared PDF type, bounded request size, PDF signature/end marker and SHA-256. Optional malware scanning uses an operator-provided local clamd Unix socket via AKUS_CLAMD_SOCKET, mounted into the existing API container. The client cannot set the scanner address. A missing daemon, timeout or unrecognized response quarantines the upload. An infected response rejects it. Only an upload cleared by the scanner can be downloaded, by the owner or independent case designee, as a fixed-name attachment with a download audit event. Scoped oversight may see the dossier metadata. The default Docker demo has no live scanner or NPTEL credential API. Independent review uses an official source the reviewer can actually authenticate.
+
+The isolated reviewer browser run uses fictional source records and case-specific appointments stored only in a test database. Run scripts/check-phase5-cases.sh against the compiled local stack to exercise it. The operational Google acceptance gate still requires approved configuration and participating real account holders.

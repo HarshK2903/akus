@@ -1,3 +1,7 @@
+## Phase 6 · 2026-11-20
+
+Phase 6 uses formal application-specific authority for certificate verification and named-subject relevance. IO-02, Q51, P-53, P-54 and the separate five-account Google acceptance dependency remain open.
+
 # Policy gaps and safe behavior
 
 These are institutional decisions, not permission to invent rules. Current HoD mapping authority, annual shared quota scope, scheduled-exam initial charging and verified cross-year transfer are CONFIRMED.

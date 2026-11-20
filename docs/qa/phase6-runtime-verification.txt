@@ -1,0 +1,28 @@
+NAME                              IMAGE                COMMAND                  SERVICE   CREATED          STATUS                             PORTS
+akus-local-api-1                  akus-local-api       "uvicorn akus.main:c…"   api       11 hours ago     Up 37 seconds (healthy)            
+akus-local-api-run-b5fc94033b96   akus-local-api       "sh -c 'ruff check -…"   api       14 seconds ago   Up 13 seconds (health: starting)   
+akus-local-db-1                   postgres:16          "docker-entrypoint.s…"   db        4 days ago       Up 45 seconds (healthy)            5432/tcp
+akus-local-migrate-1              akus-local-migrate   "sh -c 'alembic -c a…"   migrate   11 hours ago     Exited (0) 37 seconds ago          
+akus-local-proxy-1                caddy:2-alpine       "caddy run --config …"   proxy     4 days ago       Up 26 seconds                      443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1                  akus-local-web       "caddy run --config …"   web       11 hours ago     Up 44 seconds                      80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1               akus-local-worker    "python -m akus.work…"   worker    11 hours ago     Up 37 seconds                      
+volume=akus-local_akus_pg created=2026-11-16T00:36:02+05:30
+akus-local_akus_pg mounted at /var/lib/postgresql/data
+frontend HTTP 200
+{"status":"ready","database":"connected","schema_version":"0018_exam_evidence"}0018_exam_evidence (head)
+No new upgrade operations detected.
+    name    |  heartbeat_age  
+------------+-----------------
+ foundation | 00:00:03.189685
+(1 row)
+
+ institutional_identity_links 
+------------------------------
+                            0
+(1 row)
+
+ credential_designations 
+-------------------------
+                       0
+(1 row)
+

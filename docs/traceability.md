@@ -1,6 +1,6 @@
 # Requirements → code → API → tests
 
-2026-11-19. Phase 5 exceptional-case coverage and executed commands are recorded in codex/PHASE5_CHECKLIST.md and ../TEST_RESULTS.md. The source inventory is in spec-inventory.md. The local Phase 2–5 checklists in codex/ identify the tested workflows and outstanding institutional decisions. Live institutional Google acceptance remains externally blocked.
+2026-11-20. Phase 6 local acceptance passed with 266 backend tests, two frontend tests, 40 standard and four additional isolated browser journeys. [Acceptance checklist](codex/PHASE6_CHECKLIST.md) · [Test results](../TEST_RESULTS.md) · [Database reconciliation](qa/phase6-signed-ledgers.txt). Previous phase checklists retain their executed results. The inventory covers 80 target routes and 50 historical policies. Live institutional Google sign-in remains externally blocked.
 
 ## Executed vertical slices
 
@@ -22,6 +22,8 @@ fixtures are isolated test-only generated signatures/HTTP responses, not real si
 | Five role-specific dashboards | sources/router.py; web/pages/Dashboards.tsx | dashboard, academic/integration/{area} | role routing/exemption/denials, no fake academic state; five-role responsive axe/browser |
 | Current auth after transaction locks | people/service.py lock_command | all source/import/account mutations | session revocation after read, current grant recheck, command/commit races |
 | Responsive usable forms and navigation | web/src/components, pages, styles.css | all source workflows plus foundation | people.spec.ts, phase2.spec.ts at 1440/390/320; foundation also 1024/768; actual screenshots |
+
+Phase 6 sources are compliance/* and migrations 0017–0018. Certificate, annual, Silver and as-of reporting evidence is indexed in [the Phase 6 checklist](codex/PHASE6_CHECKLIST.md), test_compliance.py, e2e/phase6.spec.ts and qa/credential.spec.ts.
 
 Phase 5 quota event coverage includes a first pool publication racing a missing destination, scoped worker wakeups and exactly-once release across concurrent exception cases. The immutable ledger is reconciled with current allocations using scripts/verify-quota.sql.
 
@@ -64,14 +66,14 @@ routes support the inventory and do not inflate its count.
 | FAC-11 | `/app/applications/:applicationId/quota` | `pages/academic/Applications.tsx` / applications/{id} | VERIFIED original/current/official years, allocation and immutable movements | 4 |
 | FAC-12 | `/app/applications/:applicationId/evidence` | `pages/academic/Participation.tsx` / applications/{id}; enrollment-claims; verify-enrollment | Source reference/digest, precision, claims, independent findings. Private binary and actual-exam evidence remain Phase 6. | 4 |
 | FAC-13 | `/app/applications/:applicationId/history` | `pages/academic/Applications.tsx` / applications/{id} | VERIFIED submission/source/movement/decision history; later evidence events absent | 4 |
-| FAC-14 | `/app/participation/:applicationId` | `pages/academic/Participation.tsx` / applications/{id}; enrollment-claims; verify-enrollment | Source reference/digest, precision, claims, independent findings. Private binary and actual-exam evidence remain Phase 6. | 6 |
+| FAC-14 | `/app/participation/:applicationId` | `pages/academic/Credentials.tsx, Participation.tsx` / applications/{id}/enrollment-claims, certificates/{aid}/exam | Independent attendance and pending certificate; enrollment chronology remains separately verified. | 6 |
 | FAC-15 | `/app/previous-attempts` | `pages/academic/Outcomes.tsx` / previous-attempts; outcome-verifications/{id}/decision | Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts. | 6 |
 | FAC-16 | `/app/previous-attempts/:attemptId` | `pages/academic/Outcomes.tsx` / previous-attempts; outcome-verifications/{id}/decision | Scoped attempt history, source evidence and current HoD findings. See test_outcomes.py and phase4.spec.ts. | 6 |
-| FAC-17 | `/app/compliance/annual` | None | NOT IMPLEMENTED | 6 |
-| FAC-18 | `/app/compliance/annual/:yearId` | None | NOT IMPLEMENTED | 6 |
-| FAC-19 | `/app/compliance/silver` | None | NOT IMPLEMENTED | 6 |
-| FAC-20 | `/app/compliance/silver/:obligationId` | None | NOT IMPLEMENTED | 6 |
-| FAC-21 | `/app/certificates` | None | NOT IMPLEMENTED | 6 |
+| FAC-17 | `/app/compliance/annual` | `pages/academic/Compliance.tsx` / compliance/episodes/{eid} | Personal July–June ledger and dated observations. | 6 |
+| FAC-18 | `/app/compliance/annual/:yearId` | `pages/academic/Compliance.tsx` / compliance/episodes/{eid} | Year drilldown shows same-year qualifying allocations and evidence. | 6 |
+| FAC-19 | `/app/compliance/silver` | `pages/academic/Compliance.tsx` / compliance/episodes/{eid} | Episode-scoped teaching obligations, pending IO-02 and frozen separation. | 6 |
+| FAC-20 | `/app/compliance/silver/:obligationId` | `pages/academic/Compliance.tsx` / compliance/episodes/{eid} | Actual exam timeliness, relevance and threshold; adjudicated source correction review. | 6 |
+| FAC-21 | `/app/certificates` | `pages/academic/Credentials.tsx` / certificates, certificates/{aid}/evidence|exam|verify|disposition | Scoped private source registration, independent decisions, document quarantine and timeline. | 6 |
 | DRC-01 | `/drc/reviews` | `pages/academic/Applications.tsx` / applications?review=true | VERIFIED scoped review queue and no self-review; advanced queue filters later | 4 |
 | DRC-02 | `/drc/reviews/:taskId` | `pages/academic/Applications.tsx` / applications/{id}/review | VERIFIED ordinary decisions, current office and DRC-own direct route; evidence exceptions later | 4 |
 | DRC-03 | `/drc/history` | None | NOT IMPLEMENTED | 4 |
@@ -95,8 +97,8 @@ routes support the inventory and do not inflate its count.
 | HOD-18 | `/hod/integrity/:caseId` | `pages/academic/Exceptions.tsx` / integrity-cases/{id}, integrity-cases/{id}/decision | Versioned evidence, current/original pool, case-specific independent authorization and audited uphold/invalidate. | 5 |
 | HOD-19 | `/hod/separation-cases` | `pages/academic/Exceptions.tsx` / separation-cases | Department and oversight inbox for proven permanent departures and pending chronology. | 5 |
 | HOD-20 | `/hod/separation-cases/:caseId` | `pages/academic/Exceptions.tsx` / separation-cases/{id}/decision, roster-finding, historical-review, historical-review/subject | Effective-time evidence, HoD review, authoritative releases, frozen subjects and retrospective assessments with as-of replay. | 5 |
-| HOD-21 | `/hod/reports/annual` | None | NOT IMPLEMENTED | 6 |
-| HOD-22 | `/hod/reports/silver` | None | NOT IMPLEMENTED | 6 |
+| HOD-21 | `/hod/reports/annual` | `pages/academic/ComplianceRegister.tsx` / compliance/register | Departmental annual register, year filter and episode drilldown. | 6 |
+| HOD-22 | `/hod/reports/silver` | `pages/academic/ComplianceRegister.tsx` / compliance/register | Departmental subject register, sourced status and historic observations. | 6 |
 | HOD-23 | `/hod/reports/applications` | None | NOT IMPLEMENTED | 6 |
 | HOD-24 | `/hod/decisions` | None | NOT IMPLEMENTED | 4 |
 | PRN-01 | `/principal/home` | `pages/Dashboards.tsx: PrincipalDashboard` / dashboard | VERIFIED global read-only source oversight; academic reports later | 2 |
@@ -104,8 +106,8 @@ routes support the inventory and do not inflate its count.
 | PRN-03 | `/principal/departments/:departmentId` | None | NOT IMPLEMENTED | 8 |
 | PRN-04 | `/principal/applications` | None | NOT IMPLEMENTED | 8 |
 | PRN-05 | `/principal/topics-quotas` | None | NOT IMPLEMENTED | 8 |
-| PRN-06 | `/principal/reports/annual` | None | NOT IMPLEMENTED | 8 |
-| PRN-07 | `/principal/reports/silver` | None | NOT IMPLEMENTED | 8 |
+| PRN-06 | `/principal/reports/annual` | `pages/academic/ComplianceRegister.tsx` / compliance/register | Institution-wide annual read-only register. | 8 |
+| PRN-07 | `/principal/reports/silver` | `pages/academic/ComplianceRegister.tsx` / compliance/register | Institution-wide subject read-only register. | 8 |
 | PRN-08 | `/principal/exceptions` | None | NOT IMPLEMENTED | 8 |
 | PRN-09 | `/principal/audit` | None | NOT IMPLEMENTED | 8 |
 | ADM-01 | `/admin/home` | `pages/Dashboards.tsx` / dashboard; admin/nptel/provider-fetches | VERIFIED sources/imports/accounts and real public provider fetch | 2 |
@@ -126,7 +128,7 @@ routes support the inventory and do not inflate its count.
 
 All Q01–Q50 remain reconciled in POLICY_REGISTER.md; planned domain acceptances are
 in POLICY_TEST_TRACEABILITY.md. Actual application and quota races are mapped in the Phase 3 checklist.
-Phase 5 adds frozen episode status and historical Silver assessment. Active annual and subject fulfillment workflows belong to Phase 6.
+Phase 5 introduced frozen separation status. Phase 6 joins the active and archived credential histories and tests current and retrospective annual and subject results.
 
 A01–A08/I01–I18, J1–J16, UX-01–25, T-Q01–50, T-AMEND-01–10,
 T-V2.4-TOPIC-MAP-01–05, T-ANNUAL-TOPIC-01–07, T-QUOTA-XFER-01–05 and C01–C50

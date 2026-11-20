@@ -35,7 +35,10 @@ def today() -> date:
 
 
 def notice(db: Session, app: Application, kind: str, facts: dict[str, Any]) -> None:
-    db.add(AcademicNotice(application_id=app.id, kind=kind, facts=facts))
+    # PostgreSQL now() would date the notice at transaction start, before the decision.
+    db.add(
+        AcademicNotice(application_id=app.id, kind=kind, facts=facts, created_at=datetime.now(UTC))
+    )
 
 
 def case(

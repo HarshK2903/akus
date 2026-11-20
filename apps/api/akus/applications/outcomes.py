@@ -107,19 +107,47 @@ def conclusive_no_cert(db: Session, attempt: Attempt) -> bool:
 
 
 def assert_repeat_eligible(db: Session, app: Application) -> dict[UUID, Attempt]:
+    from akus.compliance.credentials import certified, latest
+    from akus.compliance.models import CredentialEvent
     from akus.exceptions.models import HistoricalFinding
 
-    if db.scalar(
-        select(HistoricalFinding.id)
-        .join(Application)
-        .where(
-            Application.person_id == app.person_id,
-            Application.course_id == app.course_id,
-            Application.id != app.id,
+    candidates = select(Application).where(
+        Application.person_id == app.person_id,
+        Application.course_id == app.course_id,
+        Application.id != app.id,
+        (
+            select(HistoricalFinding.id)
+            .where(HistoricalFinding.application_id == Application.id)
+            .exists()
+            | select(CredentialEvent.id)
+            .where(CredentialEvent.application_id == Application.id)
+            .exists()
+        ),
+    )
+    for prior in db.scalars(candidates):
+        official = certified(db, prior.id)
+        if official and not (isinstance(official, CredentialEvent) and official.kind == "REVOKED"):
+            raise HTTPException(409, "CANONICAL_COURSE_REPEAT_PROHIBITED_Q28")
+        attempt = db.scalar(
+            select(Attempt).where(
+                Attempt.person_id == app.person_id, Attempt.offering_id == prior.offering_id
+            )
         )
-        .limit(1)
-    ):
-        raise HTTPException(409, "CANONICAL_COURSE_REPEAT_PROHIBITED_Q28")
+        finding = latest_finding(db, attempt.id) if attempt else None
+        pending = latest(db, prior.id)
+
+        if (
+            not attempt
+            or not finding
+            or not conclusive_no_cert(db, attempt)
+            or (official and finding.recorded_at <= official.recorded_at)
+            or (
+                pending
+                and pending.kind in {"ASSERTED", "EXAM_VERIFIED"}
+                and finding.recorded_at <= pending.recorded_at
+            )
+        ):
+            raise HTTPException(423, "PRIOR_OUTCOME_VERIFICATION_REQUIRED_Q29")
     attempts = list(
         db.scalars(
             select(Attempt).where(

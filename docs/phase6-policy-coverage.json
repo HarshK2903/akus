@@ -1,0 +1,18 @@
+{
+  "22": "Annual and Silver recognition suspend during unresolved integrity review. Historical reads use the recorded knowledge cutoff; a later formal invalidation cannot restore recognition.",
+  "28": "Permanent-person/canonical-course recognition includes credential findings across episodes and grades; revocation requires a conclusive new outcome.",
+  "29": "A later exam finding or unresolved credential assertion requires fresh conclusive no-certificate evidence before further admission. Covered by test_new_credential_claim_requires_newer_no_certificate_finding.",
+  "33": "First authenticated prior certificate opens a conflict-of-interest protected review of a newer approved same-course application.",
+  "34": "Integrity status gates institutional credit separately from provider authenticity and counted seats.",
+  "35": "Actual examination date drives July\u2013June credit. A saved observation retains what was known at its timestamp.",
+  "36": "At least eight weeks or two distinct four-week credentials in the same actual examination year; one allocation set per annual assessment.",
+  "37": "Two eligible four-week credentials may both be below 75%. See test_certificate_across_june_july_and_late_issue.",
+  "38": "A valid eligible 65% long course qualifies for annual completion. Tested in PostgreSQL and the isolated verifier browser.",
+  "39": "First official date per episode and subject; formal obligation source distinct from raw teaching records; two calendar years and pending leap-day rule.",
+  "40": "Ending or resuming teaching in the same episode preserves the first date. Source corrections capture new observations and retain adjudicated deadlines for reconciliation.",
+  "41": "Permanent separation closes monitoring and freezes original status including previously earned on-time Silver.",
+  "42": "Employment episodes have separate subject identities and deadlines; permanent-person credential findings survive rehire.",
+  "48": "A pre-separation exam can earn historical annual credit. Later source findings preserve earlier observations and never alter released seats.",
+  "49": "Confirmed score, subject relevance, original deadline, approved obligation and pre-separation exam are required for retrospective Silver.",
+  "50": "Actual exam on or before the original deadline can count on time after independent verification; certificate issue date does not determine timeliness."
+}

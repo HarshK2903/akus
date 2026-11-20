@@ -340,6 +340,21 @@ def commit(db: Session, actor: Actor, record_id: UUID, cfg: Settings) -> SourceI
             record.rows, record.status = normalized, "VALIDATION_FAILED"
             db.commit()
             raise HTTPException(409, "IMPORT_HAS_ERRORS")
+    from akus.compliance.assessment import capture
+
+    teaching_episodes = (
+        list(
+            db.scalars(
+                select(EmploymentEpisode)
+                .where(EmploymentEpisode.id.in_(episode_ids))
+                .order_by(EmploymentEpisode.id)
+            )
+        )
+        if record.kind == "teaching"
+        else []
+    )
+    for participant in teaching_episodes:
+        capture(db, participant)
     source_context(db, actor, record.source_reference, f"Approved import {record.id}")
     try:
         for row in normalized:
@@ -390,6 +405,10 @@ def commit(db: Session, actor: Actor, record_id: UUID, cfg: Settings) -> SourceI
                     )
                 )
         record.status, record.committed_at = "COMMITTED", datetime.now(UTC)
+        if teaching_episodes:
+            db.flush()
+            for participant in teaching_episodes:
+                capture(db, participant)
         security_event(
             db,
             "SOURCE_IMPORT_COMMITTED",

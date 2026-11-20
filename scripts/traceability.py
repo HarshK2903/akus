@@ -27,9 +27,10 @@ implemented = {
 implemented.update(json.loads((root / 'docs/phase3-route-coverage.json').read_text()))
 implemented.update(json.loads((root / 'docs/phase4-route-coverage.json').read_text()))
 implemented.update(json.loads((root / 'docs/phase5-route-coverage.json').read_text()))
+implemented.update(json.loads((root / 'docs/phase6-route-coverage.json').read_text()))
 s = '''# Requirements → code → API → tests
 
-2026-11-19. Phase 5 exceptional-case coverage and executed commands are recorded in codex/PHASE5_CHECKLIST.md and ../TEST_RESULTS.md. The source inventory is in spec-inventory.md. The local Phase 2–5 checklists in codex/ identify the tested workflows and outstanding institutional decisions. Live institutional Google acceptance remains externally blocked.
+2026-11-20. Phase 6 local acceptance passed with 266 backend tests, two frontend tests, 40 standard and four additional isolated browser journeys. [Acceptance checklist](codex/PHASE6_CHECKLIST.md) · [Test results](../TEST_RESULTS.md) · [Database reconciliation](qa/phase6-signed-ledgers.txt). Previous phase checklists retain their executed results. The inventory covers 80 target routes and 50 historical policies. Live institutional Google sign-in remains externally blocked.
 
 ## Executed vertical slices
 
@@ -51,6 +52,8 @@ fixtures are isolated test-only generated signatures/HTTP responses, not real si
 | Five role-specific dashboards | sources/router.py; web/pages/Dashboards.tsx | dashboard, academic/integration/{area} | role routing/exemption/denials, no fake academic state; five-role responsive axe/browser |
 | Current auth after transaction locks | people/service.py lock_command | all source/import/account mutations | session revocation after read, current grant recheck, command/commit races |
 | Responsive usable forms and navigation | web/src/components, pages, styles.css | all source workflows plus foundation | people.spec.ts, phase2.spec.ts at 1440/390/320; foundation also 1024/768; actual screenshots |
+
+Phase 6 sources are compliance/* and migrations 0017–0018. Certificate, annual, Silver and as-of reporting evidence is indexed in [the Phase 6 checklist](codex/PHASE6_CHECKLIST.md), test_compliance.py, e2e/phase6.spec.ts and qa/credential.spec.ts.
 
 Phase 5 quota event coverage includes a first pool publication racing a missing destination, scoped worker wakeups and exactly-once release across concurrent exception cases. The immutable ledger is reconciled with current allocations using scripts/verify-quota.sql.
 
@@ -98,7 +101,7 @@ s += '''
 
 All Q01–Q50 remain reconciled in POLICY_REGISTER.md; planned domain acceptances are
 in POLICY_TEST_TRACEABILITY.md. Actual application and quota races are mapped in the Phase 3 checklist.
-Phase 5 adds frozen episode status and historical Silver assessment. Active annual and subject fulfillment workflows belong to Phase 6.
+Phase 5 introduced frozen separation status. Phase 6 joins the active and archived credential histories and tests current and retrospective annual and subject results.
 
 A01–A08/I01–I18, J1–J16, UX-01–25, T-Q01–50, T-AMEND-01–10,
 T-V2.4-TOPIC-MAP-01–05, T-ANNUAL-TOPIC-01–07, T-QUOTA-XFER-01–05 and C01–C50
@@ -119,6 +122,7 @@ wording is in POLICY_REGISTER.md. Negative tests must prevent retired runtime pa
 policy_status = json.loads((root / 'docs/phase3-policy-coverage.json').read_text())
 policy_status.update(json.loads((root / 'docs/phase4-policy-coverage.json').read_text()))
 policy_status.update(json.loads((root / 'docs/phase5-policy-coverage.json').read_text()))
+policy_status.update(json.loads((root / 'docs/phase6-policy-coverage.json').read_text()))
 for i in range(1, 51):
     owner, ui = ('quota/applications', 'HOD-09–12; FAC-06–13') if i <= 9 else ('identity/reviews', 'ADM-05; DRC-01–03; HOD-02–03') if i <= 18 else ('applications/integrity/outcomes', 'FAC-06–16; HOD-15–18') if i <= 34 else ('annual compliance', 'FAC-17–18; HOD-21; PRN-06') if i <= 38 else ('Silver/employment', 'FAC-19–20; ADM-04/06; HOD-22') if i <= 42 else ('separation/history', 'HOD-19–20; ADM-04; FAC-13/17–20')
     status = 'PARTIAL: source office exclusion and eligible route metadata tested' if i in [12, 16] else 'PARTIAL: source authority/revocation tested; academic reassignment absent' if i == 17 else 'PARTIAL: first official date, continuity and provisional anniversary tested; final Silver credit absent' if i in [39, 40] else 'PARTIAL: permanent identity and new-episode first-teaching clock tested; academic consequences absent' if i == 42 else 'NOT IMPLEMENTED'
@@ -126,4 +130,4 @@ for i in range(1, 51):
     s += f'| Q-{i:02} | {owner} | {ui} | T-Q{i:02} | {status} |\n'
 (root / 'docs/POLICY_TEST_TRACEABILITY.md').write_text(s)
 assert len(routes) == 80
-print('Traceability refreshed: 80 routes, 50 policy rows; Phase 2/3/4/5 slices and explicit live/policy/later-phase boundaries.')
+print('Traceability refreshed: 80 routes, 50 policy rows; Phase 2–6 slices and explicit live/policy/later-phase boundaries.')

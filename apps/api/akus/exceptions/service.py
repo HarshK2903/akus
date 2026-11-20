@@ -78,7 +78,38 @@ def active_order(db: Session, app: Application) -> Departure | None:
 def freeze(db: Session, order: Departure) -> None:
     if db.get(SeparationSnapshot, order.id):
         return
-    from akus.exceptions.history import archived_obligation
+    from datetime import time
+
+    from akus.compliance.models import CredentialEvent
+    from akus.exceptions.history import archived_obligation, comparison, episode_report
+
+    cutoff = order.effective_at or datetime.combine(order.effective_on, time.min, IST)
+    timely: dict[str, str] = {}
+    for aid in db.scalars(
+        select(CredentialEvent.application_id)
+        .join(Application)
+        .where(
+            Application.episode_id == order.episode_id,
+            CredentialEvent.kind == "VERIFIED",
+            CredentialEvent.recorded_at <= cutoff,
+        )
+        .distinct()
+    ):
+        finding = episode_report(db, order.episode_id, aid, cutoff)["finding"]
+        if (
+            finding
+            and finding["silver"] == "VERIFIED_ON_TIME"
+            and comparison(
+                date.fromisoformat(finding["actual_exam_on"]),
+                datetime.fromisoformat(finding["actual_exam_at"])
+                if finding.get("actual_exam_at")
+                else None,
+                order.effective_on,
+                order.effective_at,
+            )
+            == -1
+        ):
+            timely[finding["subject_id"]] = str(finding["id"])
 
     subjects = []
     for subject, first in db.execute(
@@ -101,7 +132,10 @@ def freeze(db: Session, order: Departure) -> None:
                 "archived_obligation_id": str(accepted.id) if accepted else None,
                 "first_assignment": first.isoformat(),
                 "deadline": deadline.isoformat() if deadline else None,
-                "status_at_separation": "DEADLINE_POLICY_PENDING"
+                "achievement_at_separation": timely.get(str(subject)),
+                "status_at_separation": "VERIFIED_ON_TIME"
+                if accepted and str(subject) in timely
+                else "DEADLINE_POLICY_PENDING"
                 if not deadline
                 else "DEADLINE_PASSED_ACCEPTANCE_PENDING_IO02"
                 if not accepted and deadline < order.effective_on
@@ -361,7 +395,7 @@ def mandate(
     # Prior adjudicators, evidence verifiers and the applicant cannot decide integrity.
     entities = [app.id]
     for e in db.scalars(select(CaseEvent).where(CaseEvent.case_id == c.id)):
-        for source_id in ("attempt_id", "historical_finding_id"):
+        for source_id in ("attempt_id", "historical_finding_id", "credential_event_id"):
             if e.facts.get(source_id):
                 entities.append(UUID(e.facts[source_id]))
     if db.scalar(
@@ -375,6 +409,7 @@ def mandate(
                     "PRIOR_OUTCOME_DECIDED",
                     "ENROLLMENT_VERIFIED",
                     "HISTORICAL_CERTIFICATE",
+                    "CREDENTIAL_VERIFIED",
                 ]
             ),
         )

@@ -1057,6 +1057,13 @@ export function ApplicationDetail({
           </Link>
         </section>
       )}
+      {a.state !== "DRAFT" && (
+        <p>
+          <Link to={"/app/certificates/" + a.id}>
+            Exam and certificate dossier
+          </Link>
+        </p>
+      )}
       <Participation
         app={a}
         canVerify={

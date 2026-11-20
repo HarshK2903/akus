@@ -1,4 +1,9 @@
 import {
+  CertificateLibrary,
+  CertificateDetail,
+} from "./pages/academic/Credentials";
+import { Compliance } from "./pages/academic/Compliance";
+import {
   AttemptList,
   AttemptDetail,
   NewAttempt,
@@ -33,7 +38,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Shell } from "./components/Shell";
 import { Login } from "./pages/Login";
-import { RoleDashboard, AcademicIntegration } from "./pages/Dashboards";
+import { RoleDashboard } from "./pages/Dashboards";
 import { Imports, ImportDetail } from "./pages/Imports";
 import { ReferenceSetup } from "./pages/ReferenceSetup";
 import { TeachingList, TeachingDetail, TeachingForm } from "./pages/Teaching";
@@ -113,6 +118,21 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/hod/outcome-verifications/:attemptId"
               element={<AttemptDetail inbox />}
             />
+            <Route path="/app/certificates" element={<CertificateLibrary />} />
+            <Route
+              path="/app/certificates/:aid"
+              element={<CertificateDetail />}
+            />
+            {["/app/compliance", "/hod/reports", "/principal/reports"].flatMap(
+              (base) =>
+                ["annual", "silver"].map((kind) => (
+                  <Route
+                    key={base + kind}
+                    path={base + "/" + kind + "/:itemId?"}
+                    element={<Compliance />}
+                  />
+                )),
+            )}
             <Route path="/app/catalog" element={<Catalog />} />
             <Route path="/app/catalog/:courseId" element={<CourseDetail />} />
             <Route
@@ -190,10 +210,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               element={<SourceCorrection />}
             />
             <Route path="/app/applications" element={<Applications />} />
-            <Route
-              path="/app/compliance"
-              element={<AcademicIntegration area="compliance" />}
-            />
+            <Route path="/app/compliance" element={<Compliance />} />
             <Route path="/drc/reviews" element={<Applications review />} />
             <Route path="/hod/reviews" element={<Applications review />} />
             <Route path="/hod/quotas" element={<QuotaList />} />
@@ -238,10 +255,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               path="/hod/quota-transfers/:caseId"
               element={<ApplicationDetail caseView />}
             />
-            <Route
-              path="/principal/reports"
-              element={<AcademicIntegration area="reports" />}
-            />
+            <Route path="/principal/reports" element={<Compliance />} />
             <Route path="/app/profile" element={<StaffRecord own />} />
             <Route path="/admin/staff" element={<StaffDirectory />} />
             <Route path="/people/staff" element={<StaffDirectory />} />

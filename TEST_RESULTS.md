@@ -1,3 +1,40 @@
+# Phase 6 final local acceptance · 2026-11-20
+
+| Gate | Observed result | Evidence |
+|---|---|---|
+| Combined Docker check | Exit 0. Ruff passed, 99 Python files formatted, mypy passed on 69 source files. PostgreSQL pytest passed 266 tests in 115.22 s with four deprecation warnings. | [Full gate](docs/qa/phase6-signed-checks.txt) |
+| Frontend | ESLint, TypeScript and Prettier passed. Both Vitest tests passed. Vite built the production bundle in 2.28 s and reported a size advisory for the 550.97 kB JavaScript chunk. | [Frontend output](docs/qa/phase6-signed-checks.txt) |
+| Playwright | The interrupted standard run finished with 40 passes in 1.7 min. Its two Phase 6 journeys also passed a focused rerun. The four additional isolated journeys passed in the original run and again in 6.9 s on the final build. Reruns are excluded from the journey count. | [Full](docs/qa/phase6-final-browser.txt) · [Focused](docs/qa/phase6-recovered-browser.txt) · [Final isolated](docs/qa/phase6-signed-case-browser.txt) |
+| Deployment and migrations | Frontend HTTP 200, API ready, PostgreSQL connected, worker heartbeat 1.30 s old. Original data volume retained. Fresh test upgrade and operational database both checked at `0018_exam_evidence` with zero drift. | [Fresh migration](docs/qa/phase6-0018-checks.txt) · [Deployment build](docs/qa/phase6-signed-build.txt) · [Health](docs/qa/phase6-signed-health.txt) |
+| Persisted invariants | Six quota/exception counters and seven compliance counters each returned zero across the operational database and three test databases after the final runs. | [Read-only reconciliation](docs/qa/phase6-signed-ledgers.txt) |
+| Source security check | Limited secret-pattern check examined 118 authored files and found zero matches. | [Scope and result](docs/qa/phase6-signed-source-scan.md) |
+
+The earlier combined command exited 1 at Prettier on `e2e/phase6.spec.ts`. “All checks passed!” was Ruff’s output. The formatting fix left the browser assertion intact. The earlier run stopped before Vitest and Vite. On recovery the existing stack was stopped and was started using its retained volume. [Original gate](docs/qa/phase6-final-checks.txt) · [Recovered gate](docs/qa/phase6-recovered-checks.txt)
+
+The final 266 include three new regressions for a later certificate claim or exam after a no-certificate determination, historical subject relevance after a score-only correction, and the effect of a formal invalidation at distinct report cutoffs. The latter exposed a transaction-start timestamp on a newly appended integrity notice. Recording the actual append time preserves the pre-hold report. [Pre-fix regression](docs/qa/phase6-invalidation-cutoff.txt) · [Passing suite](docs/qa/phase6-signed-checks.txt)
+
+The four pytest warnings concern Starlette TestClient, Authlib's HTTPX integration and Alembic path configuration (twice). Live Google sign-in remains unverified. Operational checks found zero linked Google identities and zero active credential-review mandates. The isolated verification journeys exercised designated test reviewers. Live provider credential verification and malware scanning were not exercised. Institutional decisions left pending are listed in the [Phase 6 acceptance checklist](docs/codex/PHASE6_CHECKLIST.md).
+
+## Earlier checkpoints
+
+Phase 6 recovery milestone 7. The 265-test gate, frontend build, two affected Playwright journeys and four isolated case journeys passed. A final historical-report check now distinguishes a resolved integrity hold from formal invalidation at the report knowledge cutoff. The final acceptance evidence is phase6-signed-checks.txt, phase6-signed-health.txt and phase6-acceptance-ledgers.txt.
+
+Phase 6 recovery milestone 6. Started the stopped original containers without recreation. The retained volume is mounted and the live API reported ready at 0018 with no drift. The recovered gate passed 263 backend tests, Vitest 2, formatting and Vite. Review added regressions for later evidence after a no-certificate decision, and a separated participant’s original subject decision across score-only corrections. Final validation is phase6-acceptance.txt plus read-only database reconciliation.
+
+Phase 6 recovery milestone 5. The final browser log completed with 40 passes and the isolated suite with four passes. The combined script completed its 263 backend tests but stopped at Prettier before Vitest/build. A whitespace-only correction to e2e/phase6.spec.ts passes the targeted format check. Next command is AKUS_TEST_DATABASE_NAME=akus_phase6_release_test scripts/check-docker.sh; retain phase6-recovery-gate.txt, runtime and read-only reconciliation evidence.
+
+Phase 6 milestone 4. Revision 0018 upgraded the fresh release test database with no drift; 258 PostgreSQL tests passed. The existing demo stack upgraded in place and the API became healthy. The compiled suite passed both new journeys and 37 earlier journeys. Its remaining failure exposed a desktop sidebar that could push Sign out below the viewport. The sidebar now scrolls. The isolated fixture parser also accepts the pytest progress dot. The department/institution registers, historical cutoff filter and extended separation/race tests await the final rerun. See docs/qa/phase6-0018-checks.txt and phase6-browser.txt.
+
+Phase 6 milestone 3. Twelve targeted PostgreSQL tests passed in 6.62 seconds (phase6-credential-recheck.txt), including competing verifications, repeated report captures, revocation, archived observations, private access and threshold/deadline checks. The first targeted invocation used the wrong public origin and was denied; no origin guard changed. Added 0018_exam_evidence and June/July, Q51, integrity and exam-only regressions after that run. Next run is phase6-0018-checks.txt.
+
+Phase 6 milestone 2. The first isolated Docker run upgraded through 0017 with no drift and passed all 242 existing PostgreSQL tests (111.52s, 3 warnings). ESLint found a now-removed unused route import. Credential library/forms, scoped annual/Silver reports and new database tests are in the checkout, pending acceptance. See docs/qa/phase6-first-checks.txt.
+
+Phase 6 milestone 1. Added migration 0017_compliance, appointment-scoped credential commands, private PDF quarantine, episode assessments and stored observations. Local Ruff passed and mypy passed across 69 sources. PostgreSQL and browser acceptance remain unverified. Next command: AKUS_TEST_DATABASE_NAME=akus_phase6_acceptance_test scripts/check-docker.sh.
+
+## Phase 6 · 2026-11-20
+
+Phase 6 recovery: docker compose ps -a showed healthy API and PostgreSQL, running proxy, web and worker, and the previous migrate container exited 0. The 242 backend and 41 browser passes are retained Phase 5 evidence.
+
 # Phase 5 verified results · 2026-11-19
 
 | Gate | Observed result | Evidence under docs/qa |

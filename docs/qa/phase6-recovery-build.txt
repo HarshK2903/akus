@@ -1,0 +1,90 @@
+ Image akus-local-migrate Building 
+ Image akus-local-api Building 
+ Image akus-local-worker Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.42kB done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 430B done
+#2 DONE 0.0s
+
+#3 [migrate internal] load metadata for docker.io/library/python:3.13-slim
+#3 DONE 1.5s
+
+#4 [migrate internal] load .dockerignore
+#4 transferring context: 208B done
+#4 DONE 0.0s
+
+#5 [worker 1/6] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#5 DONE 0.0s
+
+#6 [api internal] load build context
+#6 transferring context: 125.82kB done
+#6 DONE 0.0s
+
+#7 [worker 2/6] WORKDIR /app
+#7 CACHED
+
+#8 [worker 3/6] COPY apps/api/requirements.lock /app/requirements.lock
+#8 CACHED
+
+#9 [worker 4/6] RUN pip install --no-cache-dir -r requirements.lock
+#9 CACHED
+
+#10 [api 5/6] COPY apps/api /app/apps/api
+#10 DONE 0.1s
+
+#11 [api 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#11 0.755 Obtaining file:///app/apps/api
+#11 0.757   Installing build dependencies: started
+#11 2.082   Installing build dependencies: finished with status 'done'
+#11 2.082   Checking if build backend supports build_editable: started
+#11 2.363   Checking if build backend supports build_editable: finished with status 'done'
+#11 2.363   Getting requirements to build editable: started
+#11 2.654   Getting requirements to build editable: finished with status 'done'
+#11 2.655   Preparing editable metadata (pyproject.toml): started
+#11 2.838   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#11 2.844 Building wheels for collected packages: akus-api
+#11 2.844   Building editable for akus-api (pyproject.toml): started
+#11 3.050   Building editable for akus-api (pyproject.toml): finished with status 'done'
+#11 3.050   Created wheel for akus-api: filename=akus_api-0.1.0-0.editable-py3-none-any.whl size=2875 sha256=8d4cdd31a51ace34558452f756c8d144b95da0e82fd38f7d86225a8ae435a2c5
+#11 3.051   Stored in directory: /tmp/pip-ephem-wheel-cache-ba57j0zb/wheels/b1/8f/6c/228667c2da5e253868149b5f65557add9c4fbba2f70f6f297e
+#11 3.053 Successfully built akus-api
+#11 3.063 Installing collected packages: akus-api
+#11 3.082 Successfully installed akus-api-0.1.0
+#11 3.082 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 3.083 
+#11 3.083 [notice] A new release of pip is available: 26.2.2 -> 26.3
+#11 3.083 [notice] To update, run: pip install --upgrade pip
+#11 DONE 3.2s
+
+#12 [api] exporting to image
+#12 exporting layers 0.1s done
+#12 writing image sha256:bf192afdf503fc485480760dfc6f27b43348965ff08970de9286b6129d8a7733 0.0s done
+#12 naming to docker.io/library/akus-local-api 0.0s done
+#12 DONE 0.1s
+
+#13 [worker] exporting to image
+#13 exporting layers 0.1s done
+#13 writing image sha256:f80307ed707bd7156f8ccdeb2808fa0adde3ecc7ea804351f0b25060704ad995 done
+#13 naming to docker.io/library/akus-local-worker 0.0s done
+#13 DONE 0.1s
+
+#14 [migrate] exporting to image
+#14 exporting layers 0.1s done
+#14 writing image sha256:580ed8a6d40232b2ff0919a3306112bec806690d0c67fbb955137d6a3e342e95 done
+#14 naming to docker.io/library/akus-local-migrate 0.0s done
+#14 DONE 0.1s
+
+#15 [worker] resolving provenance for metadata file
+#15 DONE 0.1s
+
+#16 [api] resolving provenance for metadata file
+#16 DONE 0.0s
+
+#17 [migrate] resolving provenance for metadata file
+#17 DONE 0.0s
+ Image akus-local-api Built 
+ Image akus-local-migrate Built 
+ Image akus-local-worker Built 

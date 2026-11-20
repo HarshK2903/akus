@@ -1,0 +1,391 @@
+ current_database 
+------------------
+ akus
+(1 row)
+
+BEGIN
+    version_num     
+--------------------
+ 0018_exam_evidence
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          32
+(1 row)
+
+    state     | applications 
+--------------+--------------
+ APPROVED     |           11
+ DRAFT        |            5
+ UNDER_REVIEW |           74
+ WITHDRAWN    |           27
+(4 rows)
+
+COMMIT
+ credential_events 
+-------------------
+                 3
+(1 row)
+
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+     current_database     
+--------------------------
+ akus_phase6_release_test
+(1 row)
+
+BEGIN
+    version_num     
+--------------------
+ 0018_exam_evidence
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          69
+(1 row)
+
+      state       | applications 
+------------------+--------------
+ APPROVED         |           21
+ DRAFT            |           84
+ OUTCOME_RECORDED |            4
+ REJECTED         |           12
+ UNDER_REVIEW     |          183
+ WITHDRAWN        |           36
+(6 rows)
+
+COMMIT
+ credential_events 
+-------------------
+                 0
+(1 row)
+
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+          current_database           
+-------------------------------------
+ akus_phase6_release_departures_test
+(1 row)
+
+BEGIN
+    version_num     
+--------------------
+ 0018_exam_evidence
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                           7
+(1 row)
+
+      state       | applications 
+------------------+--------------
+ APPROVED         |           84
+ INVALIDATED      |            8
+ OUTCOME_RECORDED |            1
+ REJECTED         |            4
+ SEPARATED        |           93
+ UNDER_REVIEW     |           20
+(6 rows)
+
+COMMIT
+ credential_events 
+-------------------
+               179
+(1 row)
+
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+          current_database           
+-------------------------------------
+ akus_phase5_browser_departures_test
+(1 row)
+
+BEGIN
+    version_num     
+--------------------
+ 0018_exam_evidence
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                           0
+(1 row)
+
+    state     | applications 
+--------------+--------------
+ APPROVED     |            3
+ SEPARATED    |           16
+ UNDER_REVIEW |            2
+(3 rows)
+
+COMMIT
+ credential_events 
+-------------------
+                 5
+(1 row)
+
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT

@@ -1,3 +1,7 @@
+## Phase 6 · 2026-11-20
+
+Phase 6 extends Phase 5 historical findings with application-scoped verified credential revisions, private evidence and episode-level annual/Silver assessments. The Phase 6 checklist indexes the deployed routes, PostgreSQL invariants, regressions and dated observations. The [Phase 6 local acceptance gate](codex/PHASE6_CHECKLIST.md) passed at migration head `0018_exam_evidence`. The approved successor is Phase 7 employment exits and historical correctness.
+
 # AKUS implementation plan
 
 Binding sources: spec/AKUS_MASTER_SPEC.txt (complete inventory, latest V2.4),

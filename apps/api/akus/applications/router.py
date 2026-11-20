@@ -146,6 +146,22 @@ def app_view(
 
         historical = report(db, app, datetime.now(UTC)) if app.state == "SEPARATED" else {}
         finding = historical.get("finding")
+        from akus.compliance.credentials import certified
+        from akus.compliance.models import CredentialEvent
+
+        actual = certified(db, app.id)
+        if (
+            isinstance(actual, CredentialEvent)
+            and actual.kind == "VERIFIED"
+            and (not finding or actual.recorded_at >= finding["recorded_at"])
+        ):
+            from akus.compliance.assessment import assess
+            from akus.people.models import EmploymentEpisode
+
+            ep = db.get_one(EmploymentEpisode, app.episode_id)
+            annual = assess(db, ep)["annual"]
+            historical = {"annual": {y["year"]: y["status"] for y in annual}}
+            finding = actual.facts
         suspended = any(c.kind == "INTEGRITY" and c.status == "OPEN" for c in cases)
         result |= {
             "participation": participation.view(db, app),

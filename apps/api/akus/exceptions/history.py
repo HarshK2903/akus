@@ -141,6 +141,21 @@ def record(
         .limit(1)
     ):
         raise HTTPException(423, "UNRESOLVED_EVIDENCE_REVIEW")
+    from sqlalchemy import or_
+
+    from akus.compliance.models import CredentialIdentity
+
+    if db.scalar(
+        select(CredentialIdentity.certificate_key)
+        .where(
+            or_(
+                CredentialIdentity.certificate_key == body.certificate_key,
+                CredentialIdentity.application_id == app.id,
+            )
+        )
+        .limit(1)
+    ):
+        raise HTTPException(409, "CERTIFICATE_IDENTITY_CONFLICT")
     if db.scalar(select(HistoricalFinding.id).where(HistoricalFinding.application_id == app.id)):
         raise HTTPException(409, "CERTIFICATE_ALREADY_ASSESSED")
     year = db.scalar(
@@ -303,23 +318,63 @@ def episode_report(
         .join(Departure)
         .where(Departure.episode_id == episode_id, SeparationSnapshot.recorded_at <= as_of)
     )
-    rows = db.scalars(
+    archived_rows = db.scalars(
         select(HistoricalFinding)
         .join(Application)
         .where(Application.episode_id == episode_id, HistoricalFinding.recorded_at <= as_of)
         .order_by(HistoricalFinding.recorded_at, HistoricalFinding.id)
     )
+    from akus.compliance.models import CredentialEvent
+
+    rows: dict[UUID, HistoricalFinding | CredentialEvent] = {
+        r.application_id: r for r in archived_rows
+    }
+    for revision in db.scalars(
+        select(CredentialEvent)
+        .join(Application)
+        .where(
+            Application.episode_id == episode_id,
+            CredentialEvent.recorded_at <= as_of,
+            CredentialEvent.kind.in_(["VERIFIED", "REVOKED"]),
+        )
+        .order_by(CredentialEvent.recorded_at, CredentialEvent.version)
+    ):
+        current = rows.get(revision.application_id)
+        if not current or revision.recorded_at > current.recorded_at:
+            rows[revision.application_id] = revision
     eligible: list[dict[str, Any]] = []
     subjects = {s["subject_id"]: dict(s) for s in snapshot.subjects} if snapshot else {}
     own = None
-    for row in rows:
+    for row in rows.values():
         f = row.facts
+        if isinstance(row, CredentialEvent):
+            if row.kind != "VERIFIED":
+                continue
+            order = db.get(Departure, snapshot.departure_id) if snapshot else None
+            if (
+                order
+                and comparison(
+                    date.fromisoformat(f["actual_exam_on"]),
+                    datetime.fromisoformat(f["actual_exam_at"])
+                    if f.get("actual_exam_at")
+                    else None,
+                    order.effective_on,
+                    order.effective_at,
+                )
+                != -1
+            ):
+                f = f | {
+                    "eligibility": "PRE_SEPARATION_EXAM_UNCONFIRMED",
+                    "silver": "PARTICIPATION_INELIGIBLE",
+                }
+
         relevance = db.scalar(
             select(CaseEvent)
             .join(Reconciliation)
             .where(
                 Reconciliation.application_id == row.application_id,
                 CaseEvent.action == "SUBJECT_RELEVANCE_VERIFIED",
+                CaseEvent.recorded_at >= row.recorded_at,
                 CaseEvent.recorded_at <= as_of,
             )
             .order_by(CaseEvent.version.desc())
@@ -360,6 +415,18 @@ def episode_report(
                 "eligibility": "SUSPENDED_PENDING_REVIEW",
                 "silver": "SUSPENDED_PENDING_REVIEW",
             }
+        invalidation = db.scalar(
+            select(CaseEvent.id)
+            .join(Reconciliation)
+            .where(
+                Reconciliation.application_id == row.application_id,
+                CaseEvent.action == "INVALIDATE",
+                CaseEvent.recorded_at <= as_of,
+            )
+            .limit(1)
+        )
+        if invalidation:
+            f = f | {"eligibility": "APPROVAL_INVALIDATED", "silver": "PARTICIPATION_INELIGIBLE"}
         if row.application_id == application_id:
             own = {"id": row.id, "recorded_at": row.recorded_at, **f}
         if f["eligibility"] != "ELIGIBLE":
@@ -401,6 +468,9 @@ def verify_subject(
         and finding["silver"] == "OBLIGATION_ACCEPTANCE_POLICY_PENDING_IO02"
     ):
         raise HTTPException(423, "SUBJECT_ALREADY_ASSESSED_MULTIPLE_SUBJECT_POLICY_PENDING")
+    from akus.compliance.credentials import require_single_subject
+
+    require_single_subject(db, app.id, body.subject_id)
     subject = next((s for s in result["subjects"] if s["subject_id"] == str(body.subject_id)), None)
     if not subject:
         raise HTTPException(409, "SUBJECT_OUTSIDE_CLOSED_EPISODE")

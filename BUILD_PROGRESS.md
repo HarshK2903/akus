@@ -1,3 +1,33 @@
+# Phase 6 local acceptance passed · 2026-11-20
+
+The running [AKUS demo](http://127.0.0.1:8080) serves the certificate library, annual NPTEL compliance and subject-wise Silver reports on the original PostgreSQL volume. The live API reported ready at migration head `0018_exam_evidence`. The worker heartbeat, frontend response and Alembic drift check passed. [Runtime evidence](docs/qa/phase6-signed-health.txt)
+
+Resumed the existing Phase 6 checkout. The interrupted browser suite had already finished. Fixed the Prettier failure in its test file and three certificate-history defects. A later claim or independently established exam now reopens the prior-outcome check for repeat admission. A score-only correction preserves an independent subject-relevance ruling across separation. Historical reports use the actual time of an integrity notice and retain a formal invalidation after the hold closes. The regression tests preserve the earlier as-of view as well as the later decision.
+
+The combined Docker gate exited 0 with **266 backend tests and 2 frontend tests passing**. The recovered full browser suite passed **40 journeys**, two affected journeys passed again, and the final isolated suite passed **4 journeys**. All 13 quota and compliance discrepancy counts were zero on the operational database and each of three test databases. [Test results](TEST_RESULTS.md) · [Phase 6 checklist](docs/codex/PHASE6_CHECKLIST.md)
+
+To exercise the demo, open **Certificate library** and **Compliance reports** from the local Faculty or DRC Head dashboard. HoD and Principal have department and institution report registers respectively. Genuine institutional evidence decisions still require a documented, active reviewer appointment. Live Google sign-in awaits approved credentials, staff and office records, and voluntary account-holder participation. Unratified decisions remain policy-pending. The next approved phase is Phase 7, employment exits and historical correctness. [User manual](docs/USER_MANUAL.md) · [Policy register](POLICY_GAPS.md)
+
+## Earlier checkpoints
+
+Phase 6 recovery milestone 7. The 265-test gate, frontend build, two affected Playwright journeys and four isolated case journeys passed. A final historical-report check now distinguishes a resolved integrity hold from formal invalidation at the report knowledge cutoff. The final acceptance evidence is phase6-signed-checks.txt, phase6-signed-health.txt and phase6-acceptance-ledgers.txt.
+
+Phase 6 recovery milestone 6. Started the stopped original containers without recreation. The retained volume is mounted and the live API reported ready at 0018 with no drift. The recovered gate passed 263 backend tests, Vitest 2, formatting and Vite. Review added regressions for later evidence after a no-certificate decision, and a separated participant’s original subject decision across score-only corrections. Final validation is phase6-acceptance.txt plus read-only database reconciliation.
+
+Phase 6 recovery milestone 5. The final browser log completed with 40 passes and the isolated suite with four passes. The combined script completed its 263 backend tests but stopped at Prettier before Vitest/build. A whitespace-only correction to e2e/phase6.spec.ts passes the targeted format check. Next command is AKUS_TEST_DATABASE_NAME=akus_phase6_release_test scripts/check-docker.sh; retain phase6-recovery-gate.txt, runtime and read-only reconciliation evidence.
+
+Phase 6 milestone 4. Revision 0018 upgraded the fresh release test database with no drift; 258 PostgreSQL tests passed. The existing demo stack upgraded in place and the API became healthy. The compiled suite passed both new journeys and 37 earlier journeys. Its remaining failure exposed a desktop sidebar that could push Sign out below the viewport. The sidebar now scrolls. The isolated fixture parser also accepts the pytest progress dot. The department/institution registers, historical cutoff filter and extended separation/race tests await the final rerun. See docs/qa/phase6-0018-checks.txt and phase6-browser.txt.
+
+Phase 6 milestone 3. Twelve targeted PostgreSQL tests passed in 6.62 seconds (phase6-credential-recheck.txt), including competing verifications, repeated report captures, revocation, archived observations, private access and threshold/deadline checks. The first targeted invocation used the wrong public origin and was denied; no origin guard changed. Added 0018_exam_evidence and June/July, Q51, integrity and exam-only regressions after that run. Next run is phase6-0018-checks.txt.
+
+Phase 6 milestone 2. The first isolated Docker run upgraded through 0017 with no drift and passed all 242 existing PostgreSQL tests (111.52s, 3 warnings). ESLint found a now-removed unused route import. Credential library/forms, scoped annual/Silver reports and new database tests are in the checkout, pending acceptance. See docs/qa/phase6-first-checks.txt.
+
+Phase 6 milestone 1. Added migration 0017_compliance, appointment-scoped credential commands, private PDF quarantine, episode assessments and stored observations. Local Ruff passed and mypy passed across 69 sources. PostgreSQL and browser acceptance remain unverified. Next command: AKUS_TEST_DATABASE_NAME=akus_phase6_acceptance_test scripts/check-docker.sh.
+
+## Phase 6 · 2026-11-20
+
+Phase 6 recovery confirmed main at 4f54152 and five running Docker services. Work starts with the active certificate register, followed by episode assessments and signed-in pages. See docs/codex/PHASE6_CHECKLIST.md.
+
 # Phase 5 local acceptance passed · 2026-11-19
 
 The running application is available at http://127.0.0.1:8080 on the original akus-local_akus_pg volume. API readiness reports PostgreSQL connected at 0016_archived_obligations. The API, worker, frontend and proxy are running. The existing migration job exited successfully. The repository remains on main; the earlier uncommitted implementation is preserved.

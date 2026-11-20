@@ -116,7 +116,7 @@ export function FacultyDashboard({ data }: { data: DashboardData }) {
           title="Annual & subject Silver"
           description="Annual completion and subject-wise Silver are separate. Compliance assessment depends on verified examination evidence."
           to="/app/compliance"
-          label="Compliance readiness"
+          label="View compliance records"
         />
         <Journey
           title="Your institutional profile"
@@ -157,7 +157,7 @@ export function DrcDashboard({ data }: { data: DashboardData }) {
           title="Your annual & Silver record"
           description="The same applicable faculty obligations apply. Teaching acceptance remains pending IO-02."
           to="/app/compliance"
-          label="Compliance readiness"
+          label="View compliance records"
         />
       </div>
     </>
@@ -301,10 +301,10 @@ export function PrincipalDashboard({ data }: { data: DashboardData }) {
           label="Open directory"
         />
         <Journey
-          title="Academic reporting readiness"
-          description="Institutional compliance reporting requires verified evidence and the later compliance engine. No missing result is treated as failure."
+          title="Institutional compliance reports"
+          description="Inspect annual certificate credit, subject obligations and saved assessments by employment episode."
           to="/principal/reports"
-          label="Reporting service status"
+          label="Open compliance reports"
         />
       </div>
     </>

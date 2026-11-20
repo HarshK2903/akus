@@ -7,6 +7,7 @@ from akus.applications import (
     workflow_models,  # noqa: F401
 )
 from akus.catalog import models as catalog_models  # noqa: F401
+from akus.compliance import models as compliance_models  # noqa: F401
 from akus.config import Settings
 from akus.db import Base, database
 from akus.exceptions import models as exception_models  # noqa: F401

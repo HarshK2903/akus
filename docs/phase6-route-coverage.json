@@ -1,0 +1,52 @@
+{
+  "FAC-14": [
+    "pages/academic/Credentials.tsx, Participation.tsx",
+    "applications/{id}/enrollment-claims, certificates/{aid}/exam",
+    "Independent attendance and pending certificate; enrollment chronology remains separately verified."
+  ],
+  "FAC-17": [
+    "pages/academic/Compliance.tsx",
+    "compliance/episodes/{eid}",
+    "Personal July\u2013June ledger and dated observations."
+  ],
+  "FAC-18": [
+    "pages/academic/Compliance.tsx",
+    "compliance/episodes/{eid}",
+    "Year drilldown shows same-year qualifying allocations and evidence."
+  ],
+  "FAC-19": [
+    "pages/academic/Compliance.tsx",
+    "compliance/episodes/{eid}",
+    "Episode-scoped teaching obligations, pending IO-02 and frozen separation."
+  ],
+  "FAC-20": [
+    "pages/academic/Compliance.tsx",
+    "compliance/episodes/{eid}",
+    "Actual exam timeliness, relevance and threshold; adjudicated source correction review."
+  ],
+  "FAC-21": [
+    "pages/academic/Credentials.tsx",
+    "certificates, certificates/{aid}/evidence|exam|verify|disposition",
+    "Scoped private source registration, independent decisions, document quarantine and timeline."
+  ],
+  "HOD-21": [
+    "pages/academic/ComplianceRegister.tsx",
+    "compliance/register",
+    "Departmental annual register, year filter and episode drilldown."
+  ],
+  "HOD-22": [
+    "pages/academic/ComplianceRegister.tsx",
+    "compliance/register",
+    "Departmental subject register, sourced status and historic observations."
+  ],
+  "PRN-06": [
+    "pages/academic/ComplianceRegister.tsx",
+    "compliance/register",
+    "Institution-wide annual read-only register."
+  ],
+  "PRN-07": [
+    "pages/academic/ComplianceRegister.tsx",
+    "compliance/register",
+    "Institution-wide subject read-only register."
+  ]
+}

@@ -214,6 +214,7 @@ small,
   font-weight: 650;
 }
 .sidebar {
+  overflow-y: auto;
   width: 248px;
   position: fixed;
   top: 60px;

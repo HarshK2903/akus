@@ -1,0 +1,13 @@
+
+> akus-web@0.1.0 e2e
+> playwright test phase6.spec.ts
+
+
+Running 2 tests using 1 worker
+
+(node:21243) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/phase6.spec.ts:10:1 › faculty submits a private certificate, retrieves its pending history and opens the actual-year ledger (3.6s)
+  ✓  2 e2e/phase6.spec.ts:76:1 › academic reports honor all five roles, preserve filters and expose service errors (7.3s)
+
+  2 passed (11.9s)

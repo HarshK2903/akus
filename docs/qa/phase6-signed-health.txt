@@ -1,0 +1,30 @@
+NAME                  IMAGE               COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+akus-local-api-1      akus-local-api      "uvicorn akus.main:c…"   api       39 seconds ago   Up 25 seconds (healthy)   
+akus-local-db-1       postgres:16         "docker-entrypoint.s…"   db        4 days ago       Up 11 minutes (healthy)   5432/tcp
+akus-local-proxy-1    caddy:2-alpine      "caddy run --config …"   proxy     4 days ago       Up 10 minutes             443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1      akus-local-web      "caddy run --config …"   web       11 hours ago     Up 11 minutes             80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1   akus-local-worker   "python -m akus.work…"   worker    39 seconds ago   Up 25 seconds             
+Retained volume: akus-local_akus_pg, created 2026-11-16T00:36:02+05:30
+akus-local_akus_pg at /var/lib/postgresql/data
+Frontend HTTP 200
+{"status":"ready","database":"connected","schema_version":"0018_exam_evidence"}0018_exam_evidence (head)
+No new upgrade operations detected.
+    name    | worker_heartbeat_age 
+------------+----------------------
+ foundation | 00:00:01.30389
+(1 row)
+
+ linked_google_identities 
+--------------------------
+                        0
+(1 row)
+
+ active_credential_mandates 
+----------------------------
+                          0
+(1 row)
+
+f5eb4f32c0267d34572e20591331108152f2b1c952f2e978e22cdd51b4efed94  apps/api/akus/applications/service.py
+e7abb91279bd95166bf9096b2a5409258cf1e90c34314f243b5e28ccdf6ad266  apps/api/akus/exceptions/history.py
+f5eb4f32c0267d34572e20591331108152f2b1c952f2e978e22cdd51b4efed94  apps/api/akus/applications/service.py
+e7abb91279bd95166bf9096b2a5409258cf1e90c34314f243b5e28ccdf6ad266  apps/api/akus/exceptions/history.py

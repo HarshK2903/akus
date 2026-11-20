@@ -98,6 +98,9 @@ def write_teaching(
     operation = f"TEACHING:{record_id or 'CREATE'}"
     if result := replay(db, actor, key, operation, body):
         return result
+    from akus.compliance.assessment import capture
+
+    capture(db, episode)
     validate_teaching(db, body)  # after target person lock, source could have changed
     source_context(db, actor, body.source_reference, body.reason)
     values = body.model_dump(exclude={"reason", "expected_version"})
@@ -120,6 +123,7 @@ def write_teaching(
     except IntegrityError as exc:
         db.rollback()
         raise HTTPException(409, "TEACHING_INTERVAL_OR_KEY_CONFLICT") from exc
+    capture(db, episode)
     return commit_command(
         db,
         actor,

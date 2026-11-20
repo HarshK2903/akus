@@ -102,6 +102,28 @@ export function Shell() {
             </NavLink>
           </>
         )}
+        {(person.applicant_eligible ||
+          person.roles?.some((r) => ["HOD", "PRINCIPAL"].includes(r))) && (
+          <>
+            <NavLink to="/app/certificates" onClick={() => setOpen(false)}>
+              <BookOpen size={18} />
+              Certificate library
+            </NavLink>
+            <NavLink
+              to={
+                (person.roles?.includes("PRINCIPAL")
+                  ? "/principal/reports"
+                  : person.roles?.includes("HOD")
+                    ? "/hod/reports"
+                    : "/app/compliance") + "/annual"
+              }
+              onClick={() => setOpen(false)}
+            >
+              <ShieldCheck size={18} />
+              Compliance reports
+            </NavLink>
+          </>
+        )}
         {person.applicant_eligible && (
           <NavLink to="/app/previous-attempts" onClick={() => setOpen(false)}>
             <BookOpen size={18} />
