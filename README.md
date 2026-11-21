@@ -3,22 +3,20 @@
 React 19/TypeScript/Vite, FastAPI/Python 3.13, synchronous SQLAlchemy/Psycopg 3,
 PostgreSQL 16 and Alembic. Binding specification: docs/spec/AKUS_MASTER_SPEC.txt.
 
-Phase 2 local implementation is verified: institutional Google OIDC protocol/linking,
-operator bootstrap, staff/source corrections, CSV/XLSX imports, effective offices,
-teaching/reference management and five role workspaces. **Live Google sign-in and
-five real-person acceptance tests remain blocked. Phase 2 is not declared complete.**
-Phase 3 adds real catalog/provider snapshots, HoD topic mapping and annual quotas,
-atomic application admission/reviews, cross-year reconciliation and manual HoD
-hall-ticket scheduled-date verification. Evidence/compliance work remains in later phases.
-[Phase 3 guide](docs/NPTEL_PROVIDER_SETUP.md) documents the working pages and boundaries.
-Current running dataset is explicitly LOCAL/DEMO. No genuine Google or NPTEL success
-is simulated. See BUILD_PROGRESS.md and TEST_RESULTS.md for observed results.
+The local application supports staff imports and source corrections, effective-dated offices,
+NPTEL catalog and topic governance, annual quota reservations and transfers, DRC/HoD reviews,
+employment history, certificate evidence, annual compliance and subject-wise Silver reporting.
+The five workspaces use role-scoped tasks, notifications, search and reports. The running
+dataset is explicitly LOCAL/DEMO. Live institutional Google sign-in requires approved OAuth
+configuration, staff records and voluntary account-holder participation. Certificate authenticity
+and unresolved institutional decisions retain their individual verification states.
+[Phase 8 checklist](docs/codex/PHASE8_CHECKLIST.md) · [Test evidence](TEST_RESULTS.md) · [Open policies](POLICY_GAPS.md)
 
 ## Existing Docker application
 
 ```sh
 docker compose config -q
-docker compose build api migrate worker web
+docker compose build api migrate worker web proxy db
 docker compose up -d
 ```
 
@@ -26,7 +24,7 @@ Open **http://127.0.0.1:8080**; API docs **http://127.0.0.1:8080/api/docs**;
 readiness **http://127.0.0.1:8080/api/v1/health/ready**. Use this exact origin for CSRF.
 Compose runs PostgreSQL, forward migration/startup job, API, worker, compiled React
 web and Caddy proxy. Only the loopback proxy port is published. Current migration
-head: `0010_personal_schedule`. Existing volume `akus-local_akus_pg` is retained.
+head is `0021_application_files`. Existing volume `akus-local_akus_pg` is retained.
 `docker compose stop` stops services without deleting data. Never use down -v/reset.
 
 Default Compose settings are fictional demo data and credentials. Choose Nila Shah
@@ -73,9 +71,9 @@ ports/instructions in historical QA records are not current runtime claims.
 
 ## Resume safely
 
-Read AGENTS.md, docs/codex/PHASE2_COMPLETION.md, BUILD_PHASES.md, BUILD_PROGRESS.md,
-TEST_RESULTS.md, docs/codex/PHASE2_CHECKLIST.md, docs/traceability.md and POLICY_GAPS.md.
-The 80-page and Q01–50 inventories describe total scope, not completed routes.
-Next gate is live authorized Google UAT; next planned implementation phase is 3
-(course/topic/annual quota). Academic reviews, submissions, certificates/compliance,
-production TLS/DB least privilege and backup/restore are later verified phases.
+Read AGENTS.md, the master specification, [approved build phases](docs/codex/BUILD_PHASES.md),
+[Phase 8 instructions](docs/codex/PHASE8_CONTINUATION.md), [Phase 8 checklist](docs/codex/PHASE8_CHECKLIST.md),
+[build progress](BUILD_PROGRESS.md) and [test results](TEST_RESULTS.md). Check Git changes, running services
+and the stored QA logs before repeating a migration or test. The [traceability matrix](docs/traceability.md)
+maps the 80 target routes. [Policy gaps](POLICY_GAPS.md) and the Google UAT guide track the remaining
+institutional decisions and external acceptance work.

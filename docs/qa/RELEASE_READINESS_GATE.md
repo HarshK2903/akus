@@ -1,0 +1,17 @@
+# Release decision and owners
+
+**Local acceptance is scoped to the reproducible Docker environment. Institutional release decision is NO-GO.** The local scanner now runs with vendor definitions. Production hosting, live identities, provider evidence and governance still require owner sign-off.
+
+| Gate | Decision | Evidence or action | Accountable party |
+|---|---|---|---|
+| Source and data recovery | LOCAL PASS | Working tree and governing source fingerprints recorded, migrations retained, private logical archive catalog inspected and two independent synthetic restore manifests reproduced. | Engineering [preflight](system-audit-checkpoint.txt) · [file restore](system-audit-patched-restore-files.txt) · [certificate restore](system-audit-patched-restore-certs.txt) |
+| Release stack | LOCAL PASS | Five long-running services, migration exit 0, API readiness, PostgreSQL 16 and worker heartbeat. Original named volume retained. | Engineering [service status](system-audit-closeout-runtime.txt) · [runtime](system-audit-runtime.txt) |
+| Academic and access controls | LOCAL PASS for tested contracts | PostgreSQL authorization, race, audit and as-of tests. Dedicated synthetic browser suites exercise five roles and record-specific routes. | Engineering [coverage matrix](FINAL_REQUIREMENTS_MATRIX.md) · [tests](../../TEST_RESULTS.md) |
+| Release image advisories | VERIFIED FAILURE | One critical Debian libxml2 match and further high matches remain after post-audit remediation. Qualify updated builds or record accountable risk decisions with reachability evidence. | Infrastructure security [current image inventory](remediation-image-scans.md) |
+| Institutional identity | EXTERNAL BLOCKED | Approved Google client, callback, current authoritative persons/appointments, non-demo dataset and five consenting account holders. Zero completed. | Workspace administrator, HR, each account holder [UAT](GOOGLE_REAL_USER_UAT.md) |
+| External evidence and scanning | EXTERNAL BLOCKED | The local scanner passed private delivery, detection and outage checks. The institution must witness production scanner operations and verify a real personal NPTEL enrollment/certificate via approved source and independent mandate. | Academic registrar, provider liaison, security [dependencies](EXTERNAL_DEPENDENCIES_AND_POLICIES.md) |
+| Policy adjudication | POLICY_PENDING | Resolve affected scenarios including IO-02, Q51, mapping revision impact, indefinite blocked transfers and independent verification/exception authority. Record formal scope, effective date and source. | Institutional policy authority [decision register](../../POLICY_GAPS.md) |
+| Deployment and recovery | NOT READY | Select hosting and TLS, disable demo, isolate database privileges, protect secrets/backups, resolve the recorded image findings and verify alerting, retention and a witnessed restore against approved recovery objectives. | Infrastructure and security owners [runbook](../OPERATIONAL_RUNBOOK.md) |
+| User acceptance and accessibility | EXTERNAL BLOCKED | Obtain voluntary role-based acceptance and manual assistive-technology review on the approved deployment and devices. Record owners and evidence references under agreed privacy controls. | Institutional QA/accessibility lead [security review](SECURITY_REVIEW.md) |
+
+Promote only an identified, reviewed release artifact. This audit ran on an uncommitted worktree. The institution must approve the release version and record who accepted each external gate. [Working-tree fingerprints](system-audit-resumed-worktree.txt)

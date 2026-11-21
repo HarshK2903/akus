@@ -1,0 +1,2 @@
+40/40 read-only loopback requests, four concurrent readers, ten per route: /api/v1/health/ready, /api/v1/auth/config, /login, /api/v1/health/live
+Median 5.0 ms, nearest-rank p95 67.0 ms, max 70.8 ms.

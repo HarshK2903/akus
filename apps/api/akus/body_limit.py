@@ -12,23 +12,29 @@ class BodyLimitMiddleware:
         if scope["type"] != "http" or scope["method"] not in {"POST", "PUT", "PATCH"}:
             await self.app(scope, receive, send)
             return
-        messages: list[Message] = []
-        size = 0
+        body = bytearray()
         while True:
             message = await receive()
             if message["type"] == "http.disconnect":
                 return
-            size += len(message.get("body", b""))
-            if size > self.limit:
+            chunk = message.get("body", b"")
+            if len(body) + len(chunk) > self.limit:
                 await JSONResponse({"error": {"code": "REQUEST_BODY_TOO_LARGE"}}, status_code=413)(
                     scope, receive, send
                 )
                 return
-            messages.append(message)
+            body.extend(chunk)
             if not message.get("more_body", False):
                 break
 
+        buffered: bytes | None = bytes(body)
+        del body
+
         async def replay() -> Message:
-            return messages.pop(0) if messages else await receive()
+            nonlocal buffered
+            if buffered is None:
+                return await receive()
+            content, buffered = buffered, None
+            return {"type": "http.request", "body": content, "more_body": False}
 
         await self.app(scope, replay, send)

@@ -1,0 +1,10 @@
+NAME                  IMAGE               COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+akus-local-api-1      akus-local-api      "uvicorn akus.main:c…"   api       11 minutes ago   Up 11 minutes (healthy)   
+akus-local-clamd-1    akus-local-clamd    "/bin/sh -ec 'chown …"   clamd     11 minutes ago   Up 11 minutes (healthy)   3310/tcp, 7357/tcp
+akus-local-db-1       akus-local-db       "docker-entrypoint.s…"   db        19 minutes ago   Up 19 minutes (healthy)   5432/tcp
+akus-local-proxy-1    akus-local-proxy    "caddy run --config …"   proxy     6 minutes ago    Up 6 minutes              443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1      akus-local-web      "caddy run --config …"   web       6 minutes ago    Up 6 minutes              80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1   akus-local-worker   "python -m akus.work…"   worker    11 minutes ago   Up 11 minutes             
+Original and final operational counts and cluster ID match.
+foundation|t
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}

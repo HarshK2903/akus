@@ -1,3 +1,69 @@
+# Full-system acceptance audit closed locally · 21 November 2026
+
+The existing AKUS release is running at [the loopback origin](http://127.0.0.1:8080). The original PostgreSQL 16.16 cluster and volume remain at migration `0021_application_files`. The recovered 320-test checkpoint finished. The patched release passed 321 PostgreSQL tests, three web unit tests, 53 standard, four isolated and two supplemental browser journeys. All 22 discrepancy counters were zero on nine databases after the final browser writes. The release package covers all 80 blueprint pages and retains both the historical policies and their current amendments. [Audit checklist](docs/qa/FINAL_AUDIT_CHECKLIST.md) · [Requirements matrix](docs/qa/FINAL_REQUIREMENTS_MATRIX.md) · [Executed results](TEST_RESULTS.md)
+
+This continuation repaired cross-department quota-transfer visibility for a holder of both an Admin grant and a department office, corrected the evidence workflow text and mobile layout, and applied vendor package fixes to the existing Compose services. Both new synthetic restores matched their source manifests. The optional clamd socket overlay is documented and its configuration validates. The five real Google accounts and private NPTEL evidence still await institutional UAT. Production release is **NO-GO**. Two critical DB image matches, other high advisories, deployed scanning, institutional verification and unratified decisions remain open. [Acceptance report](docs/qa/FINAL_ACCEPTANCE_REPORT.md) · [Security findings](docs/qa/SECURITY_REVIEW.md) · [Release owners and gates](docs/qa/RELEASE_READINESS_GATE.md)
+
+Earlier checkpoints below preserve the order of execution.
+
+## Full-system audit checkpoint
+
+Post-patch tests passed 321 PostgreSQL cases with two dependency warnings and three frontend cases. Both fresh synthetic restores matched source manifests, including 66 application file revisions and 132 credential documents. The patched deployment retained its cluster and operational row counts. Remaining high/critical image advisories are documented release blockers. [Scan inventory](docs/qa/system-audit-image-advisories.md).
+
+The quota-transfer list and case-detail services now enforce the academic office’s department even when the same person also has an Admin grant. The combined suite passed 321 backend and three frontend tests. Orca generated the expected control names and roles on both public pages. Trivy found additional image-level advisories outside the lockfiles. A targeted vendor package refresh is being evaluated.
+
+Resumed audit on 21 November after the completed 320/3/53+4+2 checks. All 219 recorded input hashes match. Five stopped existing Docker services recovered on the original volume after a new private logical backup. Alembic reports head 0021 with no drift, the worker heartbeat is current, and all 22 counters are zero in seven databases. The earlier temporary snapshot directory was absent after the interruption. See docs/qa/system-audit-recovery-runtime.txt and docs/qa/system-audit-recovery-ledgers.txt.
+
+The non-root release gate passed 320 PostgreSQL cases including the same-person distinct-course race and post-start rejection/withdrawal race. Playwright passed 53 standard, four isolated and two supplemental journeys. The record sweep reloaded 23 parameterized paths and the isolated Q44/Q47 journeys exercised the 24th. Both synthetic restores reproduced the audited evidence manifests. Final database reconciliation found zero discrepancies in all seven databases checked after the suites.
+
+The focused search-to-evidence browser journey passed on the audited release. It opens the authorized file, quota movements, audit history and participation views after reload. The first combined backend run found the Faculty/DRC dashboard missing the newly required episode parameter. That shared query now binds the current episode. The first full browser run recorded a 30-second timeout during automated accessibility analysis; its assertions and timeout are unchanged for the full rerun. The patched npm lockfile has zero registry advisories (10 before), and all 45 Python release lookups returned no listed advisories.
+
+2026-11-21 full-system audit baseline. Signed Phase 8 logs confirm 316 backend, 3 frontend, 52 standard and 4 isolated browser passes. The existing stack is ready at migration 0021. All 22 read-only counters were rerun on each of the eight databases. The private pre-change logical backup has a readable archive catalog. See docs/qa/system-audit-checkpoint.txt and docs/qa/system-audit-baseline.txt.
+
+# Phase 8 passed local acceptance · 2026-11-21
+
+The existing [local AKUS application](http://127.0.0.1:8080) runs on the original PostgreSQL volume at `0021_application_files`. The release passed 316 PostgreSQL tests, three frontend tests and 52 standard plus four isolated browser journeys. The complete route matcher covers all 80 blueprint paths. The 22 read-only discrepancy checks returned zero in the operational database, five test databases and both synthetic restores. [Acceptance checklist](docs/codex/PHASE8_CHECKLIST.md) · [Executed checks](TEST_RESULTS.md)
+
+The interrupted build and startup logs recorded successful image builds and migration. The later combined check had failed because repeated scans generated duplicate vacant HoD notices. The reviewer and delivery services now preserve the office observation and use the effective appointment as the delivery address. The release also closes the draft and submitted application evidence pages. Applicants can attach a private PDF, replace it with an immutable revision, or remove it from a draft. Submission records the exact revision IDs in the reservation transaction. Downloads enforce current authorization, scan status and private cache headers. The user manual includes a reproducible walkthrough.
+
+The next acceptance work requires institutional input. The five live Google journeys need approved OAuth configuration, authorized roster and appointments, and voluntary sign-in. Production scanner acceptance, private provider verification and deployment-specific recovery remain open. Decisions about IO-02, Q51, retroactive mapping and a final remedy for a blocked quota transfer remain in [the policy register](POLICY_GAPS.md). Resume from the current uncommitted working tree, [Phase 8 checklist](docs/codex/PHASE8_CHECKLIST.md) and [operator runbook](docs/OPERATIONAL_RUNBOOK.md).
+
+## Earlier checkpoints
+
+## Phase 8 recovery · 2026-11-21
+
+The final backend passed 316 tests. The four file tests also passed on the database migrated from empty. Both synthetic restores returned zero for every one of the 22 discrepancy counters, including attachment-to-audit and submission-to-revision integrity. The first full browser run passed 52; the isolated run passed four. Final-image browser verification is running.
+
+The retained stack migrated to `0021_application_files` and reported ready with a current worker heartbeat. On the upgraded release test DB, all 315 collected backend tests passed. Prettier subsequently flagged the new browser test; it was formatted. The new clean-file delivery test and complete suite are running on a fresh database. A separate logical restore reproduced 9,053 audit events, 565 quota movements and all seven application attachment revisions.
+
+The release and signed Compose builds completed and the migration exited 0. The release browser run had two failures during sign-in navigation and lazy route loading. The signed browser rerun passed all 51 journeys. The signed combined check then exposed a duplicate vacant HoD alert. Delivery now uses the appointment recorded by the coverage check, and comparison with older alerts ignores delivery-only metadata. The original vacancy regression and private delivery replay test both passed in Docker. See [focused results](docs/qa/phase8-resumed-alert.txt). The acceptance run for the new application attachment workflow is in progress.
+
+Phase 8 recovery verified the retained Phase 7 checkpoint on main at de5844c, including its uncommitted changes. Saved results show 272 backend, two frontend, 42 standard and four isolated browser passes. All 18 discrepancy checks were zero on each of four databases. The live API and database are healthy at 0019_employment_sessions on the original volume.
+
+Phase 8 milestone 2 · Provider refresh jobs, ambiguity flags, real public preview and 80 explicit route matches exercised. Final role, historical reporting, Docker and browser checks in progress.
+
+Phase 8 milestone 1 · The workspace registers, personal inbox and job retry commands now run on isolated PostgreSQL migration 0020_workspace. All 29 focused API tests passed. Browser and release acceptance pending.
+
+# Phase 7 local acceptance passed
+
+The existing [AKUS local application](http://127.0.0.1:8080) is running at `0019_employment_sessions` on the original `akus-local_akus_pg` volume. The final Compose build, start, combined test gate, both browser suites and read-only reconciliation completed successfully. [Checklist](docs/codex/PHASE7_CHECKLIST.md) · [Test evidence](TEST_RESULTS.md)
+
+Admins can preview an episode's applications, quota occupancy, subject deadlines and offices, and record rehire with its initial home department in one audited transaction. Faculty and DRC Head can inspect their own earlier episodes, closure decisions, original subject status and linked annual/Silver assessments. Rehire requires fresh sign-in. A new session cannot use ordinary applicant commands to change the earlier episode. Existing department/institution report permissions still apply at read time.
+
+Historical registers now use the workforce and staff names recorded by the requested cutoff. A delayed permanent order freezes the teaching revision then known. Later confirmed evidence and corrections append observations. Existing Q43–Q47 final decisions, quotas and the original separation snapshot retain their histories. The migration preserves identity links and leaves unattributable legacy sessions subject to fresh authentication.
+
+**Verified** — 272 PostgreSQL tests, two frontend tests, 42 standard browser journeys and four additional isolated journeys. All 18 discrepancy counts were zero in the operational database and each of three test databases. The six new backend tests cover mixed closure/rehire and personal-history authorization, historical roster selection, concurrent final approval and HR action, concurrent credential and integrity review, institutional-session continuity, and delayed HR recording. [Demo steps](docs/USER_MANUAL.md) · [Traceability](docs/traceability.md)
+
+Real Google acceptance, live certificate-provider verification, malware scanning and unratified institutional decisions remain open. Phase 8 is the next approved phase for route coverage and UI/QA. [Policy gaps](POLICY_GAPS.md) · [Build plan](docs/codex/BUILD_PHASES.md)
+
+## Earlier checkpoints
+
+Phase 7 milestone 2 passed. The 271-test Docker check exited 0 with four dependency warnings and two Vitest passes. It includes HR versus final HoD approval, integrity versus certificate review, and the institutional-session rehire test with a local signing key. All 42 full Playwright journeys passed on the first Phase 7 build. The final revision also replays teaching revisions for delayed permanent orders and rejects writes to an earlier episode after rehire. Verify that revision with phase7-acceptance.txt, phase7-final-browser.txt and phase7-isolated-browser.txt.
+
+Phase 7 milestone 1 passed. The combined Docker gate exited 0 with 268 PostgreSQL tests, four deprecation warnings, two Vitest passes, clean static checks, a successful Vite build and zero migration drift on a fresh test database. Mixed Q45/Q47 closures, repeated processing, atomic rehire, stale-session rejection and historical roster filters passed. The original Compose database upgraded to 0019_employment_sessions. See docs/qa/phase7-first-checks.txt and docs/qa/phase7-start.txt. Final browser and concurrent-decision gates follow.
+
+Phase 7 recovery. Main at de5844c contains Phase 6. Read-only checks confirmed healthy API and database at 0018_exam_evidence on the original volume. The saved gate records 266 backend, two frontend and 40 full browser passes plus four isolated journeys. All 13 saved discrepancy counters were zero in each of four databases. Phase 7 work and outstanding gates are tracked in docs/codex/PHASE7_CHECKLIST.md.
+
 # Phase 6 local acceptance passed · 2026-11-20
 
 The running [AKUS demo](http://127.0.0.1:8080) serves the certificate library, annual NPTEL compliance and subject-wise Silver reports on the original PostgreSQL volume. The live API reported ready at migration head `0018_exam_evidence`. The worker heartbeat, frontend response and Alembic drift check passed. [Runtime evidence](docs/qa/phase6-signed-health.txt)
@@ -206,3 +272,21 @@ The 0015 gate covered 234 passing PostgreSQL tests, 2 Vitest tests, 38 Playwrigh
 The interrupted final check completed with 235 passes and one failure in the office rotation test. The recovered gate passed after testing the former HoD's exact loss of dossier access and the Admin/Principal academic-write denials. Regressions now cover concurrent separation/integrity dispositions and late enrollment documents with date-only precision. The final acceptance evidence is being collected in docs/qa/phase5-final-acceptance*.txt.
 
 On the retained demo database, browser repetition exposed two fixture-volume effects. A Principal directory test assumed the subjects were on the first page, and a quota publication enqueued rechecks for unrelated enrollment and integrity cases. The directory journey now searches by exact staff name. Capacity changes wake the affected transfer waiters and the worker drains successive full batches without the idle delay. Independent transactions exercise publication racing a missing destination. The original browser timeout and outcome assertions are preserved.
+
+### Post-audit remediation — database image and recovery, 2026-11-21
+
+Restored a fresh private logical archive into a network-isolated PostgreSQL 16 candidate on tmpfs. The original and restored audit, ledger and evidence manifests matched and all 22 restored discrepancy counters were zero. Rolled out the rebuilt database image on the existing named volume. The cluster identifier remained 7708476577220165670 and the migration remained 0021_application_files. Trivy now reports one critical in the database image. The rebuilt gosu 1.20 uses Go 1.27.4. Debian's libxml2 critical remains open. See [restore evidence](docs/qa/remediation-candidate-restore.txt) and [release blockers](docs/qa/RELEASE_BLOCKERS.md).
+
+### Post-audit remediation — private evidence and identity
+
+Activated the private ClamAV service and FreshClam on the local stack. Verified real signature detection, unavailable-socket quarantine, safe retry, private clean delivery, denied unrelated access and immutable certificate re-submission. Each new attachment audit or certificate assertion records its clean scanner version. Certificate download uses the selected assertion revision. Added fresh-signature and framing checks and a server guard against authenticating person-specific findings with known public course previews. Google discovery and public keys resolved. All five live sign-ins still require institutional action. [Scanner acceptance](docs/qa/remediation-final-scanner.txt) · [Public integration evidence](docs/qa/remediation-integrations.txt)
+
+### Post-audit remediation — release image qualification
+
+Rebuilt the stock Caddy command with patched dependencies, compared its full module list and validated forwarding and the login route. All six release images and ClamAV have matching-database Trivy reports. The database has one critical and 125 high matches. API, migrator and worker have 50 high each. Web and proxy retain one high each. ClamAV has zero matches after the supported Alpine libxml2 update. No remaining high/critical match has a scanner-listed fix. The institutional release gate stays closed. [Image IDs and counts](docs/qa/remediation-image-scans.md) · [Owner register](docs/qa/RELEASE_BLOCKERS.md)
+
+### Post-audit final acceptance checkpoint — 2026-11-21
+
+All local remediation acceptance suites finished. 331 backend, two additional real-engine, three frontend and 60 Playwright tests passed. All 242 discrepancy readings were zero across eleven databases. The local API/DB/scanner are healthy, the worker heartbeat is fresh and the original operational counts match preflight. The release remains NO-GO pending the critical Debian libxml2 match, remaining high package matches, live institutional sign-ins (0/5), authentic private provider evidence, production controls and governance. No historical migrations or institutional appointments were changed.
+
+Resume from the [remediation report](docs/qa/POST_AUDIT_REMEDIATION_REPORT.md) and [owner register](docs/qa/RELEASE_BLOCKERS.md). Use both compose.yaml and compose.scanner.yaml for scanner-enabled changes. The original database backup and full raw scans remain in the ignored private remediation directory. Keep all existing volumes and working files. [Test results](TEST_RESULTS.md) · [Next institutional actions](docs/qa/EXTERNAL_DEPENDENCIES_AND_POLICIES.md)

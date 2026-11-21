@@ -1,0 +1,1 @@
+Inventoried 80 routes, 50 policies, 27 policy-register entries; full source coverage verified.

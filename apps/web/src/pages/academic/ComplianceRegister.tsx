@@ -40,6 +40,7 @@ export function ComplianceRegister({
     search,
     offset: String(offset),
   });
+  if (params.get("department")) qs.set("department", params.get("department")!);
   if (period) qs.set("year_id", period);
   if (cutoff && Number.isFinite(Date.parse(cutoff)))
     qs.set("as_of", new Date(cutoff).toISOString());

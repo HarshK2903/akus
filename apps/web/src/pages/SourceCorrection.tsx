@@ -1,3 +1,4 @@
+import { EmploymentChanges } from "../components/EmploymentChanges";
 import { PermanentOrder } from "./academic/Exceptions";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -189,6 +190,12 @@ export function SourceCorrection() {
           </table>
         </div>
       </section>
+      <EmploymentChanges
+        key={data.person.id}
+        sources={data}
+        departments={refs.data?.departments ?? []}
+        actor={actor}
+      />
       <PermanentOrder episodes={data.episodes} />
       {notice && (
         <p role="status" className="success-notice">

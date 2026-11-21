@@ -2,7 +2,7 @@
 
 from collections.abc import Generator
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from typing import Annotated
 from uuid import UUID
 from zoneinfo import ZoneInfo
@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
 
 from akus.auth import digest, resolve
+from akus.exceptions.models import Departure
 from akus.identity.models import ExternalIdentity, InstitutionalSession
 from akus.models import AuthSession, DemoIdentity
 from akus.people.models import (
@@ -72,6 +73,16 @@ class Actor:
         )
 
 
+def current_episode(db: Session, person_id: UUID, today: date) -> EmploymentEpisode | None:
+    return db.scalar(
+        select(EmploymentEpisode).where(
+            EmploymentEpisode.person_id == person_id,
+            EmploymentEpisode.starts_on <= today,
+            or_(EmploymentEpisode.ends_before.is_(None), EmploymentEpisode.ends_before > today),
+        )
+    )
+
+
 def authority(
     db: Session,
     demo: DemoIdentity | None,
@@ -89,15 +100,21 @@ def authority(
     )
     if person is None or not person.enabled:
         raise HTTPException(403, "STAFF_NOT_PROVISIONED")
-    episode = db.scalar(
-        select(EmploymentEpisode).where(
-            EmploymentEpisode.person_id == person.id,
-            EmploymentEpisode.starts_on <= today,
-            or_(EmploymentEpisode.ends_before.is_(None), EmploymentEpisode.ends_before > today),
-        )
-    )
+    episode = current_episode(db, person.id, today)
     if episode is None:
         raise HTTPException(403, "EMPLOYMENT_INACTIVE")
+    if db.scalar(
+        select(Departure.id).where(
+            Departure.episode_id == episode.id,
+            Departure.effective_on <= today,
+            or_(Departure.effective_at.is_(None), Departure.effective_at <= now),
+        )
+    ):
+        raise HTTPException(403, "PERMANENT_ORDER_SOURCE_CONFLICT")
+    # The identity-link eligibility probe has no token. Every issued session
+    # belongs to one employment episode, including during a same-day rehire.
+    if session.token_hash and session.episode_id != episode.id:
+        raise HTTPException(401, "EMPLOYMENT_SESSION_REAUTHENTICATION_REQUIRED")
     assignment = db.scalar(
         select(DepartmentAssignment).where(
             DepartmentAssignment.episode_id == episode.id,

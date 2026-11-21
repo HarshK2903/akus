@@ -59,4 +59,6 @@ export const accessKey = (actor: Identity) => [
   actor.person_id,
   actor.roles,
   actor.department_ids,
+  actor.department,
+  actor.applicant_eligible,
 ];

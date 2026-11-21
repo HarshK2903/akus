@@ -7,5 +7,7 @@ class Base(DeclarativeBase):
 
 
 def database(url: str) -> tuple[Engine, sessionmaker[Session]]:
-    engine = create_engine(url, pool_pre_ping=True, connect_args={"connect_timeout": 3})
+    engine = create_engine(
+        url, pool_pre_ping=True, hide_parameters=True, connect_args={"connect_timeout": 3}
+    )
     return engine, sessionmaker(engine, expire_on_commit=False)

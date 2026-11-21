@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { api, roleHome, type Identity } from "../lib/api";
 import { sessionCsrf } from "../lib/session";
-import { ErrorState, Loading } from "../components/ui";
+import { ErrorState, WorkspaceLoading } from "../components/ui";
 const states: Record<string, [string, string]> = {
   "configuration-required": [
     "Google configuration required",
@@ -70,10 +70,13 @@ export function AuthComplete() {
       return result.identity;
     },
   });
-  if (query.isPending) return <Loading />;
+  if (query.isPending) return <WorkspaceLoading />;
   if (query.error)
     return (
-      <ErrorState error={query.error} retry={() => void query.refetch()} />
+      <main className="recovery-page">
+        <h1>Sign-in status</h1>
+        <ErrorState error={query.error} retry={() => void query.refetch()} />
+      </main>
     );
   return query.data ? (
     <Navigate to={roleHome(query.data.role)} replace />

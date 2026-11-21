@@ -942,3 +942,75 @@ def test_historical_report_respects_invalidation_at_knowledge_cutoff(client, db)
     assert historical(db, app, during)["finding"]["eligibility"] == "SUSPENDED_PENDING_REVIEW"
     assert not ay(report(client, episode))["allocations"]
     assert_balance(db, s["pool"], 0)
+
+
+def test_enrollment_integrity_races_certificate_review_and_saves_suspension(client, db):
+    from test_admission import actor_token, parallel
+    from test_participation import proof
+
+    from akus.applications import participation
+    from akus.applications.models import Application
+    from akus.applications.participation_schemas import EnrollmentVerify
+    from akus.compliance import credentials
+    from akus.compliance.schemas import Verify
+
+    s, path, ep, body, staff = academic_case(client, db)
+    aid = UUID(path.split("/")[-1])
+    appoint(client, db, str(aid))
+    early = proof(
+        expected_version=1, enrolled_at=(datetime.now(UTC) - timedelta(days=1)).isoformat()
+    )
+    assert (
+        post(
+            client, f"/applications/{aid}/enrollment-claims", early, login(client, staff)
+        ).status_code
+        == 200
+    )
+    claim = participation.claim_current(db, aid)
+    evidence = EnrollmentVerify.model_validate(
+        early | {"claim_id": claim.id, "outcome": "VERIFIED", "independently_authenticated": True}
+    )
+    results = parallel(
+        client,
+        [
+            (
+                actor_token(client, "hod"),
+                lambda tx, a: participation.verify(tx, a, uuid4(), aid, evidence),
+            ),
+            (
+                actor_token(client, "acting-hod"),
+                lambda tx, a: credentials.write(
+                    tx, a, uuid4(), aid, Verify.model_validate(decision(body))
+                ),
+            ),
+        ],
+    )
+    assert results == ["OK", "OK"]
+    assert_balance(db, s["pool"], 1)
+    assert db.get(Application, aid).state == "APPROVED"
+    current = ay(report(client, ep))
+    assert current["status"] == "UNDER_INTEGRITY_REVIEW" and not current["allocations"]
+    last_saved = db.scalar(
+        select(AssessmentSnapshot)
+        .where(AssessmentSnapshot.episode_id == ep.id)
+        .order_by(AssessmentSnapshot.recorded_at.desc())
+        .limit(1)
+    )
+    assert ay(last_saved.facts) == current
+
+
+def test_public_offering_metadata_cannot_authenticate_individual_score(client, db):
+    from akus.catalog.models import ProviderSnapshot
+    from akus.catalog.provider import BASE_URL
+
+    s, path, _, body, _ = academic_case(client, db)
+    h = appoint(client, db, path.split("/")[-1])
+    preview = db.get_one(ProviderSnapshot, UUID(s["offering"]["snapshot_id"]))
+    for changes in [
+        {"source_reference": BASE_URL + "?course_id=noc26_cs98"},
+        {"document_digest": preview.digest},
+    ]:
+        rejected = post(client, path + "/verify", decision(body) | changes, h)
+        assert rejected.status_code == 422, rejected.text
+        assert rejected.json()["error"]["code"] == "PUBLIC_COURSE_METADATA_IS_NOT_PERSON_EVIDENCE"
+    assert client.get("/api/v1" + path).json()["version"] == 1

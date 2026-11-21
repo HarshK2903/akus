@@ -12,7 +12,8 @@ from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
 
 from akus.access import Actor, authority
-from akus.catalog.models import AcademicEvent
+from akus.catalog.models import AcademicEvent, ProviderSnapshot
+from akus.catalog.provider import BASE_URL
 from akus.identity.models import ExternalIdentity, InstitutionalSession
 from akus.models import AuditEvent, AuthSession
 from akus.people.models import CommandReceipt, OfficeAppointment
@@ -31,6 +32,14 @@ def replay(
     db: Session, actor: Actor, key: UUID, operation: str, body: BaseModel
 ) -> CommandResult | None:
     return source_replay(db, actor, key, receipt_operation(operation), body)
+
+
+def require_person_evidence(db: Session, reference: str, digest: str) -> None:
+    endpoint = reference.split("?", 1)[0].split("#", 1)[0].rstrip("/").casefold()
+    if endpoint == BASE_URL.casefold() or db.scalar(
+        select(ProviderSnapshot.id).where(ProviderSnapshot.digest == digest).limit(1)
+    ):
+        raise HTTPException(422, "PUBLIC_COURSE_METADATA_IS_NOT_PERSON_EVIDENCE")
 
 
 def normalize(value: str) -> str:
@@ -166,6 +175,7 @@ __all__ = [
     "refresh",
     "department_scope",
     "require_hod",
+    "require_person_evidence",
     "require_applicant",
     "event",
     "finish",

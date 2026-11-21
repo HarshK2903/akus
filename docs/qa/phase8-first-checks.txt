@@ -1,0 +1,94 @@
+ Container akus-local-api-run-a5e6fd5564a3 Creating 
+ Container akus-local-api-run-a5e6fd5564a3 Created 
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps/api/akus/main.py:1:1
+   |
+ 1 | / import json
+ 2 | | import logging
+ 3 | | from datetime import UTC, datetime, timedelta
+ 4 | | from uuid import uuid4
+ 5 | |
+ 6 | | from fastapi import FastAPI, Request, Response
+ 7 | | from fastapi.exceptions import RequestValidationError
+ 8 | | from fastapi.responses import JSONResponse
+ 9 | | from sqlalchemy import select, text
+10 | | from sqlalchemy.exc import SQLAlchemyError
+11 | | from starlette.exceptions import HTTPException
+12 | |
+13 | | from akus.access import DB, Current, authority
+14 | | from akus.applications.outcome_router import router as outcomes_router
+15 | | from akus.applications.router import router as applications_router
+16 | | from akus.auth import csrf_valid, resolve, sign_in
+17 | | from akus.body_limit import BodyLimitMiddleware
+18 | | from akus.catalog.router import router as catalog_router
+19 | | from akus.compliance.router import router as compliance_router
+20 | | from akus.config import Settings
+21 | | from akus.db import database
+22 | | from akus.workspace.router import router as workspace_router
+23 | | from akus.exceptions.router import router as exceptions_router
+24 | | from akus.identity.router import router as identity_router
+25 | | from akus.models import AcademicYear, AuditEvent, DemoIdentity, WorkerHeartbeat
+26 | | from akus.people.router import router as people_router
+27 | | from akus.policy import HELP
+28 | | from akus.schemas import (
+29 | |     AuthConfig,
+30 | |     DemoLogin,
+31 | |     Foundation,
+32 | |     Health,
+33 | |     Identity,
+34 | |     LoginResult,
+35 | |     PolicyHelp,
+36 | |     Year,
+37 | | )
+38 | | from akus.sources.router import router as sources_router
+   | |________________________________________________________^
+39 |
+40 |   log = logging.getLogger("akus")
+   |
+help: Organize imports
+   |
+21 | from akus.db import database
+   - from akus.workspace.router import router as workspace_router
+22 | from akus.exceptions.router import router as exceptions_router
+--------------------------------------------------------------------------------
+37 | from akus.sources.router import router as sources_router
+38 + from akus.workspace.router import router as workspace_router
+39 |
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> apps/api/migrations/env.py:1:1
+   |
+ 1 | / from alembic import context
+ 2 | |
+ 3 | | from akus import models  # noqa: F401
+ 4 | | from akus.applications import models as application_models  # noqa: F401
+ 5 | | from akus.applications import (
+ 6 | |     outcome_models,  # noqa: F401
+ 7 | |     workflow_models,  # noqa: F401
+ 8 | | )
+ 9 | | from akus.catalog import models as catalog_models  # noqa: F401
+10 | | from akus.compliance import models as compliance_models  # noqa: F401
+11 | | from akus.config import Settings
+12 | | from akus.db import Base, database
+13 | | from akus.exceptions import models as exception_models  # noqa: F401
+14 | | from akus.identity import models as identity_models  # noqa: F401
+15 | | from akus.people import models as people_models  # noqa: F401
+16 | | from akus.quotas import models as quota_models  # noqa: F401
+17 | | from akus.sources import models as source_models  # noqa: F401
+18 | |
+19 | | from akus.workspace import models as workspace_models  # noqa: F401
+   | |_____________________________________________________^
+20 |
+21 |   engine, _ = database(Settings().database_url)
+   |
+help: Organize imports
+   |
+17 | from akus.sources import models as source_models  # noqa: F401
+   -
+18 | from akus.workspace import models as workspace_models  # noqa: F401
+   |
+
+Found 2 errors.
+[*] 2 fixable with `--fix`.
+

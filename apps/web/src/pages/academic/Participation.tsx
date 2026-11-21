@@ -87,11 +87,11 @@ export function Participation({
               : "No external enrollment evidence recorded"}
         </Badge>
         <p>
-          These records identify material retained in an official archive.
-          Binary upload and malware scanning are not available here. An
-          assertion or reference alone is not verified participation.
+          Record the official archive reference and the precision of the
+          enrollment date. Supporting PDFs belong in Application evidence. An
+          independent finding is required to verify enrollment.
         </p>
-        {app.own &&
+        {app.own_current_episode &&
           ["DRAFT", "UNDER_REVIEW", "APPROVED"].includes(app.state) && (
             <details>
               <summary>Record or correct enrollment evidence</summary>
@@ -195,40 +195,43 @@ export function Participation({
           </form>
         </section>
       )}
-      {app.own && live && latest && !data.pending_withdrawal && (
-        <section className="panel prose section-gap">
-          <h2>Request withdrawal after enrollment</h2>
-          <p>
-            Before commencement, current HoD can authorize release after
-            verification. A request alone keeps the seat counted. After
-            commencement voluntary withdrawal retains it.
-          </p>
-          <form
-            className="source-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              request.mutate({
-                path: `/applications/${app.id}/withdrawal-requests`,
-                body: {
-                  expected_version: app.version,
-                  voluntary_request: true,
-                  ...reasonFields(new FormData(e.currentTarget)),
-                },
-              });
-            }}
-          >
-            <SourceFields />
-            <label className="checkbox-label">
-              <input type="checkbox" required /> I voluntarily request HoD
-              review of my withdrawal.
-            </label>
-            <CommandError error={request.error} />
-            <button disabled={request.isPending}>
-              Request HoD withdrawal decision
-            </button>
-          </form>
-        </section>
-      )}
+      {app.own_current_episode &&
+        live &&
+        latest &&
+        !data.pending_withdrawal && (
+          <section className="panel prose section-gap">
+            <h2>Request withdrawal after enrollment</h2>
+            <p>
+              Before commencement, current HoD can authorize release after
+              verification. A request alone keeps the seat counted. After
+              commencement voluntary withdrawal retains it.
+            </p>
+            <form
+              className="source-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                request.mutate({
+                  path: `/applications/${app.id}/withdrawal-requests`,
+                  body: {
+                    expected_version: app.version,
+                    voluntary_request: true,
+                    ...reasonFields(new FormData(e.currentTarget)),
+                  },
+                });
+              }}
+            >
+              <SourceFields />
+              <label className="checkbox-label">
+                <input type="checkbox" required /> I voluntarily request HoD
+                review of my withdrawal.
+              </label>
+              <CommandError error={request.error} />
+              <button disabled={request.isPending}>
+                Request HoD withdrawal decision
+              </button>
+            </form>
+          </section>
+        )}
       {data.pending_withdrawal && (
         <section className="panel prose section-gap">
           <h2>Pending HoD withdrawal request</h2>

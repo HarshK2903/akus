@@ -118,11 +118,19 @@ export function Compliance() {
   const silver = loc.pathname.includes("/silver");
   const offset = Math.max(0, Number(params.get("offset")) || 0),
     search = params.get("search") || "";
+  const department = params.get("department") || "";
   const epq = useQuery({
-    queryKey: ["compliance-episodes", scope, accessKey(actor), offset, search],
+    queryKey: [
+      "compliance-episodes",
+      scope,
+      accessKey(actor),
+      offset,
+      search,
+      department,
+    ],
     queryFn: () =>
       api<{ items: Episode[]; total: number }>(
-        `/compliance/episodes?${new URLSearchParams({ scope, offset: String(offset), search })}`,
+        `/compliance/episodes?${new URLSearchParams({ scope, offset: String(offset), search, ...(department ? { department } : {}) })}`,
       ),
   });
   const eid = params.get("episode") || epq.data?.items[0]?.id,

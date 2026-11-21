@@ -1,3 +1,7 @@
+## Phase 7 employment exits and historical correctness
+
+Retain the existing people, exception-case, quota and compliance ledgers. Revision 0019 binds sessions to the issuing episode and timestamps new institutional source revisions when they are appended. Source administration records a rehire and its home department in one command. The reporting APIs combine immutable case decisions and source revisions within current read authority. [Phase 7 checklist](codex/PHASE7_CHECKLIST.md)
+
 ## Phase 6 · 2026-11-20
 
 Phase 6 extends Phase 5 historical findings with application-scoped verified credential revisions, private evidence and episode-level annual/Silver assessments. The Phase 6 checklist indexes the deployed routes, PostgreSQL invariants, regressions and dated observations. The [Phase 6 local acceptance gate](codex/PHASE6_CHECKLIST.md) passed at migration head `0018_exam_evidence`. The approved successor is Phase 7 employment exits and historical correctness.
@@ -82,3 +86,9 @@ Migrations 0013 through 0016 add permanent HR orders, frozen employment snapshot
 The historical review stores the verified exam and issuance dates independently of the quota schedule. A later subject-relevance finding can update the latest view while the original certificate finding and earlier as-of reports stay available. Dedicated routes and tests are indexed in [the Phase 5 checklist](codex/PHASE5_CHECKLIST.md). Phase 6 covers the broader evidence, active annual and Silver workflows.
 
 Capacity changes now enqueue transfer rechecks only for counted applications waiting on the affected department, canonical topic and destination year. First publication takes the source-authority gate before the pool lock, which orders publication against creation of a missing-target case. The worker starts its next bounded batch immediately after a full batch. Existing ledger, receipt and historical work rows remain intact.
+
+Phase 8 implements the remaining scoped workspaces over existing ledgers, personal inbox receipts and versioned presentation settings, durable metadata refresh and ambiguity review. Migration 0020 is additive. Role routes, API inventory checks, responsive journeys and release gates are indexed in [the acceptance checklist](codex/PHASE8_CHECKLIST.md).
+
+Phase 8 migration 0021 adds immutable private application attachments for FAC-08 and FAC-12. Both routes use the same versioned evidence API. Submission pins the revision IDs inside the existing reservation transaction.
+
+The Phase 8 local release gate passed on 2026-11-21 at 0021. [Acceptance and remaining external gates](codex/PHASE8_CHECKLIST.md).

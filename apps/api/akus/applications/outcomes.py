@@ -250,6 +250,8 @@ def decide(db: Session, actor: Actor, key: UUID, aid: UUID, body: OutcomeDecisio
     starts_on = accepted.metadata_json.get("starts_on") if accepted else None
     if body.concluded_on and starts_on and body.concluded_on < date.fromisoformat(starts_on):
         raise HTTPException(423, "OUTCOME_PRECEDES_COURSE_START_RECONCILIATION_REQUIRED")
+    if body.outcome != "UNRESOLVED":
+        common.require_person_evidence(db, body.source_reference, body.document_digest)
     finding = OutcomeFinding(
         id=uuid4(),
         attempt_id=aid,

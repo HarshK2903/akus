@@ -1,0 +1,21 @@
+Sat Nov 21 14:41:53 UTC 2026
+NAME                   IMAGE                                                                     COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+akus-local-api-1       akus-local-api                                                            "uvicorn akus.main:c…"   api       3 minutes ago    Up 3 minutes (healthy)    
+akus-local-clamd-1     akus-local-clamd                                                          "/bin/sh -ec 'chown …"   clamd     3 minutes ago    Up 3 minutes (healthy)    3310/tcp, 7357/tcp
+akus-local-db-1        akus-local-db                                                             "docker-entrypoint.s…"   db        11 minutes ago   Up 11 minutes (healthy)   5432/tcp
+akus-local-migrate-1   sha256:8d91cd6cd777c2f669a4e2fd359eb01e2e0b420406466668cce5de274ee3903d   "sh -c 'alembic -c a…"   migrate   3 hours ago      Exited (0) 3 hours ago    
+akus-local-proxy-1     akus-local-proxy                                                          "caddy run --config …"   proxy     3 hours ago      Up 17 minutes             443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1       akus-local-web                                                            "caddy run --config …"   web       6 minutes ago    Up 6 minutes              80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1    akus-local-worker                                                         "python -m akus.work…"   worker    3 minutes ago    Up 3 minutes              
+akus-local_akus_pg 2026-11-16T00:36:02+05:30
+postgres (PostgreSQL) 16.16 (Debian 16.16-1.pgdg13+1)
+1.20 (go1.27.4 on linux/amd64; gc)
+libxml2:amd64	2.12.7+dfsg+really2.9.14-2.1+deb13u3
+	libxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f75a5d5d000)
+7708476577220165670|0021_application_files|175|5137|292|8|9
+foundation|t
+0021_application_files (head)
+No new upgrade operations detected.
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}Live OpenAPI matches published document: True paths: 113
+libxml2-2.13.9-r3 x86_64 {libxml2} (MIT) [installed]
+Running services: [('api', 'running', 'healthy'), ('clamd', 'running', 'healthy'), ('db', 'running', 'healthy'), ('proxy', 'running', ''), ('web', 'running', ''), ('worker', 'running', '')]

@@ -414,6 +414,10 @@ def _change(
         person.source_reference = body.source_reference
         record = person
     elif body.kind == "employment":
+        from akus.compliance.assessment import capture
+        from akus.exceptions.models import Departure
+        from akus.exceptions.service import process_order
+
         employment = EmploymentFacts.model_validate(body.values)
         record = db.get(EmploymentEpisode, body.id) if body.id else None
         if body.id:
@@ -479,9 +483,17 @@ def _change(
                     or (office.office == "DRC_HEAD" and not employment.is_faculty)
                 ):
                     raise HTTPException(409, "CORRECT_OFFICE_INTERVALS_FIRST")
+            if record.is_faculty:
+                capture(db, record)
             for k, v in employment.model_dump().items():
                 setattr(record, k, v)
             record.source_reference = body.source_reference
+            db.flush()
+            order = db.scalar(select(Departure).where(Departure.episode_id == record.id))
+            if order:
+                process_order(db, order, cfg)
+            if record.is_faculty:
+                capture(db, record)
         else:
             record = EmploymentEpisode(
                 person_id=person.id,

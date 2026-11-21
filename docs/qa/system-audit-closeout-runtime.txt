@@ -1,0 +1,35 @@
+2026-11-21T16:51:17+05:30
+NAME                              IMAGE                COMMAND                  SERVICE   CREATED         STATUS                     PORTS
+akus-browser-audit-30889-api      akus-local-api       "uvicorn akus.main:c…"   api       3 minutes ago   Up 3 minutes (healthy)     
+akus-browser-audit-30889-proxy    akus-local-proxy     "caddy run --config …"   proxy     3 minutes ago   Up 3 minutes               443/tcp, 2019/tcp, 443/udp, 127.0.0.1:18086->80/tcp
+akus-browser-audit-30889-worker   akus-local-worker    "python -m akus.work…"   worker    3 minutes ago   Up 3 minutes               
+akus-local-api-1                  akus-local-api       "uvicorn akus.main:c…"   api       4 minutes ago   Up 4 minutes (healthy)     
+akus-local-db-1                   akus-local-db        "docker-entrypoint.s…"   db        4 minutes ago   Up 4 minutes (healthy)     5432/tcp
+akus-local-migrate-1              akus-local-migrate   "sh -c 'alembic -c a…"   migrate   4 minutes ago   Exited (0) 4 minutes ago   
+akus-local-proxy-1                akus-local-proxy     "caddy run --config …"   proxy     4 minutes ago   Up 3 minutes               443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1                  akus-local-web       "caddy run --config …"   web       4 minutes ago   Up 4 minutes               80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1               akus-local-worker    "python -m akus.work…"   worker    4 minutes ago   Up 4 minutes               
+akus-local_akus_pg 2026-11-16T00:36:02+05:30
+0021_application_files (head)
+No new upgrade operations detected.
+65532
+CapEff:	0000000000000000
+NoNewPrivs:	1
+PostgreSQL 16.16 (Debian 16.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit|t
+HTTP/1.1 200 OK
+Cache-Control: private, no-store
+Content-Length: 83
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+Content-Type: application/json
+Date: Sat, 21 Nov 2026 11:21:19 GMT
+Referrer-Policy: same-origin
+Server: uvicorn
+Via: 1.1 Caddy
+X-Content-Type-Options: nosniff
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-Request-Id: d6eea2cb-5576-45b2-8f99-5d8f368f6744
+
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+Login HTTP 200
+Demo True Google enabled False scanner socket configured False scanner socket present False

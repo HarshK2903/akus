@@ -83,3 +83,11 @@ class EmailFacts(BaseModel):
         if self.valid_until and self.valid_until <= self.valid_from:
             raise ValueError("End must follow start")
         return self
+
+
+class Rehire(SourceCommand):
+    previous_episode_id: UUID
+    expected_version: int = Field(ge=1)
+    starts_on: date
+    department_id: UUID
+    is_faculty: bool

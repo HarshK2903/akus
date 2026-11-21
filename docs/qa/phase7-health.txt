@@ -1,0 +1,31 @@
+NAME                              IMAGE                                                                     COMMAND                  SERVICE   CREATED              STATUS                                 PORTS
+akus-local-api-1                  akus-local-api                                                            "uvicorn akus.main:c…"   api       About a minute ago   Up 49 seconds (healthy)                
+akus-local-api-run-ebba41b78603   sha256:6eb985e04ca6091842fdf3a8571a0378497e8acbe4c10f99420e80a75d53c647   "sh -c 'ruff check -…"   api       About a minute ago   Up About a minute (health: starting)   
+akus-local-db-1                   postgres:16                                                               "docker-entrypoint.s…"   db        4 days ago           Up 47 minutes (healthy)                5432/tcp
+akus-local-migrate-1              akus-local-migrate                                                        "sh -c 'alembic -c a…"   migrate   About a minute ago   Exited (0) 50 seconds ago              
+akus-local-proxy-1                caddy:2-alpine                                                            "caddy run --config …"   proxy     4 days ago           Up 47 minutes                          443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1                  akus-local-web                                                            "caddy run --config …"   web       About a minute ago   Up 52 seconds                          80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1               akus-local-worker                                                         "python -m akus.work…"   worker    About a minute ago   Up 49 seconds                          
+Retained PostgreSQL volume akus-local_akus_pg created 2026-11-16T00:36:02+05:30
+akus-local_akus_pg /var/lib/postgresql/data
+Frontend HTTP 200
+{"status":"ready","database":"connected","schema_version":"0019_employment_sessions"}0019_employment_sessions (head)
+No new upgrade operations detected.
+ERROR:  column "last_seen_at" does not exist
+LINE 1: SELECT name, now()-last_seen_at AS heartbeat_age FROM worker...
+                           ^
+    name    |  heartbeat_age  
+------------+-----------------
+ foundation | 00:00:00.648014
+(1 row)
+
+ linked_google_identities 
+--------------------------
+                        0
+(1 row)
+
+ active_credential_mandates 
+----------------------------
+                          0
+(1 row)
+

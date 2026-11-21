@@ -1,0 +1,8 @@
+Interrupted run log terminates at Vite successful build. 320 backend in 177.93 seconds, 2 warnings, 3 frontend, 53 standard, 4 isolated, 2 supplemental. No live suite required resumption.
+Recovery check matched all 219 original input hashes before editing.
+At recovery 18 GiB available on workspace, 6.2 GiB on /tmp. Prior temporary snapshot not present. Fresh private archive 1653729 bytes, mode 600, SHA-256 076a3fbdba48bfa7dad12f6fa76505b6955d85d09af60690f6123a215271b1f3, 606 pg_restore catalog lines.
+Private archive under ignored .local/private/system-audit-recovery.rA8MPcRD/akus.dump. Operator to apply approved retention.
+Retained PostgreSQL cluster ID, schema, applications, audit events, quota ledger rows, attachment revisions, credential documents:
+7708476577220165670|0021_application_files|175|5137|292|8|9
+Storage identity/counts matched before/after patched release on original volume.
+Optional identify utility unavailable. PNG header for prior mobile evidence screenshot verified with Python: (320, 2178).

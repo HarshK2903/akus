@@ -1,0 +1,2 @@
+demo_enabled True google_configured False public_origin http://127.0.0.1:8080 clamd_configured False socket_present False
+Public preview https://onlinecourses.nptel.ac.in/e-learning/api/coursepreview?course_id=noc26_cs98 2026-11-21T09:09:52.884980+00:00 6f0b93fe2e1db35e07f7a1d57d16923c3e479cb16284e9f277837a03a606b896

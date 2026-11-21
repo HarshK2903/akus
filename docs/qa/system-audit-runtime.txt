@@ -1,0 +1,53 @@
+CONTAINER                           REPOSITORY           TAG                 PLATFORM            IMAGE ID            SIZE                CREATED
+akus-browser-audit-1307864-api      akus-local-api       latest              linux/amd64         72b187b0c535        308MB               4 minutes ago
+akus-browser-audit-1307864-proxy    caddy                2-alpine            linux/amd64         5813f7eb9b94        65.3MB              2 weeks ago
+akus-browser-audit-1307864-worker   akus-local-worker    latest              linux/amd64         5ebdd4fa1c16        308MB               4 minutes ago
+akus-local-api-1                    akus-local-api       latest              linux/amd64         72b187b0c535        308MB               4 minutes ago
+akus-local-db-1                     postgres             16                  linux/amd64         6b7038c60456        468MB               8 days ago
+akus-local-migrate-1                akus-local-migrate   latest              linux/amd64         5cc4eb55dd58        308MB               4 minutes ago
+akus-local-proxy-1                  caddy                2-alpine            linux/amd64         5813f7eb9b94        65.3MB              2 weeks ago
+akus-local-web-1                    akus-local-web       latest              linux/amd64         b111c0cda2e8        66MB                4 minutes ago
+akus-local-worker-1                 akus-local-worker    latest              linux/amd64         5ebdd4fa1c16        308MB               4 minutes ago
+Volume akus-local_akus_pg 2026-11-16T00:36:02+05:30
+0021_application_files (head)
+No new upgrade operations detected.
+3.13.18 api uid 65532
+CapEff:	0000000000000000
+NoNewPrivs:	1
+65532
+                                                       version                                                        | worker_current 
+----------------------------------------------------------------------------------------------------------------------+----------------
+ PostgreSQL 16.16 (Debian 16.16-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit | t
+(1 row)
+
+HTTP/1.1 200 OK
+Cache-Control: private, no-store
+Content-Length: 83
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+Content-Type: application/json
+Date: Sat, 21 Nov 2026 09:13:44 GMT
+Referrer-Policy: same-origin
+Server: uvicorn
+Via: 1.1 Caddy
+X-Content-Type-Options: nosniff
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-Request-Id: dc68e360-e538-4055-b72f-9786aea2da81
+
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Content-Length: 612
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+Content-Type: text/html; charset=utf-8
+Date: Sat, 21 Nov 2026 09:13:45 GMT
+Etag: "dn0rs68y4od0-h0"
+Last-Modified: Sat, 21 Nov 2026 09:09:31 GMT
+Referrer-Policy: same-origin
+Server: Caddy
+Vary: Accept-Encoding
+Via: 1.1 Caddy
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+v24.22.1
+11.19.1

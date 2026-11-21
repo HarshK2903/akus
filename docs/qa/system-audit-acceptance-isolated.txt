@@ -1,0 +1,160 @@
+ Container akus-local-api-run-6b8d52dd0bb1 Creating 
+ Container akus-local-api-run-6b8d52dd0bb1 Created 
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "321d179c-5702-456f-bb7c-d43a93f01cc8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9e925ea4-e9d6-40e8-86d3-9241061a362b"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "5870393b-6f15-4320-af5f-cbfe8d32b4f1"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "63329629-5fc7-4979-87da-8978260bd2b1"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "45bb1574-2bc8-4e94-952d-db2d2e44a5d8"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "3cdef8f5-6be6-4083-afbc-338736d2393d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3bea22b3-6a25-4d73-8cea-ac0565c72a8f"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "685c5cf2-0c93-4920-b334-2821d407e15c"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "321d3df9-82b0-41a1-8aa2-0d6fb8d6f5de"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ade91cc5-4dc6-4d80-85ff-b5d4c7c1067a"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "7a5bf6d2-a066-4978-8014-3455b58638e0"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "269019a9-40dc-4b3e-a154-c1b704aaed99"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0fdb1ae6-bc60-4034-b4f1-186d48ae5086"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ebd010c1-e907-403b-97e5-440cf469385f"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a1c55912-a966-42ff-9d60-74082c4e5f4d"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "8e3b8987-b56f-4368-89b2-8364b7a7830d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "2b25f33a-619a-496e-b7f0-85e6a49cacfd"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0a32c0ee-74e0-41f5-a907-8d3835c18d06"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "c80466ce-2a11-47b3-b087-32255280b20a"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "91c74dd4-9188-47ad-8936-84bcc34abc5b"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3823f977-c157-4f6e-b318-857f30637a80"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4d58cb37-c10e-489b-b343-8f04a11f2438"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4752e844-d008-49da-8959-6658efa7c3b4"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "35472d78-29da-4b21-80d8-aec9001d8aed"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "59318dca-43c8-4b2f-8a3b-65313dbd4666"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "87d4de50-4eb9-45b0-a283-e18d4fd5b0be"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "651f6598-2858-4dd9-8640-01afee24ee0a"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "6e171c81-1481-4984-9865-ad56ad4b1b13"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8694a087-b833-4d44-92ef-902980f7c3b0"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "6430155e-d7b0-41c2-945f-72efa62618d8"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ad1cf8b6-efad-4959-b592-16fe474a4d70"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "73f07d08-93a9-4696-afc7-86733ab00d66"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "d3b1b17a-7690-4d8b-aa01-c97a9adbcb1f"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "be96c560-1622-407a-946b-a827e170492b"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "117e91ed-9e4e-4cee-a338-470ed82cbd52"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "9fb9ed29-e773-43cb-8c42-98f5c649e055"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "892adcd1-3e4e-4d60-a931-ce7c0a1a0693"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "6459f662-2272-4adc-a66f-bdd9a8774ab3"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "c8385de7-11fd-4b32-bb68-4814cab2617e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "2d253fcb-af8e-47cd-950d-5a0f618fb150"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "493adb7f-b396-4724-b558-6ce3bb175ade"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "77a58252-e8b0-44df-8fd9-566af7ff8101"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8d92b88e-ea41-44b7-8199-a456638790a8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "e9ab7b9a-c2c2-4f9b-bcc9-3f3498d5356a"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "563a3721-a5a3-4981-a1fd-331255799e0c"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9d671c79-769e-4556-bb64-9a8756fdf464"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0d93440e-a797-49e3-8668-4eeff34d459b"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "cbf1cb67-dc11-4a41-89bd-69f52bfe30a0"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "7b369d4b-5fad-469d-ad11-2c04ebaa4a1e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "cf2fb224-39b2-40a6-8ae1-d25289947440"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "1117f3e5-683b-4c91-bf3d-76328c3940fa"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "d9969db5-d029-4d34-bb26-793eb1a34971"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "54bc1fce-e155-4acc-99b2-9da98d7079ef"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "02f1bd49-e106-485c-9cb0-0f8102a1dabe"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8a5850be-ec32-4503-a083-685ab3e6a004"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "541e895e-d24e-4b84-b99a-c723f4fb7e4b"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0ab110df-0810-428e-b27e-17ca737ae838"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "aaf09a7f-0a4e-4cc4-90ec-4220ae8e1190"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "abf13728-0a00-4b80-9aba-ca3de193fb68"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "1b28ba77-a077-4257-a0b1-dec2917435b3"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "345a16fa-7b2c-4f95-832c-7fcec276b840"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ef1389af-93dd-4225-bc43-0b426bcbd274"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "583c2755-c0ea-489e-a41e-0c321de3cfbc"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4c3f1ade-5b31-4f9f-9a90-5ed9ba3ac8f4"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "61f203f9-c92e-46a7-bfee-50a699bfd5f4"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "2fa531ce-91fe-4f49-945f-f486c4070216"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0915c951-7710-4081-a59b-30e35d483c07"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "de8db399-8d85-4be4-b705-a1de77efb103"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "c25b4b72-13c8-462d-acbc-f47a3e052716"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "3de7997a-cff5-4176-b67e-5c14bb757cd9"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "78d38dbe-c41d-42c0-adfd-c2b9dce6b92a"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "35f9deeb-8427-41a3-bf52-00834ca16caa"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "c3015d3f-65f9-4fff-af2c-c9361fdb7cd0"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "5ef6b5aa-c9cc-4ccd-b215-e96e971c86cd"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7fe9acdb-f4d1-46b4-a8b7-1d134fff8601"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "95f835e9-0b62-4ee6-9472-6c1e42e4b69d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "29f5f686-3c11-4ef7-a76b-1db281bd7744"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "75beed30-6571-484f-a148-c41f3c78f71d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "afa7661e-3c4e-46ff-a284-64fbaeda05bc"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "fd185ed9-fe80-43de-a13a-86bfe68141d8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "eb76a543-10a7-472d-b757-5dbc798601d7"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "5a69233f-a700-4766-8550-5633ebd92e84"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7bf75821-f791-4cd5-92f8-e52d066102ac"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f62e2a3c-cc12-4a45-ae62-c64eae74da7d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bcdc87a8-68b1-488c-b191-4cf0af15e360"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "da890e6a-8952-457f-ba6f-8f9e5bf443d6"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "94628d59-d368-4407-9270-bea4abd9891f"}
+LOCAL_PHASE5_BROWSER={"pending": "6c076960-8b23-4d58-ba04-cae37afa0bf4", "historical": "dbc42930-e3cc-460f-b8cf-7b337b901e74", "date_only": "39e78952-a40e-4ed2-b6d8-38e74da8b739", "enrolled_on": "2026-11-20", "exam_at": "2026-11-21T09:30:04.785000+00:00", "exam_on": "2026-11-21"}
+.{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "fbe80fe8-67ea-4e92-8624-e54325bbaa0e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "70ce4c82-4219-475f-b767-991876f02945"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "1ebb0d5d-165f-4ade-b034-083b01172253"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9c8f3677-369c-4072-be81-d0ffb234f2f0"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "e2763d5b-9c60-46e9-b3f8-b59972957e41"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "2e2ddf1e-3287-4ae9-a803-d36fd9020165"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "defcd713-603b-4e42-bc5a-104e9be98b55"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "8ed12097-ee7d-40d8-b2da-11a44ccb902d"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "aab456a4-6a2f-4846-9c8a-fa43583b4af5"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ed8452ff-6e97-4543-8e1e-843257d68fdd"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "e19fb40e-a812-4aca-a9b9-fbde07868930"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "c4db8463-e623-4491-90ac-137cb812ea62"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "8e675d4c-5707-4b61-907a-9049bb1943c0"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0d60e91c-0bd9-4a90-b87f-1dd1998ad4c9"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4360628d-caeb-4521-afe1-62c70e7bbd32"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "496d3ce3-853a-4a04-975a-a730016d2c27"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f37ab1a9-fc30-45f3-ab4a-da88dafb77a6"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "5689be66-186d-48b7-b7ee-e2b662d72b00"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b8ee891d-224a-473b-9196-ed5144cd0df3"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "997a65e9-78ed-4f48-8452-b1753db647f3"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "e193110f-e510-4161-9ca7-52edae9b6b7b"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bfffd4e9-9a29-4cc6-98b1-e7fbf476e4ab"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "3abe7cdc-4bf6-4390-891a-83cd6294d926"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "4ba8f549-1b1d-4223-8c8d-8b88857e9382"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0aa8fd76-edcf-4f8c-887d-0ec78c70500f"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "db2d4303-491f-49c7-9cc4-10896c521b8e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9c295644-063c-45d3-ad64-a13a1768fe85"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "622df28b-5147-4b81-b74d-db3b0e4638da"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b39b20e2-1b69-4e56-b0b6-8c9208186979"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "53c2d5ff-fca6-41a4-9cbc-d731ae8c0fce"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "630c172c-1624-4cd0-86e0-a535e3127965"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "0561026f-a4a9-4beb-aa01-dd8ce15d4038"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4aedd074-25c0-46e7-bbf5-595546f93338"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "9f9f78ba-6edc-42ef-a772-c9f728be7129"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "8fc7e8c9-f584-4df6-bc89-3660cda47337"}
+LOCAL_PHASE6_BROWSER={"aid": "9132cd6d-2601-481a-a2c5-7ab15ab09545", "episode": "a807b0b1-c541-4474-8c63-721551a392c2", "staff": "sep-c6de953a4e2648bf", "exam_at": "2026-11-21T09:30:05.987176+00:00", "key": "LOCAL_TEST_9132cd6d-2601-481a-a2c5-7ab15ab09545"}
+.
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+2 passed, 2 warnings in 3.17s
+ Container akus-phase5-proof-1343550-api Creating 
+ Container akus-phase5-proof-1343550-api Created 
+44fdae034bc723cd24762e93e67d3e47b115ce83f57c8af3189e1f254b1fdf24
+ Container akus-phase5-proof-1343550-proxy Creating 
+ Container akus-phase5-proof-1343550-proxy Created 
+3bbeb1a69240ea741285f3b5e60788ff1b7bdb7ef52642f3b2678e3fa578f071
+curl: (56) Recv failure: Connection reset by peer
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+> akus-web@0.1.0 e2e
+> playwright test --config phase5-proof.config.ts
+
+
+Running 4 tests using 1 worker
+
+(node:1344064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 qa/credential.spec.ts:6:1 › case-appointed independent verifier confirms a 65% certificate and the participant compares the two dated reports (4.2s)
+  ✓  2 qa/separation.spec.ts:21:1 › Q47 reviewer documents unknown order and releases exactly one seat in the isolated Docker database (4.1s)
+  ✓  3 qa/separation.spec.ts:57:1 › formally designated test reviewer verifies an archived result then restores the pre-verification report (2.2s)
+  ✓  4 qa/separation.spec.ts:93:1 › HoD closes Q44 from a late, date-only enrollment record and the timeline keeps its precision (2.9s)
+
+  4 passed (14.2s)

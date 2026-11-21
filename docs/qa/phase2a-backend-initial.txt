@@ -11,7 +11,7 @@ key = 'faculty'
 >       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
 E       AssertionError: assert 422 == 403
 E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
-E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'PaceVLbCUFp8WrRsVIBG65yA2CvKBGIFEDkkY--PP-U', 'Idempotency-Key': '6c1f5d54-d1bc-4acc-aac5-bdeb8c5f05cb'}, json={'staff_key': 'TEST-8d6c7e9531f147e6', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '6c1f5d54-d1bc-4acc-aac5-bdeb8c5f05cb'}, json={'staff_key': 'TEST-8d6c7e9531f147e6', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
 E        +      where post = <starlette.testclient.TestClient object at 0x79dda8ddd590>.post
 E        +      and   {'staff_key': 'TEST-8d6c7e9531f147e6', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
 
@@ -32,7 +32,7 @@ client = <starlette.testclient.TestClient object at 0x79dda80d9260>, key = 'drc'
 >       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
 E       AssertionError: assert 422 == 403
 E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
-E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'jpaEY91QE_pwvNFeQtccALTX_7WSnFkuWItTm_vi6C0', 'Idempotency-Key': '3b7ce194-3f1a-4a9f-9dc8-a09a84acf04a'}, json={'staff_key': 'TEST-e3b95e33b58d43fc', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '3b7ce194-3f1a-4a9f-9dc8-a09a84acf04a'}, json={'staff_key': 'TEST-e3b95e33b58d43fc', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
 E        +      where post = <starlette.testclient.TestClient object at 0x79dda80d9260>.post
 E        +      and   {'staff_key': 'TEST-e3b95e33b58d43fc', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
 
@@ -53,7 +53,7 @@ client = <starlette.testclient.TestClient object at 0x79dda8de4e20>, key = 'hod'
 >       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
 E       AssertionError: assert 422 == 403
 E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
-E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'pSQzz_dmXpXVCilOlOt2rdNU5amQbKND-k1tTpvZdeM', 'Idempotency-Key': 'c1abba89-75d6-4193-a978-0b70efb4a526'}, json={'staff_key': 'TEST-90aaa18e99554b92', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': 'c1abba89-75d6-4193-a978-0b70efb4a526'}, json={'staff_key': 'TEST-90aaa18e99554b92', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
 E        +      where post = <starlette.testclient.TestClient object at 0x79dda8de4e20>.post
 E        +      and   {'staff_key': 'TEST-90aaa18e99554b92', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
 
@@ -75,7 +75,7 @@ key = 'acting-hod'
 >       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
 E       AssertionError: assert 422 == 403
 E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
-E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'PbD91nPN-H6FfW5gn1xYvMdOI7eHvYj4cNwz8H5bblA', 'Idempotency-Key': '6bb809d5-6845-471c-8e42-495db64d67f8'}, json={'staff_key': 'TEST-a4ba6e9e5c174214', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '6bb809d5-6845-471c-8e42-495db64d67f8'}, json={'staff_key': 'TEST-a4ba6e9e5c174214', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
 E        +      where post = <starlette.testclient.TestClient object at 0x79dda8de5e10>.post
 E        +      and   {'staff_key': 'TEST-a4ba6e9e5c174214', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
 
@@ -97,7 +97,7 @@ key = 'principal'
 >       assert client.post("/api/v1/admin/staff", headers=headers, json=staff_body()).status_code == 403
 E       AssertionError: assert 422 == 403
 E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
-E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'YaYutg30kNIOFq_LNbsiPAjau8CiiytVdQFRMdoyVDk', 'Idempotency-Key': 'e6061483-27d4-44c3-bda6-864b3fc6f214'}, json={'staff_key': 'TEST-bb6f2d69610d4311', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': 'e6061483-27d4-44c3-bda6-864b3fc6f214'}, json={'staff_key': 'TEST-bb6f2d69610d4311', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
 E        +      where post = <starlette.testclient.TestClient object at 0x79dda69daad0>.post
 E        +      and   {'staff_key': 'TEST-bb6f2d69610d4311', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...} = staff_body()
 
@@ -125,7 +125,7 @@ db = <sqlalchemy.orm.session.Session object at 0x79dda8062c10>
         )
 E       AssertionError: assert 422 == 403
 E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
-E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', json={'staff_key': 'TEST-0593f50dbb614a9c', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...}, headers=({'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'ghf9GxhFORF4299aaQgUQ6T9Wp9OxVExkq0ieiGoAeI', 'Idempotency-Key': 'c22ea66d-7250-4e51-b5ed-a909ae8fc530'} | {'X-CSRF-Token': 'wrong'}))
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', json={'staff_key': 'TEST-0593f50dbb614a9c', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...}, headers=({'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': 'c22ea66d-7250-4e51-b5ed-a909ae8fc530'} | {'X-CSRF-Token': '[REDACTED]'}))
 E        +      where post = <starlette.testclient.TestClient object at 0x79dda80daf10>.post
 
 apps/api/tests/test_people.py:135: AssertionError
@@ -151,7 +151,7 @@ apps/api/tests/test_people.py:183:
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 client = <starlette.testclient.TestClient object at 0x79dda8d80e20>
-headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'DMduYBecPdxC7F1DrVtMYailHGRMXEyOayqRQPbqkI0', 'Idempotency-Key': '253451e5-686c-4d72-9e6b-ac3adc968b82'}
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '253451e5-686c-4d72-9e6b-ac3adc968b82'}
 dept = None, faculty = True
 
     def create_person(client, headers, dept=None, faculty=True):
@@ -186,7 +186,7 @@ apps/api/tests/test_people.py:198:
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 client = <starlette.testclient.TestClient object at 0x79dda8d80f30>
-headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '1RWvVzfEKuP9AvsPonPtvBaT3Ei08TO0MSZqLTCOAyE', 'Idempotency-Key': '79458253-18b7-43f0-9b47-6a6d3f521829'}
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '79458253-18b7-43f0-9b47-6a6d3f521829'}
 dept = None, faculty = True
 
     def create_person(client, headers, dept=None, faculty=True):
@@ -221,7 +221,7 @@ apps/api/tests/test_people.py:217:
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 client = <starlette.testclient.TestClient object at 0x79dda5f3b460>
-headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'fYFGJajPMdVEgQgDtj2R9HCq7b8LjCkrlHQiaKEZwgQ', 'Idempotency-Key': '034b1848-599d-461e-8c78-1af0875cda17'}
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '034b1848-599d-461e-8c78-1af0875cda17'}
 dept = None, faculty = False
 
     def create_person(client, headers, dept=None, faculty=True):
@@ -256,7 +256,7 @@ apps/api/tests/test_people.py:229:
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 client = <starlette.testclient.TestClient object at 0x79dda80db570>
-headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'dDCtspNa-8EkPrAkrkYWehNPovAsEI0Zk9Jo6LvlLB4', 'Idempotency-Key': '0d765b02-6ac2-4f2a-9332-001f6f947ba7'}
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '0d765b02-6ac2-4f2a-9332-001f6f947ba7'}
 dept = None, faculty = True
 
     def create_person(client, headers, dept=None, faculty=True):
@@ -640,7 +640,7 @@ apps/api/tests/test_people.py:353:
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 client = <starlette.testclient.TestClient object at 0x79dda5f3b570>
-headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'V17sxdj-M7xcUmplIdUigA5JNdyIwreG3WHii_eP57I', 'Idempotency-Key': '8f09239a-225f-4f1c-aa9c-b0606f81a91e'}
+headers = {'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '8f09239a-225f-4f1c-aa9c-b0606f81a91e'}
 dept = None, faculty = True
 
     def create_person(client, headers, dept=None, faculty=True):
@@ -672,7 +672,7 @@ db = <sqlalchemy.orm.session.Session object at 0x79dda5ff5f90>
 >       assert client.post("/api/v1/admin/staff", headers=headers, json=body).status_code == 201
 E       AssertionError: assert 422 == 201
 E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
-E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': 'y1LdmqDeIrFxUvcfHSnTTVVgGRdzmiCBCPqKUhr9BEg', 'Idempotency-Key': '605a6512-62c6-4ff2-ad31-917b22389eb2'}, json={'staff_key': 'TEST-fd2e54f75d424b11', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
+E        +    where <Response [422 Unprocessable Entity]> = post('/api/v1/admin/staff', headers={'Origin': 'http://127.0.0.1:5173', 'X-CSRF-Token': '[REDACTED]', 'Idempotency-Key': '605a6512-62c6-4ff2-ad31-917b22389eb2'}, json={'staff_key': 'TEST-fd2e54f75d424b11', 'display_name': 'Local test person', 'department_id': 'dc6e8812-7b1c-55fa-a6dc-e93f7775206d', 'starts_on': '2020-07-01', ...})
 E        +      where post = <starlette.testclient.TestClient object at 0x79dda5ee0e20>.post
 
 apps/api/tests/test_people.py:397: AssertionError

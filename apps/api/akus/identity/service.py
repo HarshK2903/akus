@@ -146,12 +146,14 @@ def issue_session(
         db.execute(
             delete(InstitutionalSession).where(InstitutionalSession.token_hash == digest(old_token))
         )
+    episode = authority(db, None, InstitutionalSession(person_id=link.person_id)).episode
     token = token_urlsafe(32)
     db.add(
         InstitutionalSession(
             token_hash=digest(token),
             person_id=link.person_id,
             external_identity_id=link.id,
+            episode_id=episode.id,
             csrf_hash=digest(csrf_for(token, settings)),
             expires_at=datetime.now(UTC) + timedelta(hours=8),
         )

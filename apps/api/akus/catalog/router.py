@@ -560,3 +560,33 @@ def quota_detail(
     from akus.applications.router import quota_history
 
     return pool_view(db, row) | quota_history(db, actor, row, as_of)
+
+
+@router.post("/admin/nptel/refresh-jobs", response_model=CommandResult)
+def enqueue_refresh(
+    body: OfferingFetch, key: Key, request: Request, db: DB, actor: Current
+) -> CommandResult:
+    from akus.catalog.refresh_jobs import enqueue
+
+    mutation_guard(request, actor)
+    return enqueue(db, actor, key, body)
+
+
+@router.post("/admin/nptel/offerings/{offering_id}/ambiguity", response_model=CommandResult)
+def flag_ambiguity(
+    offering_id: UUID, body: SnapshotAccept, key: Key, request: Request, db: DB, actor: Current
+) -> CommandResult:
+    mutation_guard(request, actor)
+    actor = common.refresh(db, actor, key)
+    require_admin(actor)
+    op = f"PROVIDER_SOURCE_FLAGGED:{offering_id}"
+    if receipt := common.replay(db, actor, key, op, body):
+        return receipt
+    row = db.scalar(select(Offering).where(Offering.id == offering_id).with_for_update())
+    if not row:
+        raise HTTPException(404, "OFFERING_NOT_FOUND")
+    if row.version != body.expected_version or row.current_snapshot_id != body.snapshot_id:
+        raise HTTPException(409, "VERSION_CONFLICT")
+    row.source_status = "SOURCE_CONFLICT_REVIEW_REQUIRED"
+    row.version += 1
+    return common.finish(db, actor, key, op, body, row.id, body.model_dump(mode="json"))

@@ -1,3 +1,4 @@
+import { preparePdf } from "../../lib/pdf";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -153,20 +154,9 @@ function EvidenceForm({
           let digest = String(f.get("digest") || "");
           let attachment;
           if (file) {
-            if (file.size > 2097152 || file.type !== "application/pdf")
-              throw new Error("Select a PDF of 2 MiB or less.");
-            const bytes = new Uint8Array(await file.arrayBuffer());
-            digest = Array.from(
-              new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
-              (b) => b.toString(16).padStart(2, "0"),
-            ).join("");
-            let raw = "";
-            for (let i = 0; i < bytes.length; i += 8192)
-              raw += String.fromCharCode(...bytes.subarray(i, i + 8192));
-            attachment = {
-              media_type: "application/pdf",
-              base64_data: btoa(raw),
-            };
+            const pdf = await preparePdf(file);
+            digest = pdf.digest;
+            attachment = pdf.attachment;
           }
           const proof = {
             ...reasonFields(f),
@@ -416,7 +406,7 @@ export function CertificateDetail() {
                   Private PDF · {words(r.document_state || "quarantined")}{" "}
                   {r.can_download && (
                     <a
-                      href={`/api/v1/certificates/${aid}/documents/${r.document_id}`}
+                      href={`/api/v1/certificates/${aid}/documents/${r.document_id}?revision=${r.id}`}
                     >
                       Download PDF
                     </a>

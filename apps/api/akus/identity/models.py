@@ -59,6 +59,7 @@ class ExternalIdentity(Base):
 
 
 class InstitutionalSession(Base):
+    episode_id: Mapped[UUID | None] = mapped_column(ForeignKey("employment_episodes.id"))
     __tablename__ = "institutional_sessions"
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     token_hash: Mapped[str] = mapped_column(String(64), primary_key=True)

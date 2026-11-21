@@ -1,0 +1,67 @@
+127.0.0.1:5432 - no response
+127.0.0.1:5432 - accepting connections
+Original 0021_application_files|5137|292|9|47|598|8|116|24f09090bc966ae938d08ac513df0832|b9204dfa82884eae0221a1b733a22179
+Restored 0021_application_files|5137|292|9|47|598|8|116|24f09090bc966ae938d08ac513df0832|b9204dfa82884eae0221a1b733a22179
+1.20 (go1.27.4 on linux/amd64; gc)
+uid=999(postgres) gid=999(postgres) groups=999(postgres),101(ssl-cert)
+BEGIN
+discontinuous_credential_histories
+0
+incorrect_document_digests
+0
+wrong_document_application
+0
+incorrect_credential_designations
+0
+conflicting_archive_identities
+0
+duplicate_annual_allocations
+0
+repeated_distinct_subject_credit
+0
+COMMIT
+BEGIN
+overlapping_employment_episodes
+0
+wrong_person_session_bindings
+0
+incomplete_rehire_audits
+0
+duplicate_separation_decisions
+0
+mismatched_frozen_teaching_sources
+0
+COMMIT
+BEGIN
+version_num
+0021_application_files
+inconsistent_pools
+0
+inconsistent_application_pool_balances
+0
+invalid_transfer_pairs
+0
+inconsistent_terminal_releases
+0
+exception_decision_mismatches
+0
+unresolved_terminal_separation_tasks
+0
+recorded_transfer_movements
+44
+state,applications
+APPROVED,18
+DRAFT,9
+UNDER_REVIEW,110
+WITHDRAWN,38
+COMMIT
+BEGIN
+invalid_attachment_bytes
+0
+discontinuous_attachment_histories
+0
+inconsistent_submission_attachments
+0
+incomplete_attachment_audits
+0
+COMMIT

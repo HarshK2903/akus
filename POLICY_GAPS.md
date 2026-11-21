@@ -1,3 +1,7 @@
+## Phase 7 employment history
+
+An amended HR source that conflicts with a recorded permanent order requires reconciliation. Its entry preserves the original closure, released seat and frozen assessment. P-59 still applies to indeterminate same-day exam/separation order, and P-64 covers a revised commencement source after a closure. The personal history and institutional registers distinguish effective dates, actual decision times and later assessments. IO-02, Q51 and the existing reviewer authority decisions retain their recorded status. [Phase 7 coverage](docs/codex/PHASE7_CHECKLIST.md)
+
 ## Phase 6 · 2026-11-20
 
 Phase 6 uses formal application-specific authority for certificate verification and named-subject relevance. IO-02, Q51, P-53, P-54 and the separate five-account Google acceptance dependency remain open.

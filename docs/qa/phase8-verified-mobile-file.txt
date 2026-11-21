@@ -1,0 +1,12 @@
+
+> akus-web@0.1.0 e2e
+> playwright test e2e/phase8.spec.ts -g quarantined draft PDF --reporter=list --output=/tmp/akus-phase8-file-final
+
+
+Running 1 test using 1 worker
+
+(node:648912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/phase8.spec.ts:136:1 › Faculty uploads and removes a quarantined draft PDF with an immutable revision history (4.0s)
+
+  1 passed (4.8s)

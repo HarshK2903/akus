@@ -171,6 +171,8 @@ def write(
         ) != (body.attachment is not None):
             raise HTTPException(409, "IDEMPOTENCY_KEY_REUSED")
         return result
+    if not isinstance(body, Registration):
+        common.require_person_evidence(db, body.source_reference, body.document_digest)
     previous = latest(db, aid)
     if body.expected_version != (previous.version if previous else 0):
         raise HTTPException(409, "CREDENTIAL_VERSION_CONFLICT")
@@ -185,6 +187,8 @@ def write(
     facts = receipt.model_dump(mode="json")
     document = None
     if pdf:
+        facts["document_scan"] = pdf.status
+        facts["scanner_version"] = pdf.scanner_version
         document = db.scalar(
             select(CredentialDocument).where(CredentialDocument.digest == body.document_digest)
         )
@@ -195,8 +199,8 @@ def write(
                 id=uuid4(),
                 application_id=aid,
                 digest=body.document_digest,
-                content=pdf[0],
-                scan=pdf[1],
+                content=pdf.content,
+                scan=pdf.status,
             )
             db.add(document)
             db.flush()
@@ -457,6 +461,12 @@ def timeline(db: Session, app: Application, actor: Actor) -> dict[str, Any]:
         if g
         else set()
     )
+    # Older assertions only recorded the initial immutable scan on the document.
+    document_scans = {
+        r.id: r.facts.get("document_scan") or db.get_one(CredentialDocument, r.document_id).scan
+        for r in rows
+        if r.document_id
+    }
     return {
         "subjects": [
             {"id": sid, "name": name, "can_verify": sid in authorized_subjects}
@@ -486,13 +496,11 @@ def timeline(db: Session, app: Application, actor: Actor) -> dict[str, Any]:
                 "recorded_at": r.recorded_at,
                 "actor_id": r.actor_id,
                 "document_id": r.document_id,
-                "document_state": db.get_one(CredentialDocument, r.document_id).scan
-                if r.document_id
-                else None,
+                "document_state": document_scans.get(r.id),
                 "can_download": bool(
                     r.document_id
                     and (actor.person.id == app.person_id or g)
-                    and db.get_one(CredentialDocument, r.document_id).scan == "CLEAN"
+                    and document_scans.get(r.id) == "CLEAN"
                 ),
                 "facts": r.facts,
             }

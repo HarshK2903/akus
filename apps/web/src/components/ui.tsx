@@ -34,6 +34,14 @@ export function Loading() {
     </div>
   );
 }
+export function WorkspaceLoading() {
+  return (
+    <main className="recovery-page">
+      <h1>Opening workspace</h1>
+      <Loading />
+    </main>
+  );
+}
 export function ErrorState({
   error,
   retry,

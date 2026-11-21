@@ -695,8 +695,16 @@ export function QuotaDetail({
   const scope = useDepartment(context.data);
   const navigate = useNavigate();
   const query = useQuery({
-    queryKey: ["quota", poolId],
-    queryFn: () => api<Pool>(`/quotas/${poolId}`),
+    queryKey: ["quota", poolId, scope.params.get("as_of")],
+    queryFn: () =>
+      api<Pool>(
+        `/quotas/${poolId}?` +
+          new URLSearchParams(
+            scope.params.get("as_of")
+              ? { as_of: scope.params.get("as_of")! }
+              : {},
+          ),
+      ),
     enabled: !!poolId,
   });
   const save = useCommand((id) => navigate(`/hod/quotas/${id}`));
@@ -865,9 +873,11 @@ export function QuotaDetail({
             Stored: {p.reconciliation?.stored_count} · Counted allocations:{" "}
             {p.reconciliation?.counted_allocations} · Ledger balance:{" "}
             {p.reconciliation?.ledger_balance}.{" "}
-            {p.reconciliation?.matches_current
-              ? "Counts reconcile."
-              : "Review required."}
+            {p.reconciliation?.as_of
+              ? "Stored and allocation counts are current."
+              : p.reconciliation?.matches_current
+                ? "Counts reconcile."
+                : "Review required."}
           </p>
           <ScrollTable label="Pool allocations">
             <table>
@@ -900,6 +910,34 @@ export function QuotaDetail({
               </tbody>
             </table>
           </ScrollTable>
+          {ledger && (
+            <form
+              className="source-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const value = new FormData(e.currentTarget).get("cutoff");
+                scope.setParams((prev) => {
+                  const next = new URLSearchParams(prev);
+                  if (value)
+                    next.set("as_of", new Date(String(value)).toISOString());
+                  else next.delete("as_of");
+                  return next;
+                });
+              }}
+            >
+              <label>
+                Movements recorded through (local time)
+                <input type="datetime-local" name="cutoff" />
+              </label>
+              <button>Filter movements</button>
+            </form>
+          )}
+          {p.reconciliation?.as_of && (
+            <p>
+              Ledger balance at {instant(p.reconciliation.as_of)} ·{" "}
+              {p.reconciliation.ledger_balance}
+            </p>
+          )}
           <MovementTable items={p.ledger || []} />
           <p className="prose muted">
             {p.visibility === "OWN_ALLOCATIONS_ONLY"

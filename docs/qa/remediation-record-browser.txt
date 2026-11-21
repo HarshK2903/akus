@@ -1,0 +1,58 @@
+time="2026-11-21T20:18:04+05:30" level=warning msg="Found orphan containers (akus-local-clamd-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container akus-local-migrate-run-04f844b177c8 Creating 
+ Container akus-local-migrate-run-04f844b177c8 Created 
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+time="2026-11-21T20:18:06+05:30" level=warning msg="Found orphan containers (akus-local-clamd-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container akus-browser-audit-65768-api Creating 
+ Container akus-browser-audit-65768-api Created 
+9e119225a55797cffa59b919c26613309f40507b28ad7c903d925b6211b8c3b2
+time="2026-11-21T20:18:07+05:30" level=warning msg="Found orphan containers (akus-local-clamd-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container akus-browser-audit-65768-worker Creating 
+ Container akus-browser-audit-65768-worker Created 
+cc292ae7e4fbacc2c74a5d742fe4104bc1bd2b267013b2260a6e64a3ef2621ba
+time="2026-11-21T20:18:07+05:30" level=warning msg="Found orphan containers (akus-local-clamd-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container akus-browser-audit-65768-proxy Creating 
+ Container akus-browser-audit-65768-proxy Created 
+40ae270a7204d388d770bc1d14f17bd7d5c553bb77ceb565f903182b2560f195
+curl: (56) Recv failure: Connection reset by peer
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+> akus-web@0.1.0 e2e
+> playwright test --config record-audit.config.ts
+
+
+Running 2 tests using 1 worker
+
+(node:66443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAC-03 authorized record reloaded
+FAC-04 authorized record reloaded
+FAC-10 authorized record reloaded
+FAC-11 authorized record reloaded
+FAC-12 authorized record reloaded
+FAC-13 authorized record reloaded
+FAC-14 authorized record reloaded
+FAC-16 authorized record reloaded
+FAC-18 authorized record reloaded
+FAC-20 authorized record reloaded
+DRC-02 authorized record reloaded
+HOD-03 authorized record reloaded
+HOD-06 authorized record reloaded
+HOD-07 authorized record reloaded
+HOD-10 authorized record reloaded
+HOD-11 authorized record reloaded
+HOD-12 authorized record reloaded
+HOD-14 authorized record reloaded
+HOD-16 authorized record reloaded
+HOD-18 authorized record reloaded
+PRN-03 authorized record reloaded
+ADM-03 authorized record reloaded
+ADM-04 authorized record reloaded
+  ✓  1 qa/record-pages.audit.ts:7:1 › reload each parameterized record with its actual authorized data (19.3s)
+/login anonymous state verified
+/auth/callback anonymous state verified
+/access-denied anonymous state verified
+/system-unavailable anonymous state verified
+/not-found anonymous state verified
+  ✓  2 qa/record-pages.audit.ts:169:1 › all five public entries expose their anonymous recovery or sign-in state (307ms)
+
+  2 passed (20.2s)

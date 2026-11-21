@@ -14,7 +14,7 @@ Exact Origin and CSRF protect mutations. Current employment/enabled/office/grant
 facts authorize requests and are rechecked after source transaction locks. Disabling
 or separating staff denies access; Principal read scope does not grant writes. Source
 and identity transaction serialization plus DB constraints cover competing writers.
-No self-review decision endpoint exists yet; Phase 4 must test academic conflicts.
+The review endpoint rechecks effective office, next review stage and applicant identity in the decision transaction. See the final security review and admission regressions.
 
 Uploads are bounded before multipart parsing (5 MiB request, 4 MiB file), with 500
 rows/20 columns, bounded expanded XLSX contents and defusedxml. Formulas, macros,

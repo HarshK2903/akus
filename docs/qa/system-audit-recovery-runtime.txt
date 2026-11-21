@@ -1,0 +1,15 @@
+2026-11-21T16:37:54+05:30
+NAME                   IMAGE                COMMAND                  SERVICE   CREATED       STATUS                          PORTS
+akus-local-api-1       akus-local-api       "uvicorn akus.main:c…"   api       2 hours ago   Up 59 seconds (healthy)         
+akus-local-db-1        postgres:16          "docker-entrypoint.s…"   db        5 days ago    Up About a minute (healthy)     5432/tcp
+akus-local-migrate-1   akus-local-migrate   "sh -c 'alembic -c a…"   migrate   2 hours ago   Exited (0) About a minute ago   
+akus-local-proxy-1     caddy:2-alpine       "caddy run --config …"   proxy     5 days ago    Up 49 seconds                   443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1       akus-local-web       "caddy run --config …"   web       2 hours ago   Up About a minute               80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1    akus-local-worker    "python -m akus.work…"   worker    2 hours ago   Up 59 seconds                   
+Retained volume akus-local_akus_pg created 2026-11-16T00:36:02+05:30
+0021_application_files (head)
+No new upgrade operations detected.
+Worker heartbeat within 30 seconds: true
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+Login HTTP 200
+API uid 65532

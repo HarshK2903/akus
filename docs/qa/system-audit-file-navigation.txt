@@ -1,0 +1,25 @@
+ Container akus-local-migrate-run-531ad0648da1 Creating 
+ Container akus-local-migrate-run-531ad0648da1 Created 
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+ Container akus-browser-audit-1306188-api Creating 
+ Container akus-browser-audit-1306188-api Created 
+b3c19faf63d9ab01f3bc004dcc82754db401bc5d03baf29f551bb2d5d9d2d1dd
+ Container akus-browser-audit-1306188-worker Creating 
+ Container akus-browser-audit-1306188-worker Created 
+f24545d10389ca1bc6b51a87e4710ff1448ed2e72ac8096217cbf2acf2413bf5
+ Container akus-browser-audit-1306188-proxy Creating 
+ Container akus-browser-audit-1306188-proxy Created 
+47463a3791cb46c82d1fff0dab9bc6421bbaf36aaa7f388a5e46f761f6b42d2c
+curl: (22) The requested URL returned error: 502
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+> akus-web@0.1.0 e2e
+> playwright test e2e/phase8.spec.ts -g find a private attachment --reporter=list
+
+
+Running 1 test using 1 worker
+
+(node:1306847) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/phase8.spec.ts:205:1 › A faculty member can find a private attachment and navigate distinct record pages (5.0s)
+
+  1 passed (5.8s)

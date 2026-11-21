@@ -1,0 +1,110 @@
+ Container akus-local-api-run-df32771bcf72 Creating 
+ Container akus-local-api-run-df32771bcf72 Created 
+All checks passed!
+110 files already formatted
+Success: no issues found in 77 source files
+No new upgrade operations detected.
+........................................................................ [ 23%]
+.......................................F................................ [ 46%]
+........................................................................ [ 69%]
+........................................................................ [ 92%]
+........................                                                 [100%]
+=================================== FAILURES ===================================
+_____ test_vacant_hod_alerts_and_restoration_leave_counted_seat_unchanged ______
+
+client = <starlette.testclient.TestClient object at 0x701d7c392360>
+db = <sqlalchemy.orm.session.Session object at 0x701d7ca49a90>
+
+    def test_vacant_hod_alerts_and_restoration_leave_counted_seat_unchanged(client, db):
+        from akus.applications.models import AcademicNotice
+        from akus.exceptions import reviewer
+        from akus.people.models import OfficeAppointment
+    
+        s = setup(client)
+        aid, h = draft(client, s, "drc")
+        assert submit(client, aid, h).status_code == 200
+        login(client, "principal")
+        response = client.get("/api/v1/review-office-alerts", params={"vacant_only": False}).json()
+        assert response["total"] >= 1
+        app = db.get(Application, UUID(aid))
+        initial = reviewer.sources(db, app)
+        assert initial["status"] == "ASSIGNED" and initial["office"] == "HOD"
+        office = db.get(OfficeAppointment, UUID(initial["appointment_id"]))
+        person = db.get(Person, office.person_id)
+        person.enabled = False
+        db.flush()
+        reviewer.notify_changes(db)
+        db.flush()
+        reviewer.notify_changes(db)
+        db.flush()
+        query = (
+            select(AcademicNotice)
+            .where(
+                AcademicNotice.application_id == app.id, AcademicNotice.kind == "REVIEW_OFFICE_ALERT"
+            )
+            .order_by(AcademicNotice.created_at)
+        )
+        rows = db.scalars(query).all()
+>       assert (
+            len(rows) == 1
+            and rows[0].facts["status"] == "VACANT"
+            and rows[0].facts["enrollment_cutoff"]
+        )
+E       assert (2 == 1)
+E        +  where 2 = len([<akus.applications.models.AcademicNotice object at 0x701d7caeb750>, <akus.applications.models.AcademicNotice object at 0x701d6eb906d0>])
+
+apps/api/tests/test_exception_cases.py:607: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f31db9c2-88e4-477f-a67f-0faf6de3508f"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a46263cf-83e2-4a63-820f-1ce7e01ab73a"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7aec3111-be07-4b43-b25b-2f0b42c13ffe"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "dab646c8-842c-400c-9909-b208a64b6c4e"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "eb4101b5-ade4-4186-8f3c-8cd4dc00db0a"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "90276e80-8d74-49d6-8d89-87408bc43cc8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "d0477d43-f3f1-4ae0-bc03-e5279239c63a"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "fd4a6818-0d8e-4780-830f-55be96c9e0a4"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "29a05bd5-fd10-4864-a1f4-f3ae6967e3ce"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "485eb5f3-fa8e-4058-8b2d-6e3edea254fe"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "82a5ee5c-6ec9-450f-980b-5afa4007d26a"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "57f218d1-2fee-4d90-b99b-d2288fb97826"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ed22a467-27f6-4975-ab58-12a6bc9e2349"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "db837ac7-fc65-46e5-84b6-9bc37b335465"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "27c99305-dd20-43c4-b5f0-28d9a82c254c"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "a3c3730f-08bf-499b-b3b0-b867d13a37fb"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "897451e2-6470-467d-aaf5-49878b201e8b"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bcf23a12-464f-4196-8847-4e80fad33d4c"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "27304ee1-84a6-463c-aeae-549f491d8fd6"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "f31db9c2-88e4-477f-a67f-0faf6de3508f"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "a46263cf-83e2-4a63-820f-1ce7e01ab73a"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7aec3111-be07-4b43-b25b-2f0b42c13ffe"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "dab646c8-842c-400c-9909-b208a64b6c4e"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "eb4101b5-ade4-4186-8f3c-8cd4dc00db0a"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "90276e80-8d74-49d6-8d89-87408bc43cc8"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "d0477d43-f3f1-4ae0-bc03-e5279239c63a"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "fd4a6818-0d8e-4780-830f-55be96c9e0a4"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "29a05bd5-fd10-4864-a1f4-f3ae6967e3ce"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "485eb5f3-fa8e-4058-8b2d-6e3edea254fe"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "82a5ee5c-6ec9-450f-980b-5afa4007d26a"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "57f218d1-2fee-4d90-b99b-d2288fb97826"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "ed22a467-27f6-4975-ab58-12a6bc9e2349"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "db837ac7-fc65-46e5-84b6-9bc37b335465"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "27c99305-dd20-43c4-b5f0-28d9a82c254c"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "a3c3730f-08bf-499b-b3b0-b867d13a37fb"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "897451e2-6470-467d-aaf5-49878b201e8b"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "bcf23a12-464f-4196-8847-4e80fad33d4c"}
+INFO     akus:main.py:79 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "27304ee1-84a6-463c-aeae-549f491d8fd6"}
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_exception_cases.py::test_vacant_hod_alerts_and_restoration_leave_counted_seat_unchanged
+1 failed, 311 passed, 2 warnings in 144.34s (0:02:24)
+

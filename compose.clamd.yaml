@@ -1,0 +1,14 @@
+# Opt in only when an operator has provisioned a dedicated clamd socket directory.
+services:
+  api:
+    environment:
+      AKUS_CLAMD_SOCKET: /run/akus-clamd/clamd.sock
+    group_add:
+      - "${AKUS_CLAMD_GID:?Set the numeric group permitted to connect to clamd}"
+    volumes:
+      - type: bind
+        source: "${AKUS_CLAMD_DIR:?Set the absolute dedicated clamd socket directory}"
+        target: /run/akus-clamd
+        read_only: true
+        bind:
+          create_host_path: false

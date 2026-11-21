@@ -1,0 +1,31 @@
+SERVICE   STATE     STATUS
+api       running   Up 25 seconds (healthy)
+api       running   Up About a minute (health: starting)
+db        running   Up 11 hours (healthy)
+migrate   exited    Exited (0) 25 seconds ago
+proxy     running   Up 11 hours
+web       running   Up About a minute
+worker    running   Up 25 seconds
+Volume akus-local_akus_pg created 2026-11-16T00:36:02+05:30
+0021_application_files (head)
+No new upgrade operations detected.
+ worker_heartbeat_current 
+--------------------------
+ t
+(1 row)
+
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Content-Length: 612
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+Content-Type: text/html; charset=utf-8
+Date: Fri, 20 Nov 2026 20:41:03 GMT
+Etag: "dn0br8tcbfhc-h0"
+Last-Modified: Fri, 20 Nov 2026 20:36:01 GMT
+Referrer-Policy: same-origin
+Server: Caddy
+Vary: Accept-Encoding
+Via: 1.1 Caddy
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+

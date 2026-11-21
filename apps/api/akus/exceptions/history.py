@@ -123,6 +123,7 @@ def record(
     operation = f"HISTORICAL_CERTIFICATE:{cid}"
     if result := common.replay(db, actor, key, operation, body):
         return result
+    common.require_person_evidence(db, body.source_reference, body.document_digest)
     order = service.active_order(db, app)
     if not order or case.status != "RESOLVED" or app.state != "SEPARATED":
         raise HTTPException(423, "CLOSED_SEPARATION_REQUIRED")
@@ -281,6 +282,9 @@ def record(
             "PRIOR_CERTIFICATE_AUTHORITY_POLICY_PENDING",
             {"historical_finding_id": str(finding.id), "recognition": "SUSPENDED"},
         )
+    from akus.compliance.assessment import capture
+
+    capture(db, db.get_one(EmploymentEpisode, app.episode_id))
     return common.finish(db, actor, key, operation, body, finding.id, facts, app.department_id)
 
 
@@ -507,4 +511,7 @@ def verify_subject(
         "HISTORICAL_RELEVANCE",
         {"finding_id": str(body.finding_id), "silver": facts["silver"]},
     )
+    from akus.compliance.assessment import capture
+
+    capture(db, db.get_one(EmploymentEpisode, app.episode_id))
     return common.finish(db, actor, key, operation, body, body.finding_id, facts, app.department_id)

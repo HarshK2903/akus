@@ -1,0 +1,51 @@
+
+> akus-web@0.1.0 e2e
+> playwright test phase8.spec.ts
+
+
+Running 3 tests using 1 worker
+
+(node:353975) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/phase8.spec.ts:5:1 › Principal follows department records, exports filtered rows and returns to the same filter (5.1s)
+  ✘  2 e2e/phase8.spec.ts:35:1 › Admin test delivery appears only in the personal inbox and supports read acknowledgement (30.2s)
+(node:354984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 e2e/phase8.spec.ts:59:1 › Scoped search, task inbox and office histories remain usable on a narrow viewport (8.6s)
+
+
+  1) e2e/phase8.spec.ts:35:1 › Admin test delivery appears only in the personal inbox and supports read acknowledgement 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Status', { exact: true })
+
+
+      41 |   await page.getByRole("link", { name: "Open my notifications" }).click();
+      42 |   await page.getByLabel("Search records").fill("In-app test");
+    > 43 |   await page.getByLabel("Status", { exact: true }).selectOption("UNREAD");
+         |                                                    ^
+      44 |   await page.getByRole("button", { name: "Apply filters" }).click();
+      45 |   await page
+      46 |     .getByRole("button", { name: /^Inspect / })
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase8.spec.ts:43:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase8-Admin-test-delivery-4628a-pports-read-acknowledgement/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase8-Admin-test-delivery-4628a-pports-read-acknowledgement/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase8-Admin-test-delivery-4628a-pports-read-acknowledgement/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase8-Admin-test-delivery-4628a-pports-read-acknowledgement/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/phase8.spec.ts:35:1 › Admin test delivery appears only in the personal inbox and supports read acknowledgement 
+  2 passed (45.5s)

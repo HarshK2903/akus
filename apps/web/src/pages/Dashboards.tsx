@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, Navigate, useOutletContext, useParams } from "react-router-dom";
-import { api, roleHome, type Identity } from "../lib/api";
+import { Link, Navigate, useOutletContext } from "react-router-dom";
+import { api, type Identity } from "../lib/api";
 import { accessKey } from "../lib/people";
 import { Badge, ErrorState, Loading, PageHeader } from "../components/ui";
 import type { Teaching } from "../lib/sources";
@@ -281,9 +281,7 @@ export function PrincipalDashboard({ data }: { data: DashboardData }) {
         <ul className="record-cards">
           {data.departments?.map((d) => (
             <li key={d.id}>
-              <Link to={`/principal/teaching?department_id=${d.id}`}>
-                {d.name}
-              </Link>
+              <Link to={`/principal/departments/${d.id}`}>{d.name}</Link>
               <span>{d.teaching_records} teaching records</span>
             </li>
           ))}
@@ -344,6 +342,7 @@ export function Dashboard() {
           <Link to="/app/profile">Open profile</Link>
         </>
       )}
+      <AcademicSummary />
       <Link className="panel-link" to="/app/system">
         System connections & academic calendar →
       </Link>
@@ -356,47 +355,32 @@ export function RoleDashboard({ role }: { role?: string }) {
     return <Navigate to="/access-denied" replace />;
   return <Dashboard />;
 }
-export function AcademicIntegration({ area: given }: { area?: string }) {
+function AcademicSummary() {
   const actor = useOutletContext<Identity>();
-  const { area: param } = useParams();
-  const area = given ?? param ?? "applications";
   const query = useQuery({
-    queryKey: ["integration", area, accessKey(actor)],
+    queryKey: ["dashboard-academic", ...accessKey(actor)],
     queryFn: () =>
-      api<{ area: string; phase: string; dependency: string }>(
-        `/academic/integration/${area}`,
-      ),
+      api<{
+        metrics: { label: string; value: number | string; href: string }[];
+      }>("/dashboard/academic"),
   });
-  if (query.isPending) return <Loading />;
-  if (query.error)
-    return (
-      <ErrorState error={query.error} retry={() => void query.refetch()} />
-    );
   return (
-    <>
-      <PageHeader
-        title={`${area[0].toUpperCase()}${area.slice(1)} service status`}
-        description="Academic workflow readiness"
-        action={<Badge tone="warning">Not yet implemented</Badge>}
-      />
-      <section className="panel prose">
-        <h2>Required before this workflow can run</h2>
-        <p>{query.data?.dependency}.</p>
-        <p>
-          Scheduled for phase {query.data?.phase}. No academic decision, seat
-          reservation or compliance result has been created.
-        </p>
-        {area === "applications" && (
-          <p>
-            {actor.roles?.includes("DRC_HEAD")
-              ? "Your own application will route directly to HoD."
-              : "Your application will route through DRC Head and then HoD."}
-          </p>
-        )}
-        <Link className="button" to={roleHome(actor.role)}>
-          Return to your workspace
-        </Link>
-      </section>
-    </>
+    <section className="panel section-gap">
+      <h2>Academic records</h2>
+      {query.isPending ? (
+        <Loading />
+      ) : query.error ? (
+        <ErrorState error={query.error} retry={() => void query.refetch()} />
+      ) : (
+        <ul className="record-cards">
+          {query.data.metrics.map((m) => (
+            <li key={m.label}>
+              <Link to={m.href}>{m.label}</Link>
+              <strong>{String(m.value).replaceAll("_", " ")}</strong>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }

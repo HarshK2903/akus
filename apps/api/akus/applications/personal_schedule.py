@@ -45,6 +45,7 @@ def verify(
         raise HTTPException(409, "VERSION_CONFLICT")
     if prior and body.observed_at < prior.observed_at:
         raise HTTPException(409, "STALE_PERSON_SCHEDULE_EVIDENCE")
+    common.require_person_evidence(db, body.source_reference, body.document_digest)
     revision = PersonalSchedule(
         id=uuid4(),
         application_id=app.id,

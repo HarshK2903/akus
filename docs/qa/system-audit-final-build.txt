@@ -1,0 +1,125 @@
+ Image akus-local-migrate Building 
+ Image akus-local-api Building 
+ Image akus-local-worker Building 
+ Image akus-local-web Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.85kB done
+#1 DONE 0.0s
+
+#2 [worker internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 477B done
+#2 DONE 0.0s
+
+#3 [web internal] load build definition from web.Dockerfile
+#3 transferring dockerfile: 324B done
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for docker.io/library/caddy:2-alpine
+#4 DONE 0.0s
+
+#5 [api internal] load metadata for docker.io/library/python:3.13-slim
+#5 DONE 1.2s
+
+#6 [web internal] load metadata for docker.io/library/node:24-slim
+#6 DONE 1.2s
+
+#7 [web internal] load .dockerignore
+#7 transferring context: 231B done
+#7 DONE 0.0s
+
+#8 [api 1/6] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#8 DONE 0.0s
+
+#9 [web build 1/6] FROM docker.io/library/node:24-slim@sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54
+#9 DONE 0.0s
+
+#10 [web stage-1 1/3] FROM docker.io/library/caddy:2-alpine
+#10 DONE 0.0s
+
+#11 [web internal] load build context
+#11 transferring context: 8.47kB done
+#11 DONE 0.0s
+
+#12 [api internal] load build context
+#12 transferring context: 15.20kB 0.0s done
+#12 DONE 0.0s
+
+#13 [web build 4/6] RUN npm ci --no-fund --no-audit
+#13 CACHED
+
+#14 [web build 6/6] RUN npm run build
+#14 CACHED
+
+#15 [web build 3/6] COPY apps/web/package*.json ./
+#15 CACHED
+
+#16 [web stage-1 2/3] COPY --from=build /web/dist /srv
+#16 CACHED
+
+#17 [web build 2/6] WORKDIR /web
+#17 CACHED
+
+#18 [web build 5/6] COPY apps/web ./
+#18 CACHED
+
+#19 [web stage-1 3/3] COPY infra/Caddy.web /etc/caddy/Caddyfile
+#19 CACHED
+
+#20 [api 4/6] RUN pip install --no-cache-dir -r requirements.lock
+#20 CACHED
+
+#21 [api 3/6] COPY apps/api/requirements.lock /app/requirements.lock
+#21 CACHED
+
+#22 [api 5/6] COPY apps/api /app/apps/api
+#22 CACHED
+
+#23 [api 2/6] WORKDIR /app
+#23 CACHED
+
+#24 [api 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#24 CACHED
+
+#25 [api] exporting to image
+#25 exporting layers done
+#25 writing image sha256:72b187b0c5358a6b90a3e5b253430b9abcbca6b0c73357db7a2d85de5f229cb8
+#25 writing image sha256:72b187b0c5358a6b90a3e5b253430b9abcbca6b0c73357db7a2d85de5f229cb8 0.0s done
+#25 naming to docker.io/library/akus-local-api 0.0s done
+#25 DONE 0.1s
+
+#26 [web] exporting to image
+#26 exporting layers done
+#26 writing image sha256:b111c0cda2e8541287891b8ff7aea95e2a06d46056c57dce1a0ac24e1192308a done
+#26 naming to docker.io/library/akus-local-web 0.0s done
+#26 DONE 0.0s
+
+#27 [worker] exporting to image
+#27 exporting layers done
+#27 writing image sha256:5ebdd4fa1c16b2ca410d0e53072a8d7149644b4169e17cf6288e6c3a6d5703df done
+#27 naming to docker.io/library/akus-local-worker 0.0s done
+#27 DONE 0.1s
+
+#28 [migrate] exporting to image
+#28 exporting layers done
+#28 writing image sha256:5cc4eb55dd587919ba2153aab113a1f4c7040578dd0f7fb456e91f0ceb1d84b3 0.0s done
+#28 naming to docker.io/library/akus-local-migrate 0.0s done
+#28 DONE 0.1s
+
+#29 [web] resolving provenance for metadata file
+#29 ...
+
+#30 [api] resolving provenance for metadata file
+#30 DONE 0.1s
+
+#29 [web] resolving provenance for metadata file
+#29 DONE 0.1s
+
+#31 [worker] resolving provenance for metadata file
+#31 DONE 0.1s
+
+#32 [migrate] resolving provenance for metadata file
+#32 DONE 0.0s
+ Image akus-local-api Built 
+ Image akus-local-migrate Built 
+ Image akus-local-worker Built 
+ Image akus-local-web Built 

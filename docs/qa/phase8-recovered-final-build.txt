@@ -1,0 +1,149 @@
+ Image akus-local-worker Building 
+ Image akus-local-web Building 
+ Image akus-local-migrate Building 
+ Image akus-local-api Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.85kB done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from api.Dockerfile
+#2 DONE 0.0s
+
+#2 [api internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 430B done
+#2 DONE 0.0s
+
+#3 [web internal] load build definition from web.Dockerfile
+#3 transferring dockerfile: 324B done
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for docker.io/library/caddy:2-alpine
+#4 DONE 0.0s
+
+#5 [migrate internal] load metadata for docker.io/library/python:3.13-slim
+#5 ...
+
+#6 [web internal] load metadata for docker.io/library/node:24-slim
+#6 DONE 1.0s
+
+#5 [api internal] load metadata for docker.io/library/python:3.13-slim
+#5 DONE 1.0s
+
+#7 [api internal] load .dockerignore
+#7 transferring context: 208B done
+#7 DONE 0.0s
+
+#8 [api 1/6] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#8 DONE 0.0s
+
+#9 [web build 1/6] FROM docker.io/library/node:24-slim@sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54
+#9 DONE 0.0s
+
+#10 [web stage-1 1/3] FROM docker.io/library/caddy:2-alpine
+#10 DONE 0.0s
+
+#11 [web internal] load build context
+#11 transferring context: 910.14kB 0.0s done
+#11 DONE 0.0s
+
+#12 [api internal] load build context
+#12 transferring context: 946.14kB 0.0s done
+#12 DONE 0.1s
+
+#13 [web build 6/6] RUN npm run build
+#13 CACHED
+
+#14 [web build 5/6] COPY apps/web ./
+#14 CACHED
+
+#15 [web stage-1 2/3] COPY --from=build /web/dist /srv
+#15 CACHED
+
+#16 [web build 2/6] WORKDIR /web
+#16 CACHED
+
+#17 [web build 4/6] RUN npm ci --no-fund --no-audit
+#17 CACHED
+
+#18 [web build 3/6] COPY apps/web/package*.json ./
+#18 CACHED
+
+#19 [web stage-1 3/3] COPY infra/Caddy.web /etc/caddy/Caddyfile
+#19 CACHED
+
+#20 [api 2/6] WORKDIR /app
+#20 CACHED
+
+#21 [api 3/6] COPY apps/api/requirements.lock /app/requirements.lock
+#21 CACHED
+
+#22 [migrate 4/6] RUN pip install --no-cache-dir -r requirements.lock
+#22 CACHED
+
+#23 [web] exporting to image
+#23 exporting layers done
+#23 writing image sha256:1bbcce4debf661f92d3dfb3e99c825231ae92533242a9821b2fb65eee16ee1f7 done
+#23 naming to docker.io/library/akus-local-web
+#23 naming to docker.io/library/akus-local-web done
+#23 DONE 0.0s
+
+#24 [migrate 5/6] COPY apps/api /app/apps/api
+#24 DONE 0.1s
+
+#25 [web] resolving provenance for metadata file
+#25 DONE 0.0s
+
+#26 [api 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#26 0.749 Obtaining file:///app/apps/api
+#26 0.750   Installing build dependencies: started
+#26 1.856   Installing build dependencies: finished with status 'done'
+#26 1.857   Checking if build backend supports build_editable: started
+#26 2.174   Checking if build backend supports build_editable: finished with status 'done'
+#26 2.175   Getting requirements to build editable: started
+#26 2.534   Getting requirements to build editable: finished with status 'done'
+#26 2.535   Preparing editable metadata (pyproject.toml): started
+#26 2.745   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#26 2.754 Building wheels for collected packages: akus-api
+#26 2.755   Building editable for akus-api (pyproject.toml): started
+#26 2.983   Building editable for akus-api (pyproject.toml): finished with status 'done'
+#26 2.984   Created wheel for akus-api: filename=akus_api-0.1.0-0.editable-py3-none-any.whl size=2875 sha256=1edf82895a68acf27293b758c94f0d9fdfda9450e0094dbd5fc4dbfd500ac7f8
+#26 2.984   Stored in directory: /tmp/pip-ephem-wheel-cache-3oh3j84x/wheels/b1/8f/6c/228667c2da5e253868149b5f65557add9c4fbba2f70f6f297e
+#26 2.986 Successfully built akus-api
+#26 2.996 Installing collected packages: akus-api
+#26 3.012 Successfully installed akus-api-0.1.0
+#26 3.012 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#26 3.013 
+#26 3.013 [notice] A new release of pip is available: 26.2.2 -> 26.3
+#26 3.013 [notice] To update, run: pip install --upgrade pip
+#26 DONE 3.1s
+
+#27 [migrate] exporting to image
+#27 exporting layers 0.1s done
+#27 writing image sha256:a0650acb3056ee1e1a5b5c2bf94b495d0ce4559967adb34f44fadb9b18b2c21a done
+#27 naming to docker.io/library/akus-local-migrate 0.0s done
+#27 DONE 0.1s
+
+#28 [worker] exporting to image
+#28 exporting layers 0.1s done
+#28 writing image sha256:3319d503f1856b78fbf21ed19adbb85b0c768209436293275dd8b52b48032de7 done
+#28 naming to docker.io/library/akus-local-worker 0.0s done
+#28 DONE 0.1s
+
+#29 [api] exporting to image
+#29 exporting layers 0.1s done
+#29 writing image sha256:b3cc46006269a8145a5d0d7bd944573b581d6f56d8a4b01c620b64b4a5381586 0.0s done
+#29 naming to docker.io/library/akus-local-api 0.0s done
+#29 DONE 0.2s
+
+#30 [migrate] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#31 [worker] resolving provenance for metadata file
+#31 DONE 0.0s
+
+#32 [api] resolving provenance for metadata file
+#32 DONE 0.0s
+ Image akus-local-api Built 
+ Image akus-local-migrate Built 
+ Image akus-local-worker Built 
+ Image akus-local-web Built 

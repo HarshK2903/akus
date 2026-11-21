@@ -7,7 +7,7 @@ from typing import Any
 from uuid import NAMESPACE_URL, UUID, uuid5
 
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
 from akus.applications import participation
@@ -67,13 +67,14 @@ def eligibility(db: Session, app: Application, event: CredentialEvent, sub: Subm
     )
     if not approved or app.state not in ("APPROVED", "OUTCOME_RECORDED", "SEPARATED"):
         return "INSTITUTIONAL_APPROVAL_REQUIRED"
-    if episode.ends_before and episode.ends_before <= today():
-        order = db.scalar(
-            select(Departure).where(
-                Departure.episode_id == app.episode_id,
-                Departure.effective_on == episode.ends_before,
-            )
+    order = db.scalar(
+        select(Departure).where(
+            Departure.episode_id == episode.id, Departure.effective_on <= today()
         )
+    )
+    if order and order.effective_on != episode.ends_before:
+        return "PERMANENT_ORDER_SOURCE_CONFLICT"
+    if episode.ends_before and episode.ends_before <= today():
         if not order:
             return "SEPARATION_ORDER_PENDING"
         if history.comparison(exam, instant, order.effective_on, order.effective_at) != -1:
@@ -254,6 +255,8 @@ def subject_rows(
     )
     frozen = db.get(SeparationSnapshot, order.id) if order else None
     cutoff = min(day, ep.ends_before) if ep.ends_before else day
+    if order:
+        cutoff = min(cutoff, order.effective_on)
     firsts = {
         a.subject_id: a
         for a in reversed(
@@ -335,7 +338,9 @@ def subject_rows(
             if state == "VERIFIED_ON_TIME":
                 chosen = r["event_id"]
                 break
-        if record.get("source_review"):
+        if order and ep.ends_before != order.effective_on:
+            state = "PERMANENT_ORDER_SOURCE_CONFLICT"
+        elif record.get("source_review"):
             state = "ASSIGNMENT_SOURCE_CORRECTION_REVIEW"
         elif not deadline:
             state = "DEADLINE_POLICY_PENDING_P54"
@@ -352,7 +357,9 @@ def subject_rows(
                 "subject_id": str(sid),
                 "subject": subject.name if subject else str(sid),
                 "deadline": deadline,
-                "monitoring": "CLOSED" if ep.ends_before and ep.ends_before <= day else "ACTIVE",
+                "monitoring": "CLOSED"
+                if order or (ep.ends_before and ep.ends_before <= day)
+                else "ACTIVE",
                 "status": state,
                 "decision_reference": confirmed.decision_reference if confirmed else None,
                 "allocation": chosen if state == "VERIFIED_ON_TIME" else None,
@@ -473,6 +480,11 @@ def assess(db: Session, ep: EmploymentEpisode) -> dict[str, Any]:
 
 
 def capture(db: Session, ep: EmploymentEpisode) -> AssessmentSnapshot:
+    # Distinct application decisions can change the same episode at once.
+    db.execute(
+        text("SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))"),
+        {"key": f"compliance-episode:{ep.id}"},
+    )
     facts = jsonable_encoder(assess(db, ep))
     digest = hashlib.sha256(
         json.dumps(facts, sort_keys=True, separators=(",", ":")).encode()

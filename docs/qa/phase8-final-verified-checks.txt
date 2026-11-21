@@ -1,0 +1,91 @@
+ Container akus-local-api-run-99de08c98ce7 Creating 
+ Container akus-local-api-run-99de08c98ce7 Created 
+All checks passed!
+113 files already formatted
+Success: no issues found in 78 source files
+No new upgrade operations detected.
+........................................................................ [ 22%]
+........................................................................ [ 45%]
+........................................................................ [ 68%]
+........................................................................ [ 91%]
+............................                                             [100%]
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+316 passed, 2 warnings in 163.70s (0:02:43)
+
+> akus-web@0.1.0 lint
+> eslint .
+
+
+> akus-web@0.1.0 typecheck
+> tsc -b
+
+
+> akus-web@0.1.0 format:check
+> prettier --check src e2e qa *.ts *.js *.json
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> akus-web@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /media/bugulnoz/New Volume/2/akus/apps/web
+
+ ✓ src/pages/Help.test.tsx (2 tests) 145ms
+ ✓ src/routes.test.tsx (1 test) 95ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  02:13:09
+   Duration  1.38s (transform 191ms, setup 353ms, collect 500ms, tests 239ms, environment 914ms, prepare 193ms)
+
+
+> akus-web@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.8 building client environment for production...
+transforming...
+✓ 1734 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                              0.61 kB │ gzip:   0.41 kB
+dist/assets/index-C8fU-A54.css              20.09 kB │ gzip:   4.87 kB
+dist/assets/compliance-D1UeX0M2.js           0.06 kB │ gzip:   0.08 kB
+dist/assets/pdf-BW3MzTR9.js                  0.48 kB │ gzip:   0.35 kB
+dist/assets/PeopleUi-C8mjnLIa.js             0.71 kB │ gzip:   0.43 kB
+dist/assets/academic-DPWIX_00.js             0.82 kB │ gzip:   0.50 kB
+dist/assets/SourceUi-BZrSCQSA.js             2.06 kB │ gzip:   0.86 kB
+dist/assets/Shared-ChdKyKL2.js               2.53 kB │ gzip:   1.11 kB
+dist/assets/Appointments-B7vAigYa.js         2.58 kB │ gzip:   1.12 kB
+dist/assets/StaffDirectory-Dl6CyqqQ.js       2.75 kB │ gzip:   1.31 kB
+dist/assets/EmploymentHistory-CBKLbyQG.js    3.21 kB │ gzip:   1.29 kB
+dist/assets/AppointmentRecord-eNr0Vm1m.js    3.42 kB │ gzip:   1.46 kB
+dist/assets/StaffNew-vx82-Hib.js             3.78 kB │ gzip:   1.54 kB
+dist/assets/Accounts-QLZD7W6V.js             4.05 kB │ gzip:   1.75 kB
+dist/assets/AppointmentNew-BKa8mhA_.js       5.14 kB │ gzip:   1.91 kB
+dist/assets/ReferenceSetup-BQF_M6yE.js       5.57 kB │ gzip:   1.95 kB
+dist/assets/Imports-DOiema6N.js              7.28 kB │ gzip:   2.81 kB
+dist/assets/Compliance-D24v-vQz.js           7.47 kB │ gzip:   2.75 kB
+dist/assets/Outcomes-DpjJp_hs.js             7.59 kB │ gzip:   2.79 kB
+dist/assets/StaffRecord-Dl-ZWtOd.js          8.28 kB │ gzip:   2.60 kB
+dist/assets/Credentials-CEir8G0K.js          9.13 kB │ gzip:   3.22 kB
+dist/assets/Dashboards-YekYVG3f.js           9.46 kB │ gzip:   2.87 kB
+dist/assets/Registers-t0FPaeVo.js           10.09 kB │ gzip:   3.56 kB
+dist/assets/Teaching-qUfbsnOF.js            10.62 kB │ gzip:   3.31 kB
+dist/assets/SourceCorrection-BUR7CX9J.js    13.48 kB │ gzip:   4.18 kB
+dist/assets/Exceptions-D_1cyiCN.js          13.53 kB │ gzip:   4.22 kB
+dist/assets/Catalog-Cg07Pr9D.js             16.89 kB │ gzip:   4.72 kB
+dist/assets/Governance-rGNvn--C.js          19.75 kB │ gzip:   5.56 kB
+dist/assets/Applications-CXwEJH6F.js        38.02 kB │ gzip:   9.92 kB
+dist/assets/index-BbaHR3b5.js              438.38 kB │ gzip: 137.55 kB
+✓ built in 2.58s

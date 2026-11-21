@@ -1,5 +1,7 @@
 name: akus-local
 x-api: &api
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
   build: {context: ., dockerfile: infra/api.Dockerfile}
   environment: &environment
     AKUS_ENV: ${AKUS_ENV:-local}
@@ -16,7 +18,7 @@ x-api: &api
     db: {condition: service_healthy}
 services:
   db:
-    image: postgres:16
+    build: {context: ., dockerfile: infra/postgres.Dockerfile}
     environment: {POSTGRES_USER: akus_demo, POSTGRES_PASSWORD: akus_demo, POSTGRES_DB: akus}
     volumes: [akus_pg:/var/lib/postgresql/data]
     healthcheck: {test: ['CMD-SHELL', 'pg_isready -U akus_demo -d akus'], interval: 5s, timeout: 3s, retries: 20}
@@ -40,7 +42,7 @@ services:
   web:
     build: {context: ., dockerfile: infra/web.Dockerfile}
   proxy:
-    image: caddy:2-alpine
+    build: {context: ., dockerfile: infra/web.Dockerfile, target: proxy}
     ports: ['127.0.0.1:8080:80']
     volumes: ['./infra/Caddyfile:/etc/caddy/Caddyfile:ro']
     depends_on:

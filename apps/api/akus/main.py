@@ -11,6 +11,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
 
 from akus.access import DB, Current, authority
+from akus.applications.attachments import router as attachments_router
 from akus.applications.outcome_router import router as outcomes_router
 from akus.applications.router import router as applications_router
 from akus.auth import csrf_valid, resolve, sign_in
@@ -35,6 +36,7 @@ from akus.schemas import (
     Year,
 )
 from akus.sources.router import router as sources_router
+from akus.workspace.router import router as workspace_router
 
 log = logging.getLogger("akus")
 if not log.handlers:
@@ -42,7 +44,7 @@ if not log.handlers:
 log.setLevel(logging.INFO)
 log.propagate = False
 COOKIE = "akus_demo_session"
-SCHEMA_HEAD = "0018_exam_evidence"
+SCHEMA_HEAD = "0021_application_files"
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -63,9 +65,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(sources_router)
     app.include_router(catalog_router)
     app.include_router(applications_router)
+    app.include_router(attachments_router)
     app.include_router(outcomes_router)
     app.include_router(exceptions_router)
     app.include_router(compliance_router)
+    app.include_router(workspace_router)
 
     @app.middleware("http")
     async def request_context(request: Request, call_next):  # type: ignore[no-untyped-def]
@@ -73,7 +77,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         response = await call_next(request)
         response.headers["X-Request-ID"] = request.state.correlation_id
         response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["Cache-Control"] = "no-store"
+        response.headers["Cache-Control"] = "private, no-store"
         log.info(
             json.dumps(
                 {

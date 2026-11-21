@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Navigate,
@@ -19,9 +19,11 @@ import {
 } from "lucide-react";
 import { api, roleHome, roleLabels } from "../lib/api";
 import type { Identity } from "../lib/api";
+import { accessKey } from "../lib/people";
 import { sessionCsrf } from "../lib/session";
 import { ApiError } from "../lib/api";
-import { ErrorState, Loading } from "./ui";
+import { ErrorState, Loading, WorkspaceLoading } from "./ui";
+import { registers } from "../lib/registers";
 export function Shell() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -34,6 +36,14 @@ export function Shell() {
       if (identity.mode === "INSTITUTIONAL") {
         const session = await api<{ csrf_token: string }>("/auth/session");
         sessionCsrf.set(session.csrf_token);
+      }
+      const previous = cache.getQueryData<Identity>(["me"]);
+      if (
+        previous &&
+        JSON.stringify(accessKey(previous)) !==
+          JSON.stringify(accessKey(identity))
+      ) {
+        cache.removeQueries({ predicate: (q) => q.queryKey[0] !== "me" });
       }
       return identity;
     },
@@ -53,7 +63,7 @@ export function Shell() {
       navigate("/login");
     },
   });
-  if (me.isPending) return <Loading />;
+  if (me.isPending) return <WorkspaceLoading />;
   if (me.error instanceof ApiError && [401, 404].includes(me.error.status))
     return (
       <Navigate
@@ -105,6 +115,12 @@ export function Shell() {
         {(person.applicant_eligible ||
           person.roles?.some((r) => ["HOD", "PRINCIPAL"].includes(r))) && (
           <>
+            {person.applicant_eligible && (
+              <NavLink to="/app/history" onClick={() => setOpen(false)}>
+                <BookOpen size={18} />
+                Employment history
+              </NavLink>
+            )}
             <NavLink to="/app/certificates" onClick={() => setOpen(false)}>
               <BookOpen size={18} />
               Certificate library
@@ -149,6 +165,14 @@ export function Shell() {
             </NavLink>
           </>
         )}
+        {Object.values(registers)
+          .filter(([, , , role]) => !role || person.roles?.includes(role))
+          .map(([path, label]) => (
+            <NavLink key={path} to={path} onClick={() => setOpen(false)}>
+              <BookOpen size={18} />
+              {label}
+            </NavLink>
+          ))}
         <NavLink to="/app/profile" onClick={() => setOpen(false)}>
           <UserRound size={18} />
           Profile & access
@@ -305,7 +329,16 @@ export function Shell() {
               the demo session.
             </p>
           )}
-          <Outlet context={person} />
+          <Suspense
+            fallback={
+              <>
+                <h1>Opening record</h1>
+                <Loading />
+              </>
+            }
+          >
+            <Outlet key={JSON.stringify(accessKey(person))} context={person} />
+          </Suspense>
           <button className="mobile-signout" onClick={() => logout.mutate()}>
             Sign out
           </button>

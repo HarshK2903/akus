@@ -1,0 +1,144 @@
+ Image akus-local-clamd Building 
+ Image akus-local-api Building 
+ Image akus-local-worker Building 
+ Image akus-local-migrate Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.29kB done
+#1 DONE 0.0s
+
+#2 [clamd internal] load build definition from clamav.Dockerfile
+#2 transferring dockerfile: 233B done
+#2 DONE 0.0s
+
+#3 [clamd internal] load metadata for docker.io/clamav/clamav:stable@sha256:12177441d1b40cef3c47b44c4090d59d4babc4c67bedd5af0fa315e603aa6dd8
+#3 DONE 0.0s
+
+#4 [api internal] load build definition from api.Dockerfile
+#4 transferring dockerfile: 629B done
+#4 DONE 0.0s
+
+#5 [api internal] load metadata for docker.io/library/python:3.13-slim
+#5 DONE 0.0s
+
+#6 [api internal] load .dockerignore
+#6 transferring context: 231B done
+#6 DONE 0.0s
+
+#7 [migrate 1/7] FROM docker.io/library/python:3.13-slim
+#7 DONE 0.0s
+
+#8 [api internal] load build context
+#8 transferring context: 163.43kB 0.0s done
+#8 DONE 0.0s
+
+#9 [clamd 1/2] FROM docker.io/clamav/clamav:stable@sha256:12177441d1b40cef3c47b44c4090d59d4babc4c67bedd5af0fa315e603aa6dd8
+#9 DONE 0.1s
+
+#10 [api 4/7] COPY apps/api/requirements.lock /app/requirements.lock
+#10 CACHED
+
+#11 [api 3/7] WORKDIR /app
+#11 CACHED
+
+#12 [api 2/7] RUN apt-get update && apt-get install -y --no-install-recommends --only-upgrade zlib1g && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [api 5/7] RUN pip install --no-cache-dir -r requirements.lock
+#13 CACHED
+
+#14 [worker 6/7] COPY apps/api /app/apps/api
+#14 DONE 0.1s
+
+#15 [worker 7/7] RUN pip install --no-cache-dir --no-deps -e /app/apps/api && python -m pip uninstall -y pip
+#15 ...
+
+#16 [clamd 2/2] RUN apk add --no-cache --upgrade libxml2
+#16 1.551 (1/1) Upgrading libxml2 (2.13.9-r2 -> 2.13.9-r3)
+#16 1.613 OK: 18.9 MiB in 41 packages
+#16 DONE 1.7s
+
+#17 [clamd] exporting to image
+#17 exporting layers 0.0s done
+#17 writing image sha256:be57f40ea3fa45c96fd930908239ce2dd091ecd158dee40de4f67a1d3b1a2517 done
+#17 naming to docker.io/library/akus-local-clamd done
+#17 DONE 0.1s
+
+#18 [clamd] resolving provenance for metadata file
+#18 DONE 0.0s
+
+#15 [worker 7/7] RUN pip install --no-cache-dir --no-deps -e /app/apps/api && python -m pip uninstall -y pip
+#15 1.721 Obtaining file:///app/apps/api
+#15 1.722   Installing build dependencies: started
+#15 2.818   Installing build dependencies: finished with status 'done'
+#15 2.819   Checking if build backend supports build_editable: started
+#15 3.069   Checking if build backend supports build_editable: finished with status 'done'
+#15 3.070   Getting requirements to build editable: started
+#15 3.342   Getting requirements to build editable: finished with status 'done'
+#15 3.343   Preparing editable metadata (pyproject.toml): started
+#15 3.517   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#15 3.523 Building wheels for collected packages: akus-api
+#15 3.524   Building editable for akus-api (pyproject.toml): started
+#15 3.718   Building editable for akus-api (pyproject.toml): finished with status 'done'
+#15 3.719   Created wheel for akus-api: filename=akus_api-0.1.0-0.editable-py3-none-any.whl size=2875 sha256=3c45901fa73e0c9c26b72ba1d7fe1d6003f51b77198d9bf03a21bfa0a188588a
+#15 3.719   Stored in directory: /tmp/pip-ephem-wheel-cache-2bew0q2e/wheels/b1/8f/6c/228667c2da5e253868149b5f65557add9c4fbba2f70f6f297e
+#15 3.721 Successfully built akus-api
+#15 3.730 Installing collected packages: akus-api
+#15 3.749 Successfully installed akus-api-0.1.0
+#15 3.749 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#15 3.749 
+#15 3.749 [notice] A new release of pip is available: 26.2.2 -> 26.3
+#15 3.749 [notice] To update, run: pip install --upgrade pip
+#15 4.025 Found existing installation: pip 26.2.2
+#15 4.066 Uninstalling pip-26.2.2:
+#15 4.305   Successfully uninstalled pip-26.2.2
+#15 4.332 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#15 DONE 4.4s
+
+#19 [migrate] exporting to image
+#19 exporting layers 0.1s done
+#19 writing image sha256:d1f38a28e7c438c7294119fec55a16cb49bc66d69b3d626d9c2d4575e4991efa 0.0s done
+#19 naming to docker.io/library/akus-local-migrate 0.0s done
+#19 DONE 0.2s
+
+#20 [worker] exporting to image
+#20 exporting layers 0.1s done
+#20 writing image sha256:7722e5ff393b0a14ab4fe9e475a918afb1b471069eed00646eb316b0cfe06654 done
+#20 naming to docker.io/library/akus-local-worker 0.0s done
+#20 DONE 0.2s
+
+#21 [api] exporting to image
+#21 exporting layers 0.1s done
+#21 writing image sha256:c7005abe589a1a4f82c59d0b377a1c34b30d14f53772debc7c4fc380b4943f60 done
+#21 naming to docker.io/library/akus-local-api 0.0s done
+#21 DONE 0.2s
+
+#22 [worker] resolving provenance for metadata file
+#22 DONE 0.1s
+
+#23 [migrate] resolving provenance for metadata file
+#23 DONE 0.0s
+
+#24 [api] resolving provenance for metadata file
+#24 DONE 0.0s
+ Image akus-local-clamd Built 
+ Image akus-local-api Built 
+ Image akus-local-worker Built 
+ Image akus-local-migrate Built 
+ Container akus-local-worker-1 Recreate 
+ Container akus-local-api-1 Recreate 
+ Container akus-local-clamd-1 Recreate 
+ Container akus-local-clamd-1 Recreated 
+ Container akus-local-api-1 Recreated 
+ Container akus-local-worker-1 Recreated 
+ Container akus-local-clamd-1 Starting 
+ Container akus-local-api-1 Starting 
+ Container akus-local-worker-1 Starting 
+ Container akus-local-clamd-1 Started 
+ Container akus-local-api-1 Started 
+ Container akus-local-worker-1 Started 
+ Container akus-local-worker-1 Waiting 
+ Container akus-local-clamd-1 Waiting 
+ Container akus-local-api-1 Waiting 
+ Container akus-local-worker-1 Healthy 
+ Container akus-local-clamd-1 Healthy 
+ Container akus-local-api-1 Healthy 

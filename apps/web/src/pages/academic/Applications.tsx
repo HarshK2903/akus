@@ -1,7 +1,11 @@
+import { ApplicationFiles } from "./ApplicationFiles";
 import { Participation } from "./Participation";
+import { useCallback, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Link,
+  useBlocker,
+  useBeforeUnload,
   useNavigate,
   useOutletContext,
   useParams,
@@ -18,11 +22,17 @@ import {
   type Offering,
   type Movement,
 } from "../../lib/academic";
-import { instant } from "../../lib/people";
+import { accessKey, instant } from "../../lib/people";
 import { Badge, ErrorState, Loading, PageHeader } from "../../components/ui";
 import { CommandError, Pager, ScrollTable } from "../../components/PeopleUi";
 import { Field, SelectField, SourceFields } from "../../components/SourceUi";
 import { Dates, History, SourceLink } from "./Shared";
+
+const caseRoutes: Record<string, string> = {
+  QUOTA_TRANSFER: "/hod/quota-transfers/",
+  INTEGRITY: "/hod/integrity/",
+  SEPARATION: "/hod/separation-cases/",
+};
 
 export function Applications({
   review = false,
@@ -35,10 +45,16 @@ export function Applications({
   const [params, setParams] = useSearchParams();
   const offset = Number(params.get("offset") || 0);
   const query = useQuery({
-    queryKey: ["applications", review, reconciliation, offset],
+    queryKey: [
+      "applications",
+      ...accessKey(actor),
+      review,
+      reconciliation,
+      params.toString(),
+    ],
     queryFn: () =>
       api<{ items: ApplicationRecord[]; total: number }>(
-        `/applications?review=${review}&reconciliation=${reconciliation}&offset=${offset}`,
+        `/applications?review=${review}&reconciliation=${reconciliation}&offset=${offset}&search=${encodeURIComponent(params.get("search") || "")}&state=${encodeURIComponent(params.get("state") || "")}`,
       ),
   });
   if (query.isPending) return <Loading />;
@@ -72,9 +88,56 @@ export function Applications({
       <p className="academic-links">
         <Link to="/app/catalog">Discover courses</Link>
         <Link to="/app/applications">Applications</Link>
-        <Link to="/hod/quota-transfers">Transfer and policy cases</Link>
+        {actor.roles?.some((r) => ["HOD", "PRINCIPAL"].includes(r)) && (
+          <Link to="/hod/quota-transfers">Quota transfer cases</Link>
+        )}
       </p>
       <section className="panel">
+        <form
+          className="source-form"
+          key={params.toString()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            const f = new FormData(e.currentTarget);
+            setParams({
+              search: String(f.get("search") || ""),
+              state: String(f.get("state") || ""),
+            });
+          }}
+        >
+          <label>
+            Search applications
+            <input
+              type="search"
+              name="search"
+              maxLength={160}
+              defaultValue={params.get("search") || ""}
+            />
+          </label>
+          {!review && (
+            <label>
+              Workflow status
+              <select name="state" defaultValue={params.get("state") || ""}>
+                <option value="">All statuses</option>
+                {[
+                  "DRAFT",
+                  "UNDER_REVIEW",
+                  "APPROVED",
+                  "REJECTED",
+                  "WITHDRAWN",
+                  "SEPARATED",
+                  "INVALIDATED",
+                  "OUTCOME_RECORDED",
+                ].map((s) => (
+                  <option key={s} value={s}>
+                    {s.replaceAll("_", " ")}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          <button>Apply filters</button>
+        </form>
         <ScrollTable label="Application records">
           <table>
             <thead>
@@ -118,13 +181,23 @@ export function Applications({
                   </td>
                   <td>
                     {a.cases
-                      .filter((c) => c.status === "OPEN")
+                      .filter(
+                        (c) =>
+                          c.status === "OPEN" &&
+                          (!reconciliation || c.kind === "QUOTA_TRANSFER"),
+                      )
                       .map((c) => (
                         <p key={c.id}>
                           {actor.roles?.some((r) =>
                             ["HOD", "PRINCIPAL"].includes(r),
                           ) ? (
-                            <Link to={`/hod/quota-transfers/${c.id}`}>
+                            <Link
+                              to={
+                                caseRoutes[c.kind]
+                                  ? caseRoutes[c.kind] + c.id
+                                  : `/app/applications/${a.id}`
+                              }
+                            >
                               {c.reason.replaceAll("_", " ")}
                             </Link>
                           ) : (
@@ -148,7 +221,9 @@ export function Applications({
         total={query.data.total}
         offset={offset}
         limit={25}
-        change={(n) => setParams({ offset: String(n) })}
+        change={(n) =>
+          setParams({ ...Object.fromEntries(params), offset: String(n) })
+        }
       />
     </>
   );
@@ -199,9 +274,20 @@ export function ApplicationDraft() {
     queryFn: () => api<Offering>(`/nptel/offerings/${offeringId}`),
     enabled: !!offeringId,
   });
-  const save = useCommand((id) =>
-    navigate(`/app/applications/new/evidence?draft=${id}`),
+  const unsaved = useRef(false);
+  const blocker = useBlocker(() => unsaved.current);
+  useBeforeUnload(
+    useCallback((event) => {
+      if (unsaved.current) {
+        event.preventDefault();
+        event.returnValue = true;
+      }
+    }, []),
   );
+  const save = useCommand((id) => {
+    unsaved.current = false;
+    navigate(`/app/applications/new/evidence?draft=${id}`);
+  });
   if (context.data && !context.data.can_apply)
     return (
       <>
@@ -225,7 +311,7 @@ export function ApplicationDraft() {
     );
   if (
     draftQuery.data &&
-    (!draftQuery.data.own || draftQuery.data.state !== "DRAFT")
+    (!draftQuery.data.own_current_episode || draftQuery.data.state !== "DRAFT")
   )
     return (
       <>
@@ -246,7 +332,13 @@ export function ApplicationDraft() {
         <Link to="/app/catalog">Open course catalog →</Link>
       </>
     );
-  if (query.isPending || context.isPending) return <Loading />;
+  if (query.isPending || context.isPending)
+    return (
+      <>
+        <h1>Loading application</h1>
+        <Loading />
+      </>
+    );
   if (query.error || context.error)
     return (
       <ErrorState
@@ -283,11 +375,7 @@ export function ApplicationDraft() {
             submission. Prior-result checks are separate from this offering's
             enrollment.
           </p>
-          <p>
-            Binary document upload is not available in this phase. Official
-            archive references, checksums and observation times remain
-            auditable.
-          </p>
+
           <Link
             className="button primary"
             to={`/app/applications/new/review?draft=${saved.id}`}
@@ -295,6 +383,7 @@ export function ApplicationDraft() {
             Continue to review
           </Link>
         </section>
+        <ApplicationFiles aid={saved.id} />
         <Participation app={saved} canVerify={false} />
       </>
     );
@@ -329,6 +418,33 @@ export function ApplicationDraft() {
         title="New application · eligibility declarations"
         description="Save a draft first, then inspect the submission snapshot. Unresolved evidence never creates a seat."
       />
+      {blocker.state === "blocked" && (
+        <dialog
+          ref={(element) => {
+            if (element && !element.open) element.showModal();
+          }}
+          aria-labelledby="unsaved-draft-title"
+          onCancel={(event) => {
+            event.preventDefault();
+            blocker.reset();
+          }}
+        >
+          <h2 id="unsaved-draft-title">
+            Leave without saving your declarations?
+          </h2>
+          <p>Changes made since your last save will be lost.</p>
+          <button onClick={() => blocker.reset()}>Keep editing</button>
+          <button
+            disabled={save.isPending}
+            onClick={() => {
+              unsaved.current = false;
+              blocker.proceed();
+            }}
+          >
+            Discard changes and leave
+          </button>
+        </dialog>
+      )}
       {navigation}
       <Link to={`/app/offerings/${o.id}`}>← Exact offering</Link>
       <section className="panel prose section-gap">
@@ -344,6 +460,9 @@ export function ApplicationDraft() {
         <section className="panel prose section-gap">
           <form
             className="source-form"
+            onChange={() => {
+              unsaved.current = true;
+            }}
             onSubmit={(e) => {
               e.preventDefault();
               const f = new FormData(e.currentTarget);
@@ -481,10 +600,13 @@ export function MovementTable({ items }: { items: Movement[] }) {
 export function ApplicationDetail({
   caseView = false,
   draftId,
+  section,
 }: {
   caseView?: boolean;
   draftId?: string;
+  section?: "quota" | "history" | "evidence" | "participation";
 }) {
+  const viewer = useOutletContext<Identity>();
   const { appId: routeAppId, caseId } = useParams();
   const appId = draftId || routeAppId;
   const navigate = useNavigate();
@@ -501,7 +623,13 @@ export function ApplicationDetail({
   const mapping = useCommand();
   const reportSchedule = useCommand();
   const verifySchedule = useCommand();
-  if (query.isPending || context.isPending) return <Loading />;
+  if (query.isPending || context.isPending)
+    return (
+      <>
+        <h1>Loading application</h1>
+        <Loading />
+      </>
+    );
   if (query.error || context.error)
     return (
       <ErrorState
@@ -513,19 +641,189 @@ export function ApplicationDetail({
     );
   if (!query.data || !context.data) return null;
   const a = query.data;
+  const mayViewFiles =
+    a.own ||
+    (a.state !== "DRAFT" &&
+      (viewer.roles?.includes("PRINCIPAL") ||
+        viewer.department_ids?.includes(a.department_id)));
   const o = a.offering;
-  return (
+  const titles = {
+    quota: "Allocation and quota movements",
+    history: "Application timeline",
+    evidence: "Application evidence",
+    participation: "External participation",
+  };
+  const quotaFacts = (
+    <section className="panel prose">
+      <h2>Annual quota facts</h2>
+      <dl className="detail-grid">
+        <div>
+          <dt>Original submission year</dt>
+          <dd>{a.submission?.facts.academic_year || "No submission"}</dd>
+        </div>
+        <div>
+          <dt>Currently charged year</dt>
+          <dd>{a.allocation?.pool.academic_year || "No counted allocation"}</dd>
+        </div>
+        <div>
+          <dt>Latest official scheduled exam year</dt>
+          <dd>{o?.expected_exam_year || "Not configured"}</dd>
+        </div>
+        <div>
+          <dt>Allocation status</dt>
+          <dd>{a.allocation?.state || "NONE"}</dd>
+        </div>
+      </dl>
+      {a.allocation && (
+        <>
+          <p>
+            {a.allocation.pool.topic} · {a.allocation.pool.occupied} /{" "}
+            {a.allocation.pool.maximum} counted
+          </p>
+          <Link to={`/hod/quotas/${a.allocation.pool.id}`}>
+            Inspect current pool →
+          </Link>
+        </>
+      )}
+    </section>
+  );
+  const participation = (
+    <Participation
+      app={a}
+      canVerify={
+        !a.own && context.data.hod_departments.includes(a.department_id)
+      }
+    />
+  );
+  const timeline = (
+    <>
+      {" "}
+      {!!a.draft_revisions?.length && (
+        <section className="panel prose section-gap">
+          <h2>Saved draft history</h2>
+          {a.draft_revisions.map((r) => (
+            <details key={r.version}>
+              <summary>
+                Revision {r.version} · {instant(r.recorded_at)}
+              </summary>
+              <p>
+                {String(
+                  r.declarations.academic_relevance ||
+                    "Academic relevance not recorded",
+                )}
+              </p>
+            </details>
+          ))}
+        </section>
+      )}
+      <History events={a.history} />
+      <section className="panel prose section-gap">
+        <h2>In-app notifications</h2>
+        {a.notifications.length ? (
+          a.notifications.map((n, i) => (
+            <p key={i}>
+              {n.kind.replaceAll("_", " ")} · {instant(n.created_at)}
+            </p>
+          ))
+        ) : (
+          <p>No notification events.</p>
+        )}
+        <p className="muted">
+          Durable in-app events; email delivery is not configured.
+        </p>
+      </section>
+    </>
+  );
+  const heading = (
     <>
       <PageHeader
-        title={caseView ? "Quota transfer case" : a.course}
+        title={
+          section
+            ? titles[section]
+            : caseView
+              ? "Quota transfer case"
+              : a.course
+        }
         description={`${a.course} · ${a.applicant} · ${a.provider_id} · version ${a.version}`}
       />
-      <p className="academic-links">
+      <nav className="academic-links" aria-label="Application record">
         {caseView && <Link to="/hod/quota-transfers">← Transfer cases</Link>}
         <Link to="/app/applications">← Applications</Link>
+        {(section || caseView) && (
+          <Link to={`/app/applications/${a.id}`}>Application overview</Link>
+        )}
         <Link to={`/app/applications/${a.id}/quota`}>Quota history</Link>
         <Link to={`/app/applications/${a.id}/history`}>Audit timeline</Link>
-      </p>
+        {mayViewFiles && (
+          <Link to={`/app/applications/${a.id}/evidence`}>
+            Application evidence
+          </Link>
+        )}
+        <Link to={`/app/participation/${a.id}`}>External participation</Link>
+      </nav>
+    </>
+  );
+  if (section === "quota")
+    return (
+      <>
+        {heading}
+        {quotaFacts}
+        {a.cases
+          .filter((c) => c.kind === "QUOTA_TRANSFER" && c.status === "OPEN")
+          .map((c) => (
+            <p className="panel" key={c.id}>
+              Transfer pending · {c.reason.replaceAll("_", " ")}. The original
+              allocation remains counted.{" "}
+              <Link to={`/hod/quota-transfers/${c.id}`}>
+                View transfer case
+              </Link>
+            </p>
+          ))}
+        <MovementTable items={a.ledger} />
+      </>
+    );
+  if (section === "history")
+    return (
+      <>
+        {heading}
+        {timeline}
+        <MovementTable items={a.ledger} />
+      </>
+    );
+  if (section === "evidence")
+    return (
+      <>
+        {heading}
+        {mayViewFiles ? (
+          <>
+            <ApplicationFiles aid={a.id} />
+            {participation}
+          </>
+        ) : (
+          <p role="alert">
+            Private application files require current evidence access.
+          </p>
+        )}
+      </>
+    );
+  if (section === "participation")
+    return (
+      <>
+        {heading}
+        {participation}
+        <SourceLink url={o?.source_url} />
+        {a.state !== "DRAFT" && (
+          <p>
+            <Link to={`/app/certificates/${a.id}`}>
+              Exam and certificate dossier
+            </Link>
+          </p>
+        )}
+      </>
+    );
+  return (
+    <>
+      {heading}
       <div className="overview-grid">
         <section className="panel prose">
           <h2>Application status</h2>
@@ -564,40 +862,7 @@ export function ApplicationDetail({
               : "Annual compliance is not assessed from a scheduled exam date."}
           </p>
         </section>
-        <section className="panel prose">
-          <h2>Annual quota facts</h2>
-          <dl className="detail-grid">
-            <div>
-              <dt>Original submission year</dt>
-              <dd>{a.submission?.facts.academic_year || "No submission"}</dd>
-            </div>
-            <div>
-              <dt>Currently charged year</dt>
-              <dd>
-                {a.allocation?.pool.academic_year || "No counted allocation"}
-              </dd>
-            </div>
-            <div>
-              <dt>Latest official scheduled exam year</dt>
-              <dd>{o?.expected_exam_year || "Not configured"}</dd>
-            </div>
-            <div>
-              <dt>Allocation status</dt>
-              <dd>{a.allocation?.state || "NONE"}</dd>
-            </div>
-          </dl>
-          {a.allocation && (
-            <>
-              <p>
-                {a.allocation.pool.topic} · {a.allocation.pool.occupied} /{" "}
-                {a.allocation.pool.maximum} counted
-              </p>
-              <Link to={`/hod/quotas/${a.allocation.pool.id}`}>
-                Inspect current pool →
-              </Link>
-            </>
-          )}
-        </section>
+        {quotaFacts}
       </div>
       {a.cases
         .filter((c) => (caseView ? c.id === caseId : c.status === "OPEN"))
@@ -638,7 +903,7 @@ export function ApplicationDetail({
             </dl>
           </section>
         ))}
-      {a.state === "DRAFT" && a.own && (
+      {a.state === "DRAFT" && a.own_current_episode && (
         <section className="panel prose section-gap">
           <h2>Review and submit</h2>
           <p>
@@ -798,44 +1063,45 @@ export function ApplicationDetail({
           </form>
         </section>
       )}
-      {a.own && ["UNDER_REVIEW", "APPROVED"].includes(a.state) && (
-        <section className="panel prose section-gap">
-          <h2>Voluntary withdrawal</h2>
-          <p>
-            Before commencement and enrollment, a valid withdrawal releases the
-            current pool. After commencement the seat remains counted. Earlier
-            external enrollment requires verified HoD review; this form cannot
-            grant that exception.
-          </p>
-          <form
-            className="source-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const f = new FormData(e.currentTarget);
-              action.mutate({
-                path: `/applications/${a.id}/withdraw`,
-                body: {
-                  expected_version: a.version,
-                  not_enrolled_declaration: f.has("not_enrolled"),
-                  ...reasonFields(f),
-                },
-              });
-            }}
-          >
-            <label className="checkbox-label">
-              <input type="checkbox" name="not_enrolled" /> I have not enrolled
-              externally in this offering.
-            </label>
-            <SourceFields />
-            <label className="checkbox-label">
-              <input type="checkbox" required /> I confirm this withdrawal
-              request.
-            </label>
-            <CommandError error={action.error} />
-            <button disabled={action.isPending}>Withdraw application</button>
-          </form>
-        </section>
-      )}
+      {a.own_current_episode &&
+        ["UNDER_REVIEW", "APPROVED"].includes(a.state) && (
+          <section className="panel prose section-gap">
+            <h2>Voluntary withdrawal</h2>
+            <p>
+              Before commencement and enrollment, a valid withdrawal releases
+              the current pool. After commencement the seat remains counted.
+              Earlier external enrollment requires verified HoD review; this
+              form cannot grant that exception.
+            </p>
+            <form
+              className="source-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const f = new FormData(e.currentTarget);
+                action.mutate({
+                  path: `/applications/${a.id}/withdraw`,
+                  body: {
+                    expected_version: a.version,
+                    not_enrolled_declaration: f.has("not_enrolled"),
+                    ...reasonFields(f),
+                  },
+                });
+              }}
+            >
+              <label className="checkbox-label">
+                <input type="checkbox" name="not_enrolled" /> I have not
+                enrolled externally in this offering.
+              </label>
+              <SourceFields />
+              <label className="checkbox-label">
+                <input type="checkbox" required /> I confirm this withdrawal
+                request.
+              </label>
+              <CommandError error={action.error} />
+              <button disabled={action.isPending}>Withdraw application</button>
+            </form>
+          </section>
+        )}
       {context.data.hod_departments.includes(a.department_id) &&
         a.cases.some((c) => c.status === "OPEN") && (
           <section className="panel prose section-gap">
@@ -882,61 +1148,62 @@ export function ApplicationDetail({
           <p>No immutable submission exists for this draft.</p>
         )}
       </section>
-      {a.own && ["UNDER_REVIEW", "APPROVED"].includes(a.state) && (
-        <section className="panel prose section-gap">
-          <h2>Report a person-specific scheduled exam date</h2>
-          <p>
-            A hall-ticket assertion is not verified evidence. Your current
-            department HoD must authenticate the official document for your
-            exact identity and offering. This creates a review case and
-            preserves your currently counted seat.
-          </p>
-          <form
-            className="source-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const f = new FormData(e.currentTarget);
-              reportSchedule.mutate({
-                path: `/applications/${a.id}/schedule-claims`,
-                body: {
-                  scheduled_exam_on: f.get("scheduled_exam_on"),
-                  source_reference: f.get("hall_reference"),
-                  reason: f.get("hall_reason"),
-                },
-              });
-            }}
-          >
-            <Field
-              label="Claimed person-specific exam date"
-              name="scheduled_exam_on"
-              type="date"
-              required
-            />
-            <Field
-              label="Hall-ticket source identifier"
-              name="hall_reference"
-              required
-              minLength={3}
-            />
-            <Field
-              label="Reason for person-specific schedule review"
-              name="hall_reason"
-              required
-              minLength={5}
-            />
-            <CommandError error={reportSchedule.error} />
-            <button disabled={reportSchedule.isPending}>
-              Record unverified schedule claim
-            </button>
-            {reportSchedule.isSuccess && (
-              <p role="status">
-                Recorded as unverified. No quota transfer or exam participation
-                has been verified.
-              </p>
-            )}
-          </form>
-        </section>
-      )}
+      {a.own_current_episode &&
+        ["UNDER_REVIEW", "APPROVED"].includes(a.state) && (
+          <section className="panel prose section-gap">
+            <h2>Report a person-specific scheduled exam date</h2>
+            <p>
+              A hall-ticket assertion is not verified evidence. Your current
+              department HoD must authenticate the official document for your
+              exact identity and offering. This creates a review case and
+              preserves your currently counted seat.
+            </p>
+            <form
+              className="source-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const f = new FormData(e.currentTarget);
+                reportSchedule.mutate({
+                  path: `/applications/${a.id}/schedule-claims`,
+                  body: {
+                    scheduled_exam_on: f.get("scheduled_exam_on"),
+                    source_reference: f.get("hall_reference"),
+                    reason: f.get("hall_reason"),
+                  },
+                });
+              }}
+            >
+              <Field
+                label="Claimed person-specific exam date"
+                name="scheduled_exam_on"
+                type="date"
+                required
+              />
+              <Field
+                label="Hall-ticket source identifier"
+                name="hall_reference"
+                required
+                minLength={3}
+              />
+              <Field
+                label="Reason for person-specific schedule review"
+                name="hall_reason"
+                required
+                minLength={5}
+              />
+              <CommandError error={reportSchedule.error} />
+              <button disabled={reportSchedule.isPending}>
+                Record unverified schedule claim
+              </button>
+              {reportSchedule.isSuccess && (
+                <p role="status">
+                  Recorded as unverified. No quota transfer or exam
+                  participation has been verified.
+                </p>
+              )}
+            </form>
+          </section>
+        )}
       {a.personal_schedule && (
         <section className="panel prose section-gap">
           <h2>Verified person-specific scheduled exam</h2>
@@ -1035,7 +1302,7 @@ export function ApplicationDetail({
             </form>
           </section>
         )}
-      {a.own && a.state === "DRAFT" && (
+      {a.own_current_episode && a.state === "DRAFT" && (
         <p>
           <Link to={`/app/applications/new/eligibility?draft=${a.id}`}>
             Edit and resume saved draft
@@ -1064,46 +1331,8 @@ export function ApplicationDetail({
           </Link>
         </p>
       )}
-      <Participation
-        app={a}
-        canVerify={
-          !a.own && context.data.hod_departments.includes(a.department_id)
-        }
-      />
-      {!!a.draft_revisions?.length && (
-        <section className="panel prose section-gap">
-          <h2>Saved draft history</h2>
-          {a.draft_revisions.map((r) => (
-            <details key={r.version}>
-              <summary>
-                Revision {r.version} · {instant(r.recorded_at)}
-              </summary>
-              <p>
-                {String(
-                  r.declarations.academic_relevance ||
-                    "Academic relevance not recorded",
-                )}
-              </p>
-            </details>
-          ))}
-        </section>
-      )}
-      <History events={a.history} />
-      <section className="panel prose section-gap">
-        <h2>In-app notifications</h2>
-        {a.notifications.length ? (
-          a.notifications.map((n, i) => (
-            <p key={i}>
-              {n.kind.replaceAll("_", " ")} · {instant(n.created_at)}
-            </p>
-          ))
-        ) : (
-          <p>No notification events.</p>
-        )}
-        <p className="muted">
-          Durable in-app events; email delivery is not configured.
-        </p>
-      </section>
+      {participation}
+      {timeline}
     </>
   );
 }

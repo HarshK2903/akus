@@ -127,7 +127,7 @@ export function StaffRecord({ own = false }: { own?: boolean }) {
                         : (actor.roles ?? []).includes("DRC_HEAD")
                           ? "Faculty eligibility remains. Your own applications will route directly to HoD; no self-review is permitted."
                           : actor.applicant_eligible
-                            ? "Your employment record is faculty-eligible; application intake will be implemented in its own phase."
+                            ? "You can apply for an NPTEL offering. Your application goes to the department DRC Head and then to the HoD."
                             : "Your current employment does not grant faculty applicant eligibility or an academic office."}
                 </p>
                 <p>
@@ -144,9 +144,8 @@ export function StaffRecord({ own = false }: { own?: boolean }) {
                   preserved.
                 </p>
                 <p>
-                  Source corrections retain original facts. Employment changes
-                  do not automatically grant academic credit or process
-                  later-phase application closures.
+                  Source corrections retain the earlier facts. A documented
+                  permanent departure opens the applicable separation workflow.
                 </p>
               </>
             )}

@@ -21,6 +21,7 @@ class DemoIdentity(Base):
 
 
 class AuthSession(Base):
+    episode_id: Mapped[UUID | None] = mapped_column(ForeignKey("employment_episodes.id"))
     __tablename__ = "auth_sessions"
     token_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
     identity_id: Mapped[UUID] = mapped_column(ForeignKey("demo_identities.id", ondelete="RESTRICT"))
@@ -58,6 +59,9 @@ class WorkJob(Base):
     __tablename__ = "work_jobs"
     __table_args__ = (CheckConstraint("state IN ('PENDING','DONE','DEAD')"),)
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    attempts: Mapped[int] = mapped_column(server_default="0")
+    last_error: Mapped[str | None] = mapped_column(String(90))
+    next_attempt_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     key: Mapped[str] = mapped_column(String(100), unique=True)
     kind: Mapped[str] = mapped_column(String(40))
     state: Mapped[str] = mapped_column(String(16), default="PENDING")

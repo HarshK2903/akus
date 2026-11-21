@@ -118,6 +118,7 @@ def claim(
     op = f"ENROLLMENT_CLAIMED:{app_id}"
     if result := common.replay(db, actor, key, op, body):
         return result
+    service.require_current_episode(actor, app)
     if app.state not in {"DRAFT", "UNDER_REVIEW", "APPROVED"}:
         raise HTTPException(409, "LIVE_APPLICATION_REQUIRED")
     db.execute(
@@ -179,6 +180,8 @@ def verify(
         raise HTTPException(409, "ENROLLMENT_EVIDENCE_CHANGED")
     if prior and body.observed_at < prior.observed_at:
         raise HTTPException(409, "STALE_ENROLLMENT_EVIDENCE")
+    if body.outcome == "VERIFIED":
+        common.require_person_evidence(db, body.source_reference, body.document_digest)
     finding = EnrollmentFinding(
         id=uuid4(),
         application_id=app.id,
@@ -256,6 +259,7 @@ def request_withdrawal(
     op = f"WITHDRAWAL_REQUESTED:{app_id}"
     if result := common.replay(db, actor, key, op, body):
         return result
+    service.require_current_episode(actor, app)
     service.check_version(app, body.expected_version)
     if app.state not in {"UNDER_REVIEW", "APPROVED"}:
         raise HTTPException(409, "ACTIVE_APPLICATION_REQUIRED")

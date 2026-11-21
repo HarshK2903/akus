@@ -1,0 +1,141 @@
+Schema revision | audit events | quota movements | credential documents | assessment snapshots | source versions | application file revisions | application file bytes | application evidence manifest checksum | credential manifest checksum
+akus_phase8_release_departures_test 0021_application_files|7765|456|110|489|1348|0|0|d41d8cd98f00b204e9800998ecf8427e|f8cd71406cc2e92175564739ba0142f4
+akus_phase8_certificate_restore_test 0021_application_files|7765|456|110|489|1348|0|0|d41d8cd98f00b204e9800998ecf8427e|f8cd71406cc2e92175564739ba0142f4
+BEGIN
+      version_num       
+------------------------
+ 0021_application_files
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          10
+(1 row)
+
+      state       | applications 
+------------------+--------------
+ APPROVED         |           95
+ INVALIDATED      |           15
+ OUTCOME_RECORDED |            5
+ REJECTED         |            5
+ SEPARATED        |          130
+ UNDER_REVIEW     |           31
+(6 rows)
+
+COMMIT
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+BEGIN
+ overlapping_employment_episodes 
+---------------------------------
+                               0
+(1 row)
+
+ wrong_person_session_bindings 
+-------------------------------
+                             0
+(1 row)
+
+ incomplete_rehire_audits 
+--------------------------
+                        0
+(1 row)
+
+ duplicate_separation_decisions 
+--------------------------------
+                              0
+(1 row)
+
+ mismatched_frozen_teaching_sources 
+------------------------------------
+                                  0
+(1 row)
+
+COMMIT
+BEGIN
+ invalid_attachment_bytes 
+--------------------------
+                        0
+(1 row)
+
+ discontinuous_attachment_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ inconsistent_submission_attachments 
+-------------------------------------
+                                   0
+(1 row)
+
+ incomplete_attachment_audits 
+------------------------------
+                            0
+(1 row)
+
+COMMIT

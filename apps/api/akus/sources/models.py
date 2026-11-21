@@ -18,7 +18,7 @@ class SourceRevision(Base):
     after: Mapped[dict[str, Any]] = mapped_column(JSONB)
     context: Mapped[dict[str, Any]] = mapped_column(JSONB)
     recorded_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True), server_default=func.clock_timestamp()
     )
 
 

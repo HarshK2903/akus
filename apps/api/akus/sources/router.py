@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from typing import Annotated, Any
 from uuid import UUID
 
@@ -13,7 +13,7 @@ from akus.people.models import Department, EmploymentEpisode, Person
 from akus.people.router import mutation_guard
 from akus.people.schemas import CommandResult
 from akus.people.service import require_admin, staff_scope
-from akus.sources import imports, service
+from akus.sources import employment, imports, service
 from akus.sources.models import (
     SourceImport,
     SourceRevision,
@@ -21,7 +21,7 @@ from akus.sources.models import (
     SubjectAlias,
     TeachingAssignment,
 )
-from akus.sources.schemas import ReferenceWrite, SourceChange, TeachingWrite
+from akus.sources.schemas import ReferenceWrite, Rehire, SourceChange, TeachingWrite
 
 router = APIRouter(prefix="/api/v1", tags=["Institutional sources"])
 
@@ -101,6 +101,37 @@ def change_source(
     return service.change_source(
         db, actor, idempotency_key, person_id, body, request.app.state.settings
     )
+
+
+@router.post("/admin/staff/{person_id}/rehire", response_model=CommandResult)
+def rehire(
+    person_id: UUID,
+    body: Rehire,
+    request: Request,
+    db: DB,
+    actor: Current,
+    idempotency_key: Annotated[UUID, Header()],
+) -> CommandResult:
+    mutation_guard(request, actor)
+    return employment.rehire(db, actor, idempotency_key, person_id, body)
+
+
+@router.get("/admin/employment-episodes/{eid}/impact")
+def impact(
+    eid: UUID,
+    effective_on: date,
+    db: DB,
+    actor: Current,
+    offset: int = Query(0, ge=0),
+    limit: int = Query(20, ge=1, le=100),
+) -> dict[str, Any]:
+    from akus.compliance.router import report_reader
+
+    require_admin(report_reader(db, actor))
+    ep = db.get(EmploymentEpisode, eid)
+    if not ep:
+        raise HTTPException(404, "EPISODE_NOT_FOUND")
+    return employment.impact(db, ep, effective_on, offset, limit)
 
 
 @router.get("/teaching")
@@ -369,27 +400,21 @@ def academic_integration(area: str, actor: Current) -> dict[str, Any]:
         )
     else:
         raise HTTPException(404, "NOT_FOUND")
-    if area in {"applications", "reviews", "quotas"}:
-        return {
-            "area": area,
-            "status": "AVAILABLE",
-            "phase": "3 continuation",
-            "dependency": "Current source, office, metadata and policy gates apply",
-            "records": None,
-            "can_decide": False,
-            "route": {
-                "applications": "/app/applications",
-                "reviews": "/hod/reviews" if "HOD" in actor.roles else "/drc/reviews",
-                "quotas": "/hod/quotas",
-            }[area],
-            "policy": "Individual command authorization is evaluated at decision time",
-        }
     return {
         "area": area,
-        "status": "NOT_IMPLEMENTED",
+        "status": "AVAILABLE",
         "phase": phase,
         "dependency": dependency,
         "records": None,
         "can_decide": False,
-        "policy": "No academic state is inferred from missing records",
+        "route": {
+            "applications": "/app/applications",
+            "compliance": "/app/compliance/annual",
+            "reviews": "/hod/reviews" if "HOD" in actor.roles else "/drc/reviews",
+            "quotas": "/hod/quotas",
+            "reports": "/principal/reports/annual"
+            if "PRINCIPAL" in actor.roles
+            else "/hod/reports/annual",
+        }[area],
+        "policy": "Individual command authorization is evaluated at decision time",
     }

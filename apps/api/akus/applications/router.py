@@ -3,7 +3,7 @@ from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Query, Request
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 from starlette.exceptions import HTTPException
 
 from akus.access import DB, Current
@@ -107,6 +107,9 @@ def app_view(
         "submitted_at": app.submitted_at,
         "can_review": can_review,
         "own": app.person_id == actor.person.id,
+        "own_current_episode": app.person_id == actor.person.id
+        and app.episode_id == actor.episode.id
+        and actor.view().applicant_eligible,
         "allocation": {
             "state": allocation.state,
             "version": allocation.version,
@@ -223,20 +226,57 @@ def listing(
     request: Request,
     review: bool = False,
     reconciliation: bool = False,
+    search: str = Query("", max_length=160),
+    state: str = Query("", max_length=24),
     offset: int = Query(0, ge=0),
     limit: int = Query(25, ge=1, le=100),
 ) -> dict[str, Any]:
     query = service.scoped_query(actor)
     if review:
+        assignments = [
+            (Application.department_id == office.department_id)
+            & (
+                Application.next_office
+                == ("HOD" if office.office == "ACTING_HOD" else office.office)
+            )
+            for office in actor.offices
+            if office.office in {"DRC_HEAD", "HOD", "ACTING_HOD"}
+        ]
+        if not assignments:
+            raise HTTPException(403, "CURRENT_DEPARTMENT_REVIEW_OFFICE_REQUIRED")
         query = query.where(
-            Application.state == "UNDER_REVIEW", Application.person_id != actor.person.id
+            Application.state == "UNDER_REVIEW",
+            Application.person_id != actor.person.id,
+            or_(*assignments),
         )
     if reconciliation:
+        if "PRINCIPAL" not in actor.roles:
+            if "HOD" not in actor.roles:
+                raise HTTPException(403, "QUOTA_CASE_OVERSIGHT_REQUIRED")
+            query = query.where(Application.department_id.in_(actor.scopes))
         query = query.where(
             Application.id.in_(
-                select(Reconciliation.application_id).where(Reconciliation.status == "OPEN")
+                select(Reconciliation.application_id).where(
+                    Reconciliation.status == "OPEN", Reconciliation.kind == "QUOTA_TRANSFER"
+                )
             )
         )
+    if search.strip():
+        term = search.strip()
+        query = (
+            query.join(Course, Course.id == Application.course_id)
+            .join(Person, Person.id == Application.person_id)
+            .join(Offering, Offering.id == Application.offering_id)
+            .where(
+                or_(
+                    Course.title.icontains(term, autoescape=True),
+                    Person.display_name.icontains(term, autoescape=True),
+                    Offering.provider_id.icontains(term, autoescape=True),
+                )
+            )
+        )
+    if state:
+        query = query.where(Application.state == state)
     total = db.scalar(select(func.count()).select_from(query.subquery())) or 0
     return {
         "items": [
@@ -256,11 +296,12 @@ def case_detail(case_id: UUID, db: DB, actor: Current, request: Request) -> dict
     if not set(actor.roles) & {"HOD", "PRINCIPAL"}:
         raise HTTPException(403, "QUOTA_CASE_OVERSIGHT_REQUIRED")
     case = db.get(Reconciliation, case_id)
-    if not case:
+    if not case or case.kind != "QUOTA_TRANSFER":
         raise HTTPException(404, "QUOTA_CASE_NOT_FOUND")
     app = db.get(Application, case.application_id)
     assert app
-    service.can_read(actor, app)
+    if "PRINCIPAL" not in actor.roles:
+        common.require_hod(actor, app.department_id)
     return app_view(db, actor, request, app, True)
 
 
@@ -398,6 +439,8 @@ def schedule_claim(
     op = f"PERSON_SCHEDULE_REPORTED:{app_id}"
     if result := common.replay(db, actor, idempotency_key, op, body):
         return result
+    common.require_applicant(actor)
+    service.require_current_episode(actor, app)
     if app.state not in {"UNDER_REVIEW", "APPROVED"}:
         raise HTTPException(409, "ACTIVE_APPLICATION_REQUIRED")
     data = body.model_dump(mode="json") | {

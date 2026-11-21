@@ -1,0 +1,118 @@
+ Container akus-local-migrate-run-b1a4848bcb70 Creating 
+ Container akus-local-migrate-run-b1a4848bcb70 Created 
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+ Container akus-browser-audit-1294106-api Creating 
+ Container akus-browser-audit-1294106-api Created 
+f485211ee979667e4c274a87421a4c0f441c7e8e0595e97775e696ed330c039c
+ Container akus-browser-audit-1294106-worker Creating 
+ Container akus-browser-audit-1294106-worker Created 
+36bc6248dcdf3f342e9b5fa632828095173daa02a4cc0513d7ebd683c6f19c2b
+ Container akus-browser-audit-1294106-proxy Creating 
+ Container akus-browser-audit-1294106-proxy Created 
+9264374b13ff33e7f50809d7afad25a76f4e3ca25b957f2c8032ab114702c6cf
+curl: (56) Recv failure: Connection reset by peer
+curl: (22) The requested URL returned error: 502
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+> akus-web@0.1.0 e2e
+> playwright test
+
+
+Running 52 tests using 1 worker
+
+(node:1294942) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/foundation.spec.ts:5:1 › sign-in, DB-backed navigation, reload, policy search, logout and denied deep link (3.5s)
+  ✓   2 e2e/foundation.spec.ts:58:3 › responsive foundation at 1440px with accessibility (2.3s)
+  ✓   3 e2e/foundation.spec.ts:58:3 › responsive foundation at 1024px with accessibility (2.2s)
+  ✓   4 e2e/foundation.spec.ts:58:3 › responsive foundation at 768px with accessibility (2.3s)
+  ✓   5 e2e/foundation.spec.ts:58:3 › responsive foundation at 390px with accessibility (2.1s)
+  ✓   6 e2e/foundation.spec.ts:58:3 › responsive foundation at 320px with accessibility (2.0s)
+  ✓   7 e2e/foundation.spec.ts:100:3 › drc demo uses appropriate home without academic actions (1.2s)
+  ✓   8 e2e/foundation.spec.ts:100:3 › hod demo uses appropriate home without academic actions (681ms)
+  ✓   9 e2e/foundation.spec.ts:100:3 › principal demo uses appropriate home without academic actions (729ms)
+  ✓  10 e2e/foundation.spec.ts:100:3 › admin demo uses appropriate home without academic actions (1.2s)
+  ✓  11 e2e/foundation.spec.ts:100:3 › acting-hod demo uses appropriate home without academic actions (690ms)
+  ✓  12 e2e/foundation.spec.ts:119:1 › backend failure and unknown URL are recoverable (1.9s)
+  ✓  13 e2e/inventory.spec.ts:16:3 › faculty can refresh every fixed workspace page assigned to that role (7.9s)
+  ✓  14 e2e/inventory.spec.ts:16:3 › drc can refresh every fixed workspace page assigned to that role (2.4s)
+  ✓  15 e2e/inventory.spec.ts:16:3 › hod can refresh every fixed workspace page assigned to that role (8.4s)
+  ✓  16 e2e/inventory.spec.ts:16:3 › principal can refresh every fixed workspace page assigned to that role (4.2s)
+  ✓  17 e2e/inventory.spec.ts:16:3 › admin can refresh every fixed workspace page assigned to that role (6.9s)
+  ✓  18 e2e/people.spec.ts:42:1 › Admin creates source records, appoints a DRC, ends authority and sees immutable history (5.5s)
+  ✓  19 e2e/people.spec.ts:133:1 › overlapping DRC and cross-department acting HoD is visibly rejected without losing inputs (2.3s)
+  ✓  20 e2e/people.spec.ts:163:1 › Principal reads all departments with no source write controls; Faculty cannot bypass route guards (3.4s)
+  ✓  21 e2e/people.spec.ts:197:1 › HoD sees only the office department, and rehire history retains two episodes (3.9s)
+  ✓  22 e2e/people.spec.ts:235:3 › people workflows at 1440px with accessible forms and tables (5.4s)
+  ✓  23 e2e/people.spec.ts:235:3 › people workflows at 390px with accessible forms and tables (6.3s)
+  ✓  24 e2e/people.spec.ts:235:3 › people workflows at 320px with accessible forms and tables (5.4s)
+  ✓  25 e2e/people.spec.ts:277:1 › existing browser session gains and loses office scope from source changes (6.1s)
+  ✓  26 e2e/phase2.spec.ts:22:1 › Admin imports a CSV roster, reviews rows, commits once, and corrects the source name (3.6s)
+  ✓  27 e2e/phase2.spec.ts:75:1 › invalid roster rows remain visible after reload and cannot be committed (2.9s)
+  ✓  28 e2e/phase2.spec.ts:101:1 › Admin records a canonical subject, teaching allocation and date correction with immutable history (4.4s)
+  ✓  29 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 1440px (6.6s)
+  ✓  30 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 390px (6.0s)
+  ✓  31 e2e/phase2.spec.ts:162:3 › five distinct role dashboards, responsive sources and no invented academic results at 320px (6.0s)
+  ✓  32 e2e/phase2.spec.ts:226:1 › Google configuration and account recovery routes are honest; academic pages enforce role scope (4.1s)
+  ✓  33 e2e/phase2.spec.ts:270:1 › canonical Admin reference and year routes persist changes and reject duplicate years (6.4s)
+  ✓  34 e2e/phase3.spec.ts:15:1 › catalog → applicant mapping intake → HoD decision → published annual quota, with scoped read oversight (7.0s)
+  ✓  35 e2e/phase3.spec.ts:77:1 › faculty submits, DRC then HoD approve, blocked cross-year transfer retains source until quota publication, then withdrawal releases current pool (12.6s)
+  ✓  36 e2e/phase3.spec.ts:197:1 › DRC applicant receives direct HoD route without a self-review action (3.6s)
+  ✓  37 e2e/phase3.spec.ts:215:1 › HoD authenticates one applicant hall ticket without changing another applicant in the same offering (6.8s)
+  ✓  38 e2e/phase3.spec.ts:290:1 › Admin source workspace exposes exact offerings and immutable versions; Faculty has no source maintenance form (3.1s)
+  ✓  39 e2e/phase4.spec.ts:44:1 › saved draft resumes, preserves revisions, then enrollment verification and Q04 withdrawal release the seat (9.7s)
+  ✓  40 e2e/phase4.spec.ts:193:1 › an enrollment assertion does not authorize approval or private cross-person access (5.4s)
+  ✓  41 e2e/phase4.spec.ts:233:1 › an applicant reports a prior run, the current HoD verifies it, and a later certificate correction blocks repeat admission (8.6s)
+  ✘  42 e2e/phase5.spec.ts:29:1 › discovered enrollment chronology holds a counted seat and can be inspected by HoD and Principal (31.2s)
+(node:1302362) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  43 e2e/phase5.spec.ts:106:1 › HR records a sourced permanent order on a dedicated synthetic former staff episode (7.7s)
+  ✓  44 e2e/phase6.spec.ts:10:1 › faculty submits a private certificate, retrieves its pending history and opens the actual-year ledger (7.0s)
+  ✓  45 e2e/phase6.spec.ts:76:1 › academic reports honor all five roles, preserve filters and expose service errors (13.0s)
+  ✓  46 e2e/phase7.spec.ts:5:1 › Admin previews source impact and records a rehire under the existing staff identity (3.4s)
+  ✓  47 e2e/phase7.spec.ts:81:1 › Faculty and DRC read personal employment history and follow the episode to Silver (5.9s)
+  ✓  48 e2e/phase8.spec.ts:5:1 › Principal follows department records, exports filtered rows and returns to the same filter (5.7s)
+  ✓  49 e2e/phase8.spec.ts:35:1 › Admin test delivery appears only in the personal inbox and supports read acknowledgement (4.0s)
+  ✓  50 e2e/phase8.spec.ts:59:1 › Scoped search, task inbox and office histories remain usable on a narrow viewport (9.1s)
+  ✓  51 e2e/phase8.spec.ts:106:1 › Admin flags the accepted offering source, and eligible applicants see the resulting blocker (3.2s)
+  ✓  52 e2e/phase8.spec.ts:136:1 › Faculty uploads and removes a quarantined draft PDF with an immutable revision history (4.0s)
+
+
+  1) e2e/phase5.spec.ts:29:1 › discovered enrollment chronology holds a counted seat and can be inspected by HoD and Principal 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: frame.evaluate: Test timeout of 30000ms exceeded.
+
+      19 |       ),
+      20 |     ).toBeTruthy();
+    > 21 |     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+         |             ^
+      22 |     await page.screenshot({
+      23 |       path: path.resolve("../../docs/qa/phase5-" + name + "-" + width + ".png"),
+      24 |       fullPage: true,
+        at AxeBuilder.runPartialRecursive (/media/bugulnoz/New Volume/2/akus/apps/web/node_modules/@axe-core/playwright/dist/index.mjs:285:34)
+        at AxeBuilder.analyze (/media/bugulnoz/New Volume/2/akus/apps/web/node_modules/@axe-core/playwright/dist/index.mjs:211:28)
+        at accessibility (/media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase5.spec.ts:21:13)
+        at /media/bugulnoz/New Volume/2/akus/apps/web/e2e/phase5.spec.ts:90:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase5-discovered-enrollme-6733d-pected-by-HoD-and-Principal/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/phase5-discovered-enrollme-6733d-pected-by-HoD-and-Principal/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/phase5-discovered-enrollme-6733d-pected-by-HoD-and-Principal/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase5-discovered-enrollme-6733d-pected-by-HoD-and-Principal/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase5-discovered-enrollme-6733d-pected-by-HoD-and-Principal/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/phase5.spec.ts:29:1 › discovered enrollment chronology holds a counted seat and can be inspected by HoD and Principal 
+  51 passed (4.7m)

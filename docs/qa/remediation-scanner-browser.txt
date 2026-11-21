@@ -1,0 +1,25 @@
+ Container akus-local-migrate-run-a2e580040726 Creating 
+ Container akus-local-migrate-run-a2e580040726 Created 
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+ Container akus-browser-audit-67570-api Creating 
+ Container akus-browser-audit-67570-api Created 
+9f7d1a118765ea574051b21ecd9028e9d32959aabcd4f5fb5909c7590c313035
+ Container akus-browser-audit-67570-worker Creating 
+ Container akus-browser-audit-67570-worker Created 
+776edf8967836e46951543d1dd0c245a1b2198c9d7de61bf4054f157ba73b4fb
+ Container akus-browser-audit-67570-proxy Creating 
+ Container akus-browser-audit-67570-proxy Created 
+146a675bc6798f0d45b6c45e3f3076296b29a21f290ee9f25830005c6350e303
+curl: (56) Recv failure: Connection reset by peer
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+> akus-web@0.1.0 e2e
+> playwright test --config scanner.config.ts
+
+
+Running 1 test using 1 worker
+
+(node:68192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 qa/scanner.audit.ts:6:1 › a faculty member downloads the clean certificate revision while the original remains quarantined (2.3s)
+
+  1 passed (2.8s)

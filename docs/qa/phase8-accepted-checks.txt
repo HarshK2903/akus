@@ -1,0 +1,115 @@
+ Container akus-local-api-run-8722bb14463e Creating 
+ Container akus-local-api-run-8722bb14463e Created 
+All checks passed!
+113 files already formatted
+Success: no issues found in 78 source files
+No new upgrade operations detected.
+...................................................F.................... [ 22%]
+........................................................................ [ 45%]
+........................................................................ [ 68%]
+........................................................................ [ 91%]
+............................                                             [100%]
+=================================== FAILURES ===================================
+__________ test_owner_download_requires_clean_scan_and_records_access __________
+
+client = <starlette.testclient.TestClient object at 0x7deb8ec65590>
+db = <sqlalchemy.orm.session.Session object at 0x7deb8c838550>
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_owner_download_requires_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7deb9223f950>
+
+    def test_owner_download_requires_clean_scan_and_records_access(client, db, tmp_path, monkeypatch):
+        """Exercise the socket protocol with a test responder in an isolated test database."""
+        import socketserver
+        import struct
+    
+        from sqlalchemy import func, select
+    
+        from akus.catalog.models import AcademicEvent
+    
+        aid, h = draft(client, setup(client))
+        url = f"/api/v1/applications/{aid}/attachments"
+        body = payload(label="local scanner protocol fixture")
+        document = base64.b64decode(body["attachment"]["base64_data"])
+        received = []
+    
+        class ScannerReply(socketserver.StreamRequestHandler):
+            def handle(self):
+                assert self.rfile.read(10) == b"zINSTREAM\0"
+                chunks = []
+                while size := struct.unpack("!I", self.rfile.read(4))[0]:
+                    chunks.append(self.rfile.read(size))
+                received.append(b"".join(chunks))
+                self.wfile.write(b"stream: OK\0")
+    
+        path = str(tmp_path / "scan.sock")
+        monkeypatch.setenv("AKUS_CLAMD_SOCKET", path)
+        with socketserver.UnixStreamServer(path, ScannerReply) as server:
+            server.timeout = 5
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                response = executor.submit(server.handle_request)
+                saved = send(client, url, h, body)
+                response.result(timeout=8)
+        assert received == [document] and saved.status_code == 200
+        rid = saved.json()["id"]
+        content_url = f"{url}/{rid}/content"
+        res = client.get(content_url)
+        assert res.status_code == 200 and res.content == document
+        assert res.headers["content-type"] == "application/pdf"
+        assert "attachment" in res.headers["content-disposition"]
+>       assert res.headers["cache-control"] == "private, no-store"
+E       AssertionError: assert 'no-store' == 'private, no-store'
+E         
+E         - private, no-store
+E         + no-store
+
+apps/api/tests/test_application_files.py:164: AssertionError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "d2605f4f-4492-498d-981f-b788f6fb7b76"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b09b7474-1f8d-415c-b6aa-cac669daecaa"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "11c0dede-8c4b-4162-8545-dc5a0cf311c4"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "1b7203d2-6814-47b4-8537-dcb8821a8dc4"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "5301d17a-c73b-4c6b-996f-82d09b0c873a"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "199f2c6d-8cae-4a8b-9586-fec9ddc172e8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4c551d1d-4858-4a09-9ad3-9650143db3db"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "a81af4ba-8ed8-4ff1-a929-a17a1dd48d06"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "254f6ed8-f3ce-4219-8e39-03532bf11d6f"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "908ec51d-8803-4b57-bb37-005e631fe752"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ffc4becd-8493-4efe-b307-f1fef3350e25"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "2d4d21d5-374a-4a41-9230-3908fa864297"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "54f88755-a503-448a-a504-1901d95ca6a8"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7e4ba2d5-3df9-48d8-b094-17664eb7bcea"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "6257d98a-0bb8-4f8d-a88a-e532673345e6"}
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9e6ac168-48e9-4941-b334-7d6ceb4253f8"}
+{"event": "http_request", "method": "GET", "status": 200, "correlation_id": "df152a1b-d059-4659-8400-500025cac886"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "d2605f4f-4492-498d-981f-b788f6fb7b76"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "b09b7474-1f8d-415c-b6aa-cac669daecaa"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "11c0dede-8c4b-4162-8545-dc5a0cf311c4"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "1b7203d2-6814-47b4-8537-dcb8821a8dc4"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "5301d17a-c73b-4c6b-996f-82d09b0c873a"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "199f2c6d-8cae-4a8b-9586-fec9ddc172e8"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "4c551d1d-4858-4a09-9ad3-9650143db3db"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "a81af4ba-8ed8-4ff1-a929-a17a1dd48d06"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "254f6ed8-f3ce-4219-8e39-03532bf11d6f"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "908ec51d-8803-4b57-bb37-005e631fe752"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "ffc4becd-8493-4efe-b307-f1fef3350e25"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "2d4d21d5-374a-4a41-9230-3908fa864297"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "54f88755-a503-448a-a504-1901d95ca6a8"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "7e4ba2d5-3df9-48d8-b094-17664eb7bcea"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "6257d98a-0bb8-4f8d-a88a-e532673345e6"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "9e6ac168-48e9-4941-b334-7d6ceb4253f8"}
+INFO     akus:main.py:81 {"event": "http_request", "method": "GET", "status": 200, "correlation_id": "df152a1b-d059-4659-8400-500025cac886"}
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_application_files.py::test_owner_download_requires_clean_scan_and_records_access
+1 failed, 315 passed, 2 warnings in 154.36s (0:02:34)
+

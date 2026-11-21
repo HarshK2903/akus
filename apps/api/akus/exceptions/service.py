@@ -8,7 +8,7 @@ from datetime import UTC, date, datetime
 from typing import Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import func, or_, select, text
+from sqlalchemy import or_, select, text
 from sqlalchemy.orm import Session
 from starlette.exceptions import HTTPException
 
@@ -25,7 +25,7 @@ from akus.exceptions.schemas import IST, Closure, Order, RosterProof
 from akus.models import AuditEvent
 from akus.people.models import EmploymentEpisode
 from akus.people.schemas import CommandResult
-from akus.sources.models import TeachingAssignment
+from akus.sources.models import SourceRevision, TeachingAssignment
 
 
 def exclusive(db: Session) -> None:
@@ -112,26 +112,48 @@ def freeze(db: Session, order: Departure) -> None:
             timely[finding["subject_id"]] = str(finding["id"])
 
     subjects = []
-    for subject, first in db.execute(
-        select(TeachingAssignment.subject_id, func.min(TeachingAssignment.starts_on))
+    # A backdated order may arrive after HR corrected a teaching allocation.
+    # Replay the revision known at the effective boundary so a later change
+    # cannot rewrite the original deadline. Date-only orders use the last
+    # unambiguously known facts at the start of that institutional day.
+    revisions = db.scalars(
+        select(SourceRevision)
+        .join(TeachingAssignment, TeachingAssignment.id == SourceRevision.entity_id)
         .where(
+            SourceRevision.entity_type == TeachingAssignment.__tablename__,
             TeachingAssignment.episode_id == order.episode_id,
-            TeachingAssignment.starts_on <= order.effective_on,
-            TeachingAssignment.voided.is_(False),
+            SourceRevision.recorded_at <= cutoff,
         )
-        .group_by(TeachingAssignment.subject_id)
-    ):
+        .distinct(SourceRevision.entity_id)
+        .order_by(
+            SourceRevision.entity_id, SourceRevision.recorded_at.desc(), SourceRevision.id.desc()
+        )
+    )
+    earliest: dict[UUID, tuple[date, SourceRevision]] = {}
+    for revision in revisions:
+        facts = revision.after
+        first = date.fromisoformat(facts["starts_on"])
+        subject = UUID(facts["subject_id"])
+        if facts["voided"] or first > order.effective_on:
+            continue
+        if subject not in earliest or first < earliest[subject][0]:
+            earliest[subject] = (first, revision)
+    for subject, (first, revision) in earliest.items():
         try:
             deadline = first.replace(year=first.year + 2)
         except ValueError:
             deadline = None
         accepted = archived_obligation(db, order.episode_id, subject, first, order.effective_on)
+        if accepted and accepted.recorded_at > cutoff:
+            accepted = None
         subjects.append(
             {
                 "subject_id": str(subject),
                 "archived_obligation_id": str(accepted.id) if accepted else None,
                 "first_assignment": first.isoformat(),
                 "deadline": deadline.isoformat() if deadline else None,
+                "teaching_revision_id": str(revision.id),
+                "knowledge_cutoff": cutoff.isoformat(),
                 "achievement_at_separation": timely.get(str(subject)),
                 "status_at_separation": "VERIFIED_ON_TIME"
                 if accepted and str(subject) in timely
@@ -333,7 +355,8 @@ def process_order(db: Session, order: Departure, cfg: Settings) -> None:
     episode = db.get(EmploymentEpisode, order.episode_id)
     assert episode
     matching = episode.ends_before == order.effective_on
-    if matching:
+    first_freeze = matching and db.get(SeparationSnapshot, order.id) is None
+    if first_freeze:
         freeze(db, order)
     for aid in db.scalars(
         select(Application.id)
@@ -385,6 +408,10 @@ def process_order(db: Session, order: Departure, cfg: Settings) -> None:
         assert c
         if reason in {"Q43", "Q45"}:
             close(db, app, c, reason, facts)
+    if first_freeze:
+        from akus.compliance.assessment import capture
+
+        capture(db, episode)
 
 
 def mandate(
@@ -546,6 +573,9 @@ def decide(
         else:
             raise HTTPException(423, "SEPARATION_EVIDENCE_OR_AUTHORITY_PENDING")
         close(db, app, c, final, facts, actor, office)
+    from akus.compliance.assessment import capture
+
+    capture(db, db.get_one(EmploymentEpisode, app.episode_id))
     return common.finish(db, actor, key, op, body, c.id, facts, app.department_id)
 
 
@@ -578,6 +608,7 @@ def verify_absence(
     op = f"ENROLLMENT_ABSENCE:{cid}"
     if replay := common.replay(db, actor, key, op, body):
         return replay
+    common.require_person_evidence(db, body.source_reference, body.document_digest)
     previous = last(db, cid)
     if not previous or previous.id != body.expected_event_id or c.status != "OPEN":
         raise HTTPException(409, "CASE_CHANGED_REFRESH_REQUIRED")
@@ -605,4 +636,7 @@ def verify_absence(
     )
     append(db, c, "NON_ENROLLMENT_VERIFIED", decision, actor)
     close(db, app, c, "Q43", decision)
+    from akus.compliance.assessment import capture
+
+    capture(db, db.get_one(EmploymentEpisode, app.episode_id))
     return common.finish(db, actor, key, op, body, c.id, decision, app.department_id)

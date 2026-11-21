@@ -1,0 +1,479 @@
+ current_database 
+------------------
+ akus
+(1 row)
+
+BEGIN
+       version_num        
+--------------------------
+ 0019_employment_sessions
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          36
+(1 row)
+
+    state     | applications 
+--------------+--------------
+ APPROVED     |           13
+ DRAFT        |            5
+ UNDER_REVIEW |           86
+ WITHDRAWN    |           31
+(4 rows)
+
+COMMIT
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+BEGIN
+ overlapping_employment_episodes 
+---------------------------------
+                               0
+(1 row)
+
+ wrong_person_session_bindings 
+-------------------------------
+                             0
+(1 row)
+
+ incomplete_rehire_audits 
+--------------------------
+                        0
+(1 row)
+
+ duplicate_separation_decisions 
+--------------------------------
+                              0
+(1 row)
+
+ mismatched_frozen_teaching_sources 
+------------------------------------
+                                  0
+(1 row)
+
+COMMIT
+     current_database     
+--------------------------
+ akus_phase7_release_test
+(1 row)
+
+BEGIN
+       version_num        
+--------------------------
+ 0019_employment_sessions
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                          47
+(1 row)
+
+      state       | applications 
+------------------+--------------
+ APPROVED         |           15
+ DRAFT            |           62
+ OUTCOME_RECORDED |            3
+ REJECTED         |            9
+ UNDER_REVIEW     |          139
+ WITHDRAWN        |           27
+(6 rows)
+
+COMMIT
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+BEGIN
+ overlapping_employment_episodes 
+---------------------------------
+                               0
+(1 row)
+
+ wrong_person_session_bindings 
+-------------------------------
+                             0
+(1 row)
+
+ incomplete_rehire_audits 
+--------------------------
+                        0
+(1 row)
+
+ duplicate_separation_decisions 
+--------------------------------
+                              0
+(1 row)
+
+ mismatched_frozen_teaching_sources 
+------------------------------------
+                                  0
+(1 row)
+
+COMMIT
+          current_database           
+-------------------------------------
+ akus_phase7_release_departures_test
+(1 row)
+
+BEGIN
+       version_num        
+--------------------------
+ 0019_employment_sessions
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                           5
+(1 row)
+
+      state       | applications 
+------------------+--------------
+ APPROVED         |           56
+ INVALIDATED      |            9
+ OUTCOME_RECORDED |            3
+ REJECTED         |            3
+ SEPARATED        |           77
+ UNDER_REVIEW     |           18
+(6 rows)
+
+COMMIT
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+BEGIN
+ overlapping_employment_episodes 
+---------------------------------
+                               0
+(1 row)
+
+ wrong_person_session_bindings 
+-------------------------------
+                             0
+(1 row)
+
+ incomplete_rehire_audits 
+--------------------------
+                        0
+(1 row)
+
+ duplicate_separation_decisions 
+--------------------------------
+                              0
+(1 row)
+
+ mismatched_frozen_teaching_sources 
+------------------------------------
+                                  0
+(1 row)
+
+COMMIT
+          current_database           
+-------------------------------------
+ akus_phase5_browser_departures_test
+(1 row)
+
+BEGIN
+       version_num        
+--------------------------
+ 0019_employment_sessions
+(1 row)
+
+ inconsistent_pools 
+--------------------
+                  0
+(1 row)
+
+ inconsistent_application_pool_balances 
+----------------------------------------
+                                      0
+(1 row)
+
+ invalid_transfer_pairs 
+------------------------
+                      0
+(1 row)
+
+ inconsistent_terminal_releases 
+--------------------------------
+                              0
+(1 row)
+
+ exception_decision_mismatches 
+-------------------------------
+                             0
+(1 row)
+
+ unresolved_terminal_separation_tasks 
+--------------------------------------
+                                    0
+(1 row)
+
+ recorded_transfer_movements 
+-----------------------------
+                           0
+(1 row)
+
+    state     | applications 
+--------------+--------------
+ APPROVED     |            5
+ SEPARATED    |           22
+ UNDER_REVIEW |            2
+(3 rows)
+
+COMMIT
+BEGIN
+ discontinuous_credential_histories 
+------------------------------------
+                                  0
+(1 row)
+
+ incorrect_document_digests 
+----------------------------
+                          0
+(1 row)
+
+ wrong_document_application 
+----------------------------
+                          0
+(1 row)
+
+ incorrect_credential_designations 
+-----------------------------------
+                                 0
+(1 row)
+
+ conflicting_archive_identities 
+--------------------------------
+                              0
+(1 row)
+
+ duplicate_annual_allocations 
+------------------------------
+                            0
+(1 row)
+
+ repeated_distinct_subject_credit 
+----------------------------------
+                                0
+(1 row)
+
+COMMIT
+BEGIN
+ overlapping_employment_episodes 
+---------------------------------
+                               0
+(1 row)
+
+ wrong_person_session_bindings 
+-------------------------------
+                             0
+(1 row)
+
+ incomplete_rehire_audits 
+--------------------------
+                        0
+(1 row)
+
+ duplicate_separation_decisions 
+--------------------------------
+                              0
+(1 row)
+
+ mismatched_frozen_teaching_sources 
+------------------------------------
+                                  0
+(1 row)
+
+COMMIT

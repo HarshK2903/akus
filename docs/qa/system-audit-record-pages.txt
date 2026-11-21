@@ -1,0 +1,54 @@
+ Container akus-local-migrate-run-53c2261c915f Creating 
+ Container akus-local-migrate-run-53c2261c915f Created 
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+ Container akus-browser-audit-1322539-api Creating 
+ Container akus-browser-audit-1322539-api Created 
+125fad4e3423abf53979d441c1ea50748281075b080c9e061363ac1b50641a50
+ Container akus-browser-audit-1322539-worker Creating 
+ Container akus-browser-audit-1322539-worker Created 
+9f8aeaa0e4ea93ff60b10f8850c40ca8791ec17dd5e3a5b908e750afc3ed4090
+ Container akus-browser-audit-1322539-proxy Creating 
+ Container akus-browser-audit-1322539-proxy Created 
+0d0443803db46c4a45690f1bfe2c1e194e5b85a48a75d857440f472549b8792a
+curl: (56) Recv failure: Connection reset by peer
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+> akus-web@0.1.0 e2e
+> playwright test --config record-audit.config.ts
+
+
+Running 2 tests using 1 worker
+
+(node:1323172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAC-03 authorized record reloaded
+FAC-04 authorized record reloaded
+FAC-10 authorized record reloaded
+FAC-11 authorized record reloaded
+FAC-12 authorized record reloaded
+FAC-13 authorized record reloaded
+FAC-14 authorized record reloaded
+FAC-16 authorized record reloaded
+FAC-18 authorized record reloaded
+FAC-20 authorized record reloaded
+DRC-02 authorized record reloaded
+HOD-03 authorized record reloaded
+HOD-06 authorized record reloaded
+HOD-07 authorized record reloaded
+HOD-10 authorized record reloaded
+HOD-11 authorized record reloaded
+HOD-12 authorized record reloaded
+HOD-14 authorized record reloaded
+HOD-16 authorized record reloaded
+HOD-18 authorized record reloaded
+PRN-03 authorized record reloaded
+ADM-03 authorized record reloaded
+ADM-04 authorized record reloaded
+  ✓  1 qa/record-pages.audit.ts:7:1 › reload each parameterized record with its actual authorized data (19.5s)
+/login anonymous state verified
+/auth/callback anonymous state verified
+/access-denied anonymous state verified
+/system-unavailable anonymous state verified
+/not-found anonymous state verified
+  ✓  2 qa/record-pages.audit.ts:163:1 › all five public entries expose their anonymous recovery or sign-in state (299ms)
+
+  2 passed (20.5s)

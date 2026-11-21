@@ -390,6 +390,52 @@ def test_blocked_transfer_retains_source_then_authorized_recheck(client, db, mod
     )
 
 
+def test_transfer_inbox_respects_academic_office_with_administrative_grant(client, db):
+    from datetime import UTC, datetime, timedelta
+
+    from akus.people.models import AdministrativeGrant
+
+    scenario_ = setup(client)
+    aid, headers = draft(client, scenario_)
+    assert submit(client, aid, headers).status_code == 200
+    reschedule(client, scenario_)
+    case = db.scalars(
+        select(Reconciliation).where(
+            Reconciliation.application_id == UUID(aid), Reconciliation.kind == "QUOTA_TRANSFER"
+        )
+    ).one()
+    listing = (
+        "/api/v1/applications?reconciliation=true&search=" + scenario_["offering"]["provider_id"]
+    )
+    detail = f"/api/v1/quota-transfer-cases/{case.id}"
+    for role in ("admin", "faculty", "drc"):
+        login(client, role)
+        assert client.get(listing).status_code == 403
+    for role in ("hod", "principal"):
+        login(client, role)
+        page = client.get(listing)
+        assert page.status_code == 200
+        assert [row["id"] for row in page.json()["items"]] == [aid]
+
+    login(client, "acting-hod")
+    person_id = UUID(client.get("/api/v1/me").json()["person_id"])
+    grant = AdministrativeGrant(
+        person_id=person_id,
+        valid_from=datetime.now(UTC) - timedelta(seconds=1),
+        source_reference="LOCAL_TEST scoped office plus administrative duty",
+    )
+    db.add(grant)
+    db.commit()
+    try:
+        assert "ADMIN" in client.get("/api/v1/me").json()["roles"]
+        page = client.get(listing)
+        assert page.status_code == 200 and page.json()["total"] == 0
+        assert client.get(detail).status_code == 403
+    finally:
+        grant.valid_until = datetime.now(UTC)
+        db.commit()
+
+
 def test_transfer_roundtrip_stale_same_year_and_current_pool_release(client, db):
     s = setup(client)
     aid, h = draft(client, s)
@@ -429,8 +475,15 @@ def test_transfer_roundtrip_stale_same_year_and_current_pool_release(client, db)
     assert_balance(db, s["pool"], 0)
 
 
-def test_last_shared_seat_race_across_distinct_courses(client, db, settings):
-    s = setup(client, 1)
+@pytest.mark.parametrize(
+    "cap,second_role,expected",
+    [(1, "drc", ["OK", "QUOTA_FULL"]), (2, "faculty", ["OK", "OK"])],
+    ids=["last-seat-two-staff", "two-courses-same-person"],
+)
+def test_last_shared_seat_race_across_distinct_courses(
+    client, db, settings, cap, second_role, expected
+):
+    s = setup(client, cap)
     h = login(client)
     cid = course(client, h)
     second = s | {"course": cid, "offering": offering(client, h, cid, s["data"])}
@@ -442,7 +495,7 @@ def test_last_shared_seat_race_across_distinct_courses(client, db, settings):
         == 200
     )
     items = []
-    for scenario_, role in [(s, "faculty"), (second, "drc")]:
+    for scenario_, role in [(s, "faculty"), (second, second_role)]:
         aid, _ = draft(client, scenario_, role)
         d = client.get("/api/v1/applications/" + aid).json()
         items.append(
@@ -469,8 +522,8 @@ def test_last_shared_seat_race_across_distinct_courses(client, db, settings):
 
     with ThreadPoolExecutor(max_workers=2) as pool:
         results = list(pool.map(writer, items))
-    assert sorted(results) == ["OK", "QUOTA_FULL"]
-    assert_balance(db, s["pool"], 1)
+    assert sorted(results) == expected
+    assert_balance(db, s["pool"], cap)
 
 
 def parallel(client, tasks):
@@ -1341,3 +1394,59 @@ def test_first_publication_vs_cross_year_revision_cannot_lose_wakeup(client, db,
     )
     assert_balance(db, s["pool"], 0)
     assert_balance(db, str(dest), 1)
+
+
+def test_rejection_vs_voluntary_withdrawal_after_start(client, db, settings):
+    from akus.applications.schemas import Review, Withdraw
+
+    scenario_ = setup(client)
+    aid, headers = draft(client, scenario_)
+    assert submit(client, aid, headers).status_code == 200
+    scenario_["data"] = scenario_["data"] | {"starts_on": "2026-01-01"}
+    reschedule(client, scenario_, scenario_["data"]["scheduled_exam_on"])
+    app_id = UUID(aid)
+    refusal = Review.model_validate(SOURCE | {"decision": "REJECT", "expected_version": 2})
+    withdrawal = Withdraw.model_validate(
+        SOURCE | {"not_enrolled_declaration": True, "expected_version": 2}
+    )
+    results = parallel(
+        client,
+        [
+            (
+                actor_token(client, "drc"),
+                lambda conn, actor: service.review(conn, actor, uuid4(), app_id, refusal, settings),
+            ),
+            (
+                actor_token(client, "faculty"),
+                lambda conn, actor: service.withdraw(
+                    conn, actor, uuid4(), app_id, withdrawal, settings
+                ),
+            ),
+        ],
+    )
+    application = db.get_one(Application, app_id)
+    allocation = db.get_one(Allocation, app_id)
+    movements = db.scalars(
+        select(Ledger).where(
+            Ledger.application_id == app_id, Ledger.kind.in_(["WITHDRAW_RETAIN", "REJECT"])
+        )
+    ).all()
+    assert application.version == 3
+    assert len(movements) == 1
+    if application.state == "REJECTED":
+        assert results == ["OK", "VERSION_CONFLICT"]
+        assert (allocation.state, movements[0].kind, movements[0].delta) == (
+            "RELEASED",
+            "REJECT",
+            -1,
+        )
+        assert_balance(db, scenario_["pool"], 0)
+    else:
+        assert application.state == "WITHDRAWN"
+        assert results == ["CURRENT_REVIEW_OFFICE_REQUIRED", "OK"]
+        assert (allocation.state, movements[0].kind, movements[0].delta) == (
+            "RETAINED",
+            "WITHDRAW_RETAIN",
+            0,
+        )
+        assert_balance(db, scenario_["pool"], 1)

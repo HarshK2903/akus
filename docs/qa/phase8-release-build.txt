@@ -1,0 +1,196 @@
+ Image akus-local-api Building 
+ Image akus-local-worker Building 
+ Image akus-local-web Building 
+ Image akus-local-migrate Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.85kB done
+#1 DONE 0.0s
+
+#2 [worker internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 430B done
+#2 DONE 0.0s
+
+#3 [web internal] load build definition from web.Dockerfile
+#3 transferring dockerfile: 324B done
+#3 DONE 0.0s
+
+#4 [web internal] load metadata for docker.io/library/caddy:2-alpine
+#4 DONE 0.0s
+
+#5 [migrate internal] load metadata for docker.io/library/python:3.13-slim
+#5 ...
+
+#6 [web internal] load metadata for docker.io/library/node:24-slim
+#6 DONE 1.3s
+
+#7 [api internal] load .dockerignore
+#7 transferring context: 208B done
+#7 DONE 0.0s
+
+#8 [web build 1/6] FROM docker.io/library/node:24-slim@sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54
+#8 DONE 0.0s
+
+#9 [web stage-1 1/3] FROM docker.io/library/caddy:2-alpine
+#9 DONE 0.0s
+
+#5 [worker internal] load metadata for docker.io/library/python:3.13-slim
+#5 DONE 1.3s
+
+#10 [api 1/6] FROM docker.io/library/python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
+#10 DONE 0.0s
+
+#11 [web internal] load build context
+#11 transferring context: 891.76kB 0.0s done
+#11 DONE 0.1s
+
+#12 [migrate internal] load build context
+#12 transferring context: 922.91kB 0.0s done
+#12 DONE 0.0s
+
+#13 [web build 2/6] WORKDIR /web
+#13 CACHED
+
+#14 [web build 3/6] COPY apps/web/package*.json ./
+#14 CACHED
+
+#15 [web build 4/6] RUN npm ci --no-fund --no-audit
+#15 CACHED
+
+#16 [migrate 3/6] COPY apps/api/requirements.lock /app/requirements.lock
+#16 CACHED
+
+#17 [migrate 2/6] WORKDIR /app
+#17 CACHED
+
+#18 [migrate 4/6] RUN pip install --no-cache-dir -r requirements.lock
+#18 CACHED
+
+#19 [web build 5/6] COPY apps/web ./
+#19 DONE 0.1s
+
+#20 [migrate 5/6] COPY apps/api /app/apps/api
+#20 DONE 0.1s
+
+#21 [migrate 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#21 2.298 Obtaining file:///app/apps/api
+#21 2.300   Installing build dependencies: started
+#21 ...
+
+#22 [web build 6/6] RUN npm run build
+#22 0.473 
+#22 0.473 > akus-web@0.1.0 build
+#22 0.473 > tsc -b && vite build
+#22 0.473 
+#22 5.381 vite v7.3.8 building client environment for production...
+#22 5.437 transforming...
+#22 7.469 ✓ 1732 modules transformed.
+#22 7.591 rendering chunks...
+#22 7.723 computing gzip size...
+#22 7.740 dist/index.html                              0.52 kB │ gzip:   0.34 kB
+#22 7.740 dist/assets/index-C8fU-A54.css              20.09 kB │ gzip:   4.87 kB
+#22 7.740 dist/assets/compliance-D1UeX0M2.js           0.06 kB │ gzip:   0.08 kB
+#22 7.740 dist/assets/PeopleUi-DUz1HFeE.js             0.71 kB │ gzip:   0.43 kB
+#22 7.740 dist/assets/academic-CPbxEcx3.js             0.82 kB │ gzip:   0.50 kB
+#22 7.740 dist/assets/SourceUi-B95h2LlI.js             2.06 kB │ gzip:   0.86 kB
+#22 7.740 dist/assets/Shared-Ti_IB9Xh.js               2.53 kB │ gzip:   1.11 kB
+#22 7.740 dist/assets/Appointments-CdzeVnVa.js         2.58 kB │ gzip:   1.12 kB
+#22 7.740 dist/assets/StaffDirectory-BLIVVXCK.js       2.75 kB │ gzip:   1.31 kB
+#22 7.740 dist/assets/EmploymentHistory-CiGf_QaG.js    3.21 kB │ gzip:   1.29 kB
+#22 7.740 dist/assets/AppointmentRecord-DHSnC6MA.js    3.42 kB │ gzip:   1.46 kB
+#22 7.740 dist/assets/StaffNew-CQ8wVPgN.js             3.78 kB │ gzip:   1.54 kB
+#22 7.740 dist/assets/Accounts-qfbyMv64.js             4.05 kB │ gzip:   1.75 kB
+#22 7.740 dist/assets/AppointmentNew-DqRvV7Cj.js       5.14 kB │ gzip:   1.91 kB
+#22 7.740 dist/assets/ReferenceSetup-Ccm3VL05.js       5.57 kB │ gzip:   1.95 kB
+#22 7.740 dist/assets/Imports-C7IFyCJT.js              7.28 kB │ gzip:   2.81 kB
+#22 7.740 dist/assets/Compliance-DAbdsH3R.js           7.47 kB │ gzip:   2.75 kB
+#22 7.740 dist/assets/Outcomes-DuK43hNZ.js             7.59 kB │ gzip:   2.79 kB
+#22 7.740 dist/assets/StaffRecord-B5-1tKZr.js          8.27 kB │ gzip:   2.59 kB
+#22 7.740 dist/assets/Credentials-CYB_wkig.js          9.44 kB │ gzip:   3.41 kB
+#22 7.740 dist/assets/Dashboards-C79V3OMb.js           9.46 kB │ gzip:   2.87 kB
+#22 7.740 dist/assets/Registers-hpwWEw0v.js           10.07 kB │ gzip:   3.54 kB
+#22 7.740 dist/assets/Teaching-qu32yMq4.js            10.62 kB │ gzip:   3.31 kB
+#22 7.741 dist/assets/SourceCorrection-BzldNJrF.js    13.48 kB │ gzip:   4.17 kB
+#22 7.741 dist/assets/Exceptions-DUzNtjUp.js          13.53 kB │ gzip:   4.21 kB
+#22 7.741 dist/assets/Catalog-CAh2LuIw.js             16.89 kB │ gzip:   4.71 kB
+#22 7.741 dist/assets/Governance-ThKAmCcA.js          19.72 kB │ gzip:   5.54 kB
+#22 7.741 dist/assets/Applications-4OUg8_po.js        33.91 kB │ gzip:   8.75 kB
+#22 7.741 dist/assets/index-qeS9uWHe.js              382.34 kB │ gzip: 119.49 kB
+#22 7.741 ✓ built in 2.33s
+#22 DONE 7.9s
+
+#21 [migrate 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#21 ...
+
+#9 [web stage-1 1/3] FROM docker.io/library/caddy:2-alpine
+#9 CACHED
+
+#23 [web stage-1 2/3] COPY --from=build /web/dist /srv
+#23 DONE 0.0s
+
+#24 [web stage-1 3/3] COPY infra/Caddy.web /etc/caddy/Caddyfile
+#24 DONE 0.1s
+
+#21 [migrate 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#21 ...
+
+#25 [web] exporting to image
+#25 exporting layers 0.1s done
+#25 writing image sha256:65b36217969358e3a6b3d55c408a71961dcc490d4e5d75e5606b701256e25d8f done
+#25 naming to docker.io/library/akus-local-web done
+#25 DONE 0.1s
+
+#26 [web] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#21 [migrate 6/6] RUN pip install --no-cache-dir --no-deps -e /app/apps/api
+#21 10.10   Installing build dependencies: finished with status 'done'
+#21 10.11   Checking if build backend supports build_editable: started
+#21 10.38   Checking if build backend supports build_editable: finished with status 'done'
+#21 10.38   Getting requirements to build editable: started
+#21 10.67   Getting requirements to build editable: finished with status 'done'
+#21 10.67   Preparing editable metadata (pyproject.toml): started
+#21 10.86   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#21 10.86 Building wheels for collected packages: akus-api
+#21 10.86   Building editable for akus-api (pyproject.toml): started
+#21 11.09   Building editable for akus-api (pyproject.toml): finished with status 'done'
+#21 11.09   Created wheel for akus-api: filename=akus_api-0.1.0-0.editable-py3-none-any.whl size=2875 sha256=9bb608140c069cef239f6b87593eec7f06a4a1da9a514844448b4ae63471b205
+#21 11.09   Stored in directory: /tmp/pip-ephem-wheel-cache-gsej7qgb/wheels/b1/8f/6c/228667c2da5e253868149b5f65557add9c4fbba2f70f6f297e
+#21 11.09 Successfully built akus-api
+#21 11.10 Installing collected packages: akus-api
+#21 11.12 Successfully installed akus-api-0.1.0
+#21 11.12 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#21 11.12 
+#21 11.12 [notice] A new release of pip is available: 26.2.2 -> 26.3
+#21 11.12 [notice] To update, run: pip install --upgrade pip
+#21 DONE 11.2s
+
+#27 [worker] exporting to image
+#27 exporting layers 0.1s done
+#27 writing image sha256:961afd9ba339c4b3efc37c5825700cd60f5a9495724276e6e3e709fe070b738d done
+#27 naming to docker.io/library/akus-local-worker 0.0s done
+#27 DONE 0.1s
+
+#28 [migrate] exporting to image
+#28 exporting layers 0.1s done
+#28 writing image sha256:90ac745a6b87cda7a4244998d5e262a1c50ea779d901743203510a99bed21423 0.0s done
+#28 naming to docker.io/library/akus-local-migrate 0.0s done
+#28 DONE 0.1s
+
+#29 [api] exporting to image
+#29 exporting layers 0.1s done
+#29 writing image sha256:e0f176d4d76ba27facc013f842d1f48a74a66901d499c0c1bbf6bbb64beef8c6 0.0s done
+#29 naming to docker.io/library/akus-local-api 0.0s done
+#29 DONE 0.2s
+
+#30 [worker] resolving provenance for metadata file
+#30 DONE 0.1s
+
+#31 [migrate] resolving provenance for metadata file
+#31 DONE 0.0s
+
+#32 [api] resolving provenance for metadata file
+#32 DONE 0.0s
+ Image akus-local-api Built 
+ Image akus-local-migrate Built 
+ Image akus-local-worker Built 
+ Image akus-local-web Built 

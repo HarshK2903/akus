@@ -1,0 +1,1 @@
+Loopback LOCAL/DEMO, 4 concurrent authenticated readers, 40 successful reads. Median 50.4 ms; p95 91.7 ms; max 263.1 ms. This smoke sample ran during QA and establishes no institutional capacity target.

@@ -125,6 +125,29 @@ def record_fetch(
     op = "PROVIDER_OBSERVATION"
     if result := common.replay(db, actor, key, op, body):
         return result
+    offering, record = persist_observation(db, actor.person.id, body, observation, error)
+    return common.finish(
+        db,
+        actor,
+        key,
+        op,
+        body,
+        offering.id,
+        {
+            "snapshot_id": str(record.id) if record else None,
+            "status": "OBSERVED" if record else error,
+            "reason": body.reason,
+        },
+    )
+
+
+def persist_observation(
+    db: Session,
+    actor_id: UUID,
+    body: OfferingFetch | DemoOffering,
+    observation: provider.Observation | None,
+    error: str | None,
+) -> tuple[Offering, ProviderSnapshot | None]:
     # Canonical identity association is an explicit source command, never title matching.
     db.execute(
         insert(Offering)
@@ -154,14 +177,14 @@ def record_fetch(
             trust="LOCAL_DEMO" if isinstance(body, DemoOffering) else "OFFICIAL_HTTPS",
             observed_at=observation.observed_at,
             metadata_json=observation.metadata.model_dump(mode="json"),
-            actor_id=actor.person.id,
+            actor_id=actor_id,
         )
         db.add(record)
         db.flush()
     db.add(
         ProviderFetch(
             offering_id=offering.id,
-            actor_id=actor.person.id,
+            actor_id=actor_id,
             observed_at=now,
             status="OBSERVED" if record else "UNAVAILABLE",
             error_code=error,
@@ -176,19 +199,7 @@ def record_fetch(
         accepted = snapshot(db, offering)
         if accepted and record.metadata_json != accepted.metadata_json:
             offering.source_status = "SOURCE_CONFLICT_REVIEW_REQUIRED"
-    return common.finish(
-        db,
-        actor,
-        key,
-        op,
-        body,
-        offering.id,
-        {
-            "snapshot_id": str(record.id) if record else None,
-            "status": "OBSERVED" if record else error,
-            "reason": body.reason,
-        },
-    )
+    return offering, record
 
 
 def local_observation(body: DemoOffering) -> provider.Observation:

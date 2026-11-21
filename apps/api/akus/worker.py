@@ -2,16 +2,18 @@
 
 import logging
 import time
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
+from akus.catalog import refresh_jobs
 from akus.config import Settings
 from akus.db import database
 from akus.models import AuditEvent, WorkerHeartbeat, WorkJob
+from akus.workspace import delivery
 
 
 def tick(db: Session, job_id: UUID | None = None) -> bool:
@@ -22,7 +24,11 @@ def tick(db: Session, job_id: UUID | None = None) -> bool:
             .values(name="foundation", seen_at=now)
             .on_conflict_do_update(index_elements=["name"], set_={"seen_at": now})
         )
-        candidates = select(WorkJob).where(WorkJob.state == "PENDING")
+        candidates = select(WorkJob).where(
+            WorkJob.state == "PENDING",
+            WorkJob.kind != refresh_jobs.KIND,
+            or_(WorkJob.next_attempt_at.is_(None), WorkJob.next_attempt_at <= now),
+        )
         if job_id is not None:
             candidates = candidates.where(WorkJob.id == job_id)
         job = db.scalar(
@@ -30,11 +36,39 @@ def tick(db: Session, job_id: UUID | None = None) -> bool:
         )
         if job is None:
             return False
-        if job.kind == "QUOTA_RECHECK":
+        job.attempts += 1
+        job.next_attempt_at = None
+        if job.kind in {"QUOTA_RECHECK", delivery.KIND}:
             from akus.applications.transfers import worker_recheck
 
-            worker_recheck(db, UUID(job.key.split(":")[1]))
-            job.state = "DONE"
+            try:
+                with db.begin_nested():
+                    if job.kind == delivery.KIND:
+                        delivery.archive(db, job)
+                    else:
+                        worker_recheck(db, UUID(job.key.split(":")[1]))
+            except Exception as exc:
+                job.last_error = type(exc).__name__[:90]
+                if job.attempts % 3 == 0:
+                    job.state = "DEAD"
+                else:
+                    job.next_attempt_at = now + timedelta(
+                        seconds=10 * (2 ** ((job.attempts - 1) % 3))
+                    )
+                db.add(
+                    AuditEvent(
+                        action="WORK_FAILED",
+                        details={
+                            "job_id": str(job.id),
+                            "attempt": str(job.attempts),
+                            "error": job.last_error,
+                            "state": job.state,
+                        },
+                    )
+                )
+            else:
+                job.state = "DONE"
+                job.last_error = None
         elif job.kind != "LOCAL_DEMO_BOOTSTRAP":
             job.state = "DEAD"
             db.add(AuditEvent(action="UNKNOWN_WORK_KIND", details={"job_id": str(job.id)}))
@@ -60,6 +94,7 @@ def main() -> None:
                         scan_due(db, settings)
                         notify_changes(db)
                     last_scan = time.monotonic()
+                refresh_jobs.run_one(factory)
                 for _ in range(20):
                     with factory() as db:
                         if not tick(db):

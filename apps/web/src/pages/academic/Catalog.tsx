@@ -143,6 +143,7 @@ export function ProviderSources({ versions = false }: { versions?: boolean }) {
       ),
     enabled: !!context.data?.can_source,
   });
+  const queued = useCommand((id) => navigate("/admin/operations?search=" + id));
   const fetch = useCommand((id) => navigate(`/app/offerings/${id}`));
   if (context.isPending) return <Loading />;
   if (context.error)
@@ -175,6 +176,9 @@ export function ProviderSources({ versions = false }: { versions?: boolean }) {
           Metadata versions
         </Link>
         <Link to="/admin/catalog/new">Record canonical course</Link>
+        <Link to="/admin/operations?search=PROVIDER_REFRESH">
+          Provider refresh jobs
+        </Link>
       </p>
       <Field
         label="Search source courses"
@@ -200,8 +204,11 @@ export function ProviderSources({ versions = false }: { versions?: boolean }) {
                 onSubmit={(e) => {
                   e.preventDefault();
                   const f = new FormData(e.currentTarget);
-                  fetch.mutate({
-                    path: "/admin/nptel/provider-fetches",
+                  const background = f.get("mode") === "background";
+                  (background ? queued : fetch).mutate({
+                    path: background
+                      ? "/admin/nptel/refresh-jobs"
+                      : "/admin/nptel/provider-fetches",
                     body: {
                       course_id: f.get("course_id"),
                       provider_id: f.get("provider_id"),
@@ -236,8 +243,15 @@ export function ProviderSources({ versions = false }: { versions?: boolean }) {
                   <input type="checkbox" required /> I checked the canonical
                   course and exact offering identity.
                 </label>
-                <CommandError error={fetch.error} />
-                <button className="primary" disabled={fetch.isPending}>
+                <SelectField label="Refresh method" name="mode">
+                  <option value="now">Fetch now</option>
+                  <option value="background">Queue with worker retries</option>
+                </SelectField>
+                <CommandError error={fetch.error || queued.error} />
+                <button
+                  className="primary"
+                  disabled={fetch.isPending || queued.isPending}
+                >
                   {fetch.isPending
                     ? "Fetching official source…"
                     : "Fetch provider metadata"}
@@ -534,6 +548,7 @@ export function OfferingDetail() {
     enabled: !!scope.department,
   });
   const accept = useCommand();
+  const flag = useCommand();
   const intake = useCommand();
   if (query.isPending || context.isPending) return <Loading />;
   if (query.error || context.error)
@@ -579,7 +594,7 @@ export function OfferingDetail() {
           <SourceLink url={o.source_url} />
           <p className="muted">
             Observed {o.observed_at ? instant(o.observed_at) : "not yet"} ·{" "}
-            {o.source_status}
+            {o.source_status.replaceAll("_", " ")}
           </p>
         </section>
         <section className="panel prose">
@@ -720,6 +735,34 @@ export function OfferingDetail() {
             )}
           </form>
         </section>
+      )}
+      {context.data.can_source && o.snapshot_id && (
+        <details className="panel section-gap">
+          <summary>Flag ambiguous metadata</summary>
+          <p>
+            Flag the accepted source for review. New submissions require a
+            current accepted observation.
+          </p>
+          <form
+            className="source-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              flag.mutate({
+                path: "/admin/nptel/offerings/" + o.id + "/ambiguity",
+                body: {
+                  ...reasonFields(new FormData(e.currentTarget)),
+                  snapshot_id: o.snapshot_id,
+                  expected_version: o.version,
+                },
+              });
+            }}
+          >
+            <SourceFields />
+            <button disabled={flag.isPending}>Flag source ambiguity</button>
+            <CommandError error={flag.error} />
+            {flag.isSuccess && <p role="status">Source flagged for review.</p>}
+          </form>
+        </details>
       )}
       <History events={o.history} />
     </>

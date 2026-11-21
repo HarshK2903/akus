@@ -1,0 +1,222 @@
+ Container akus-local-api-run-670a5583930f Creating 
+ Container akus-local-api-run-670a5583930f Created 
+All checks passed!
+108 files already formatted
+Success: no issues found in 75 source files
+No new upgrade operations detected.
+........................................................................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+........................................................................ [ 95%]
+.........F.....                                                          [100%]
+=================================== FAILURES ===================================
+_____________ test_notice_template_concurrency_privacy_and_replay ______________
+
+client = <starlette.testclient.TestClient object at 0x728bf35107c0>
+db = <sqlalchemy.orm.session.Session object at 0x728bf2bd3110>
+
+    def test_notice_template_concurrency_privacy_and_replay(client, db):
+        path = BASE + "/admin/notification-settings"
+        h = login(client, "admin")
+>       current = client.get(path).json()["versions"]
+                  ^^^^^^^^^^^^^^^^
+
+apps/api/tests/test_workspace.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/usr/local/lib/python3.13/site-packages/starlette/testclient.py:518: in request
+    return super().request(
+/usr/local/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/httpx/_client.py:928: in send
+    raise exc
+/usr/local/lib/python3.13/site-packages/httpx/_client.py:922: in send
+    response.read()
+/usr/local/lib/python3.13/site-packages/httpx/_models.py:881: in read
+    self._content = b"".join(self.iter_bytes())
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/httpx/_models.py:897: in iter_bytes
+    for raw_bytes in self.iter_raw():
+                     ^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/httpx/_models.py:951: in iter_raw
+    for raw_stream_bytes in self.stream:
+                            ^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/httpx/_client.py:153: in __iter__
+    for chunk in self._stream:
+                 ^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/starlette/testclient.py:384: in iter_body
+    exit_stack.close()
+/usr/local/lib/python3.13/contextlib.py:627: in close
+    self.__exit__(None, None, None)
+/usr/local/lib/python3.13/contextlib.py:619: in __exit__
+    raise exc
+/usr/local/lib/python3.13/contextlib.py:604: in __exit__
+    if cb(*exc_details):
+       ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/starlette/testclient.py:399: in close_app
+    raise exception
+/usr/local/lib/python3.13/site-packages/anyio/from_thread.py:272: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/starlette/testclient.py:366: in run_app
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/fastapi/applications.py:1194: in __call__
+    await super().__call__(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/starlette/applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+/usr/local/lib/python3.13/site-packages/fastapi/telemetry/_asgi.py:151: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py:203: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apps/api/akus/main.py:75: in request_context
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py:179: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py:149: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+apps/api/akus/body_limit.py:13: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/usr/local/lib/python3.13/site-packages/fastapi/middleware/asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/starlette/routing.py:683: in __call__
+    await self.middleware_stack(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:2811: in app
+    await route.handle(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:1839: in handle
+    await self.original_router.handle(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:2894: in handle
+    await included_router._handle_selected(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:1865: in _handle_selected
+    await original_route.handle(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:1328: in handle
+    await effective_context.app(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:166: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:152: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:767: in app
+    content = await serialize_response(
+/usr/local/lib/python3.13/site-packages/fastapi/routing.py:349: in serialize_response
+    return serializer(
+/usr/local/lib/python3.13/site-packages/fastapi/_compat/v2.py:231: in serialize_json
+    return self._type_adapter.dump_json(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = TypeAdapter(Annotated[dict[str, Any], FieldInfo(annotation=NoneType, required=True)])
+instance = {'category': 'APPLICATION', 'default_heading': 'Application update', 'versions': [<akus.workspace.models.NoticeTemplate object at 0x728bfc4f7cb0>]}
+indent = None, ensure_ascii = False, include = None, exclude = None
+by_alias = True, exclude_unset = False, exclude_defaults = False
+exclude_none = False, exclude_computed_fields = False, round_trip = False
+warnings = True, fallback = None, serialize_as_any = False
+polymorphic_serialization = None, context = None
+
+    def dump_json(
+        self,
+        instance: T,
+        /,
+        *,
+        indent: int | None = None,
+        ensure_ascii: bool = False,
+        include: IncEx | None = None,
+        exclude: IncEx | None = None,
+        by_alias: bool | None = None,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        exclude_computed_fields: bool = False,
+        round_trip: bool = False,
+        warnings: bool | Literal['none', 'warn', 'error'] = True,
+        fallback: Callable[[Any], Any] | None = None,
+        serialize_as_any: bool = False,
+        polymorphic_serialization: bool | None = None,
+        context: Any | None = None,
+    ) -> bytes:
+        """!!! abstract "Usage Documentation"
+            [JSON Serialization](../concepts/json.md#json-serialization)
+    
+        Serialize an instance of the adapted type to JSON.
+    
+        Args:
+            instance: The instance to be serialized.
+            indent: Number of spaces for JSON indentation.
+            ensure_ascii: If `True`, the output is guaranteed to have all incoming non-ASCII characters escaped.
+                If `False` (the default), these characters will be output as-is.
+            include: Fields to include.
+            exclude: Fields to exclude.
+            by_alias: Whether to use alias names for field names.
+            exclude_unset: Whether to exclude unset fields.
+            exclude_defaults: Whether to exclude fields with default values.
+            exclude_none: Whether to exclude fields with a value of `None`.
+            exclude_computed_fields: Whether to exclude computed fields.
+                While this can be useful for round-tripping, it is usually recommended to use the dedicated
+                `round_trip` parameter instead.
+            round_trip: Whether to serialize and deserialize the instance to ensure round-tripping.
+            warnings: How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
+                "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
+            fallback: A function to call when an unknown value is encountered. If not provided,
+                a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
+            serialize_as_any: Whether to serialize fields with duck-typing serialization behavior.
+            polymorphic_serialization: Whether to use model and dataclass polymorphic serialization for this call.
+            context: Additional context to pass to the serializer.
+    
+        Returns:
+            The JSON representation of the given instance as bytes.
+        """
+>       return self.serializer.to_json(
+            instance,
+            indent=indent,
+            ensure_ascii=ensure_ascii,
+            include=include,
+            exclude=exclude,
+            by_alias=by_alias,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            exclude_computed_fields=exclude_computed_fields,
+            round_trip=round_trip,
+            warnings=warnings,
+            fallback=fallback,
+            serialize_as_any=serialize_as_any,
+            polymorphic_serialization=polymorphic_serialization,
+            context=context,
+        )
+E       pydantic_core._pydantic_core.PydanticSerializationError: Unable to serialize unknown type: <class 'akus.workspace.models.NoticeTemplate'>
+
+/usr/local/lib/python3.13/site-packages/pydantic/type_adapter.py:651: PydanticSerializationError
+----------------------------- Captured stderr call -----------------------------
+{"event": "http_request", "method": "POST", "status": 200, "correlation_id": "806f3cee-b201-400c-ac82-bac1127fd4c5"}
+------------------------------ Captured log call -------------------------------
+INFO     akus:main.py:79 {"event": "http_request", "method": "POST", "status": 200, "correlation_id": "806f3cee-b201-400c-ac82-bac1127fd4c5"}
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5
+  /usr/local/lib/python3.13/site-packages/authlib/integrations/httpx_client/assertion_client.py:5: AuthlibDeprecationWarning: The httpx module is deprecated; please use httpx2 instead.
+    from ._compat import httpx2
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED apps/api/tests/test_workspace.py::test_notice_template_concurrency_privacy_and_replay
+1 failed, 302 passed, 2 warnings in 134.24s (0:02:14)
+

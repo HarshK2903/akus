@@ -1,0 +1,9 @@
+Public AKUS routes /login and /system-unavailable, anonymous.
+Chromium on isolated X11/D-Bus with Orca 46.1.
+Keyboard focus advanced from the identity selector to sign-in and from the retry button to the sign-in link.
+Orca generated the following speech output from actual accessibility events. Physical audio playback and human user acceptance were outside this check.
+Demo identity combo box.
+Enter local workspace push button.
+Retry health check push button.
+Return to sign-in link.
+Final generated control announcements repeated successfully against the patched web and proxy release.

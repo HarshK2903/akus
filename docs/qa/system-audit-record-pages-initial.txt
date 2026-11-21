@@ -1,0 +1,84 @@
+ Container akus-local-migrate-run-d68ee389de79 Creating 
+ Container akus-local-migrate-run-d68ee389de79 Created 
+LOCAL DEMO fixtures ready. Fictional source records only; no real institutional or provider facts.
+ Container akus-browser-audit-1319761-api Creating 
+ Container akus-browser-audit-1319761-api Created 
+49d952b9d2efe7c645a698c0203d137c0943b37d729f685130eb130843f8f93c
+ Container akus-browser-audit-1319761-worker Creating 
+ Container akus-browser-audit-1319761-worker Created 
+905865c4cbea669c0e9b64e65026da1ea322e03b99aa558ea2b2bd41bc6636b1
+ Container akus-browser-audit-1319761-proxy Creating 
+ Container akus-browser-audit-1319761-proxy Created 
+394bf478113a10f8ef3e9dd5ea3a91e85564858897c22e238aa78f61ff17f4e4
+curl: (56) Recv failure: Connection reset by peer
+{"status":"ready","database":"connected","schema_version":"0021_application_files"}
+> akus-web@0.1.0 e2e
+> playwright test --config record-audit.config.ts
+
+
+Running 2 tests using 1 worker
+
+(node:1320388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAC-03 authorized record reloaded
+FAC-04 authorized record reloaded
+FAC-10 authorized record reloaded
+FAC-11 authorized record reloaded
+FAC-12 authorized record reloaded
+FAC-13 authorized record reloaded
+FAC-14 authorized record reloaded
+FAC-16 authorized record reloaded
+FAC-18 authorized record reloaded
+FAC-20 authorized record reloaded
+DRC-02 authorized record reloaded
+HOD-03 authorized record reloaded
+HOD-06 authorized record reloaded
+HOD-07 authorized record reloaded
+HOD-10 authorized record reloaded
+HOD-11 authorized record reloaded
+HOD-12 authorized record reloaded
+HOD-14 authorized record reloaded
+HOD-16 authorized record reloaded
+HOD-18 authorized record reloaded
+PRN-03 authorized record reloaded
+ADM-03 authorized record reloaded
+  ✘  1 qa/record-pages.audit.ts:7:1 › reload each parameterized record with its actual authorized data (24.5s)
+(node:1321030) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/login anonymous state verified
+/auth/callback anonymous state verified
+/access-denied anonymous state verified
+/system-unavailable anonymous state verified
+/not-found anonymous state verified
+  ✓  2 qa/record-pages.audit.ts:163:1 › all five public entries expose their anonymous recovery or sign-in state (330ms)
+
+
+  1) qa/record-pages.audit.ts:7:1 › reload each parameterized record with its actual authorized data › ADM-04 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Institutional record', exact: true }).first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Institutional record', exact: true }).first() with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Institutional record', exact: true }).first()
+
+
+      151 |         await expect(
+      152 |           page.getByRole("heading", { name: heading, exact: true }).first(),
+    > 153 |         ).toBeVisible();
+          |           ^
+      154 |       await expect(
+      155 |         page.getByRole("heading", {
+      156 |           name: /Unable to load this information|Access is not available|Page not found/i,
+        at /media/bugulnoz/New Volume/2/akus/apps/web/qa/record-pages.audit.ts:153:11
+        at /media/bugulnoz/New Volume/2/akus/apps/web/qa/record-pages.audit.ts:129:5
+
+    Error Context: ../../.local/system-record-audit/record-pages.audit.ts-relo-28e22--its-actual-authorized-data/error-context.md
+
+  1 failed
+    qa/record-pages.audit.ts:7:1 › reload each parameterized record with its actual authorized data 
+  1 passed (25.9s)

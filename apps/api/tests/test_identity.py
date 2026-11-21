@@ -74,6 +74,9 @@ def verify(signing_key, values):
         {"exp": 1},
         {"iat": 9999999999},
         {"azp": "other-client"},
+        {"sub": "   "},
+        {"email": "@cmrit.ac.in"},
+        {"email": " staff@cmrit.ac.in"},
         {"email": "outside@gmail.com"},
         {"aud": ["isolated-client", "another"], "azp": "another"},
     ],
@@ -568,3 +571,57 @@ def test_https_cookies_and_complete_configuration_fail_closed(settings, signing_
             google_redirect_uri="http://127.0.0.1:5173/api/v1/auth/google/callback",
             _env_file=None,
         )
+
+
+def test_institutional_session_requires_fresh_sign_in_after_rehire(db, oidc, signing_key):
+    from akus.applications.service import today
+
+    person, email = provision(db)
+    subject = "local-rehire-" + uuid4().hex
+    response, _ = login(oidc, signing_key, email, subject)
+    assert response.headers["location"] == "/app/profile"
+    old = db.scalar(select(EmploymentEpisode).where(EmploymentEpisode.person_id == person.id))
+    member = db.scalar(
+        select(DepartmentAssignment).where(DepartmentAssignment.episode_id == old.id)
+    )
+    member.ends_before = today()
+    db.flush()
+    old.ends_before = today()
+    db.flush()
+    new = EmploymentEpisode(
+        person_id=person.id,
+        starts_on=today(),
+        is_faculty=True,
+        source_reference="LOCAL_TEST_REHIRE",
+    )
+    db.add(new)
+    db.flush()
+    db.add(
+        DepartmentAssignment(
+            episode_id=new.id,
+            department_id=member.department_id,
+            starts_on=today(),
+            source_reference="LOCAL_TEST_REHIRE",
+        )
+    )
+    db.commit()
+    assert oidc.get("/api/v1/me").status_code == 401
+    response, _ = login(oidc, signing_key, email, subject)
+    assert response.headers["location"] == "/app/profile"
+    assert oidc.get("/api/v1/me").json()["person_id"] == str(person.id)
+
+
+def test_public_signing_metadata_obeys_byte_budget(monkeypatch):
+    import httpx
+
+    from akus.identity.provider import public_document
+
+    def key_document(self, request):
+        assert request.headers["accept-encoding"] == "identity"
+        assert "authorization" not in request.headers
+        return httpx.Response(200, content=b'{"keys":[]}')
+
+    monkeypatch.setattr(httpx.HTTPTransport, "handle_request", key_document)
+    assert public_document(ISSUER, 11) == {"keys": []}
+    with pytest.raises(ValueError, match="exceeds limit"):
+        public_document(ISSUER, 10)

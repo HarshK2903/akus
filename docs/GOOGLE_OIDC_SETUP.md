@@ -59,7 +59,7 @@ not a production secret manager.
    `umask 077; mkdir -p .local/private; .venv/bin/python -c 'from cryptography.fernet import Fernet; from pathlib import Path; p=Path(".local/private/session-key"); p.open("xb").write(Fernet.generate_key())'`.
    Copy its value into `.env` in a private local editor. The exclusive creation
    fails if a key already exists; do not overwrite an in-use key casually.
-3. `docker compose config -q`, then `docker compose up -d --build`.
+3. For UAT using the included evidence scanner, validate with `docker compose -f compose.yaml -f compose.scanner.yaml config -q`, then start with `docker compose -f compose.yaml -f compose.scanner.yaml up -d --build`. Use the same files for subsequent service changes.
    Migration advances the selected DB; institutional mode skips fictional seeding.
    Verify `http://127.0.0.1:8080/api/v1/health/ready` and `/api/v1/auth/config`.
    Partial OAuth settings fail startup; all blank settings show CONFIGURATION REQUIRED.
@@ -82,7 +82,7 @@ when those are the approved source facts. No Google identity or session is inven
 Save the approved record as `.local/private/first-admin.json` (mode 600), then:
 
 ```sh
-docker compose run --rm --no-deps \
+docker compose run --rm --no-deps --user "$(id -u):$(id -g)" \
   -v "$PWD/.local/private/first-admin.json:/run/first-admin.json:ro" \
   api python -m akus.identity.operator bootstrap \
   --roster /run/first-admin.json --operator-authorized
@@ -136,10 +136,7 @@ Record time, environment, approved staff reference and pass/fail privately. Do n
 save auth URLs/codes/tokens/secrets in screenshots or reports. If consent is denied,
 record the failure honestly. An email address alone never counts as a passed login.
 
-Application submission, review decisions, quota publication and compliance credit
-are future-phase dependencies, displayed as unavailable. UAT must not claim those
-academic workflows passed. IO-02 teaching acceptance, P-54 leap-day deadlines and
-other unratified policies remain pending.
+Academic application, review, quota and compliance workflows are available in the LOCAL/DEMO suite. For live institutional acceptance, use only the approved UAT dataset and the actions authorized for each participant. Record each consent and role result privately. The current per-role checklist is in [Google real-user UAT](qa/GOOGLE_REAL_USER_UAT.md).
 
 ## Implemented controls and limits
 

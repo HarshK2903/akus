@@ -36,9 +36,14 @@ def today() -> date:
 
 def notice(db: Session, app: Application, kind: str, facts: dict[str, Any]) -> None:
     # PostgreSQL now() would date the notice at transaction start, before the decision.
-    db.add(
-        AcademicNotice(application_id=app.id, kind=kind, facts=facts, created_at=datetime.now(UTC))
+    from akus.workspace import delivery
+
+    now = datetime.now(UTC)
+    message = AcademicNotice(
+        id=uuid4(), application_id=app.id, kind=kind, facts=facts, created_at=now
     )
+    delivery.queue(db, app, message, now)
+    db.add(message)
 
 
 def case(
@@ -74,6 +79,10 @@ def case(
 
         db.flush()
         append(db, record, "EVIDENCE_RECORDED", data | {"reason": reason})
+    if kind in {"INTEGRITY", "SOURCE_CORRECTION"}:
+        from akus.compliance.assessment import capture
+
+        capture(db, db.get_one(EmploymentEpisode, app.episode_id))
 
 
 def resolve_case(db: Session, app: Application, kind: str, reason: str) -> None:
@@ -149,6 +158,11 @@ def lock_application(
     return app, offering
 
 
+def require_current_episode(actor: Actor, app: Application) -> None:
+    if app.episode_id != actor.episode.id:
+        raise HTTPException(423, "EARLIER_EMPLOYMENT_EPISODE_READ_ONLY")
+
+
 def check_version(app: Application, version: int) -> None:
     if app.version != version:
         raise HTTPException(409, "VERSION_CONFLICT")
@@ -167,6 +181,7 @@ def draft(db: Session, actor: Actor, key: UUID, body: DraftWrite) -> CommandResu
         app, _ = lock_application(db, body.id, actor)
         if app.person_id != actor.person.id or app.state != "DRAFT":
             raise HTTPException(403, "OWN_DRAFT_REQUIRED")
+        require_current_episode(actor, app)
         check_version(app, body.expected_version or 0)
         if app.offering_id != body.offering_id:
             raise HTTPException(409, "CREATE_NEW_DRAFT_FOR_DIFFERENT_OFFERING")
@@ -361,6 +376,9 @@ def submit(
         raise HTTPException(409, "QUOTA_FULL")
     now = datetime.now(UTC)
     route = ["HOD"] if "DRC_HEAD" in actor.roles else ["DRC_HEAD", "HOD"]
+    from akus.applications.attachments import manifest
+
+    attachment_ids = manifest(db, app.id)
     app.state, app.next_office, app.submitted_at = "UNDER_REVIEW", route[0], now
     app.version += 1
     db.add(
@@ -385,6 +403,7 @@ def submit(
                 "policy": "V2.4/V2.3;Q02,Q21,Q27-Q29",
                 "route": route,
                 "prior_outcome_finding_ids": prior_findings,
+                "attachment_revision_ids": attachment_ids,
                 "roles": actor.roles,
                 "declarations": d,
                 "external_participation": "DECLARED_NOT_ENROLLED_NOT_PROVIDER_VERIFIED",
@@ -432,6 +451,10 @@ def submit(
 
 
 def applicant_still_eligible(db: Session, app: Application) -> bool:
+    from akus.exceptions.service import active_order
+
+    if active_order(db, app):
+        return False
     person, episode = db.get(Person, app.person_id), db.get(EmploymentEpisode, app.episode_id)
     now = datetime.now(UTC)
     office = db.scalar(
@@ -670,6 +693,7 @@ def withdraw(
         raise HTTPException(403, "OWN_APPLICATION_REQUIRED")
     if result := common.replay(db, actor, key, op, body):
         return result
+    require_current_episode(actor, app)
     check_version(app, body.expected_version)
     if app.state not in {"UNDER_REVIEW", "APPROVED"}:
         raise HTTPException(409, "ACTIVE_APPLICATION_REQUIRED")

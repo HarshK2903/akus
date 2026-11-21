@@ -1,0 +1,30 @@
+# Optional vendor clamd + freshclam. Only the API shares the Unix socket.
+services:
+  clamd:
+    build: {context: ., dockerfile: infra/clamav.Dockerfile}
+    entrypoint: ["/bin/sh", "-ec", "chown clamav:clamav /run/clamav && chmod 0750 /run/clamav && exec /init"]
+    environment:
+      TZ: UTC
+      FRESHCLAM_CHECKS: "12"
+    security_opt: [no-new-privileges:true]
+    networks: [signature_updates]
+    volumes:
+      - akus_clam_definitions:/var/lib/clamav
+      - akus_clam_socket:/run/clamav
+      - ./infra/clamd.conf:/etc/clamav/clamd.conf:ro
+    healthcheck:
+      test: ["CMD", "clamdscan", "--ping=1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 2m
+      retries: 3
+  api:
+    environment:
+      AKUS_CLAMD_SOCKET: /run/akus-clamd/clamd.sock
+    group_add: ["101"]
+    volumes: [akus_clam_socket:/run/akus-clamd:ro]
+networks:
+  signature_updates:
+volumes:
+  akus_clam_definitions:
+  akus_clam_socket:

@@ -613,6 +613,9 @@ def test_vacant_hod_alerts_and_restoration_leave_counted_seat_unchanged(client, 
     db.flush()
     reviewer.notify_changes(db)
     db.flush()
+    reviewer.notify_changes(db)
+    db.flush()
+    assert [n.facts["status"] for n in db.scalars(query)] == ["VACANT", "ASSIGNED"]
     assert {n.facts["status"] for n in db.scalars(query)} == {"VACANT", "ASSIGNED"}
     assert db.get(Allocation, app.id).state == "HELD"
     db.rollback()
@@ -994,3 +997,266 @@ def test_late_date_only_enrollment_source_needs_no_invented_instant(
     )
     assert evidence["facts"].get("enrollment_at") is None
     assert_balance(db, s["pool"], 0)
+
+
+def test_mixed_departure_rehire_and_private_episode_history(client, db, settings):
+    from akus.sources.service import revision
+
+    day = apps.today()
+    first, aid, old, member, _ = sample(client, db, day - timedelta(days=2))
+    person = db.get(Person, old.person_id)
+    name = db.get(DemoIdentity, person.demo_identity_id).key
+    second = setup(client)
+    h, off, change = observe(
+        client,
+        second | {"data": second["data"] | {"starts_on": str(day)}},
+        day=second["data"]["scheduled_exam_on"],
+    )
+    assert post(client, f"/admin/nptel/offerings/{off['id']}/accept", change, h).status_code == 200
+    bid, h = draft(client, second, name)
+    assert submit(client, bid, h).status_code == 200
+    old_cookie = client.cookies.get("akus_demo_session")
+    client.cookies.clear()
+    impact = f"/api/v1/admin/employment-episodes/{old.id}/impact"
+    for role in ("faculty", "hod", "principal"):
+        login(client, role)
+        assert client.get(impact, params={"effective_on": str(day)}).status_code == 403
+    login(client, "admin")
+    page = client.get(impact, params={"effective_on": str(day), "limit": 1}).json()
+    assert page["total"] == 2 and len(page["applications"]) == 1
+    assert page["applications"][0]["pool_id"] in [first["pool"], second["pool"]]
+    assert_balance(db, first["pool"], 1)
+    oid = register(client, db, old, member, day)
+    with client.app.state.sessions.begin() as tx:
+        for _ in range(2):
+            service.process_order(tx, tx.get(Departure, oid), settings)
+    assert_balance(db, first["pool"], 0)
+    assert_balance(db, second["pool"], 1)
+    assert db.get(Application, UUID(aid)).state == "SEPARATED"
+    case = db.scalar(
+        select(Reconciliation).where(
+            Reconciliation.application_id == UUID(bid), Reconciliation.kind == "SEPARATION"
+        )
+    )
+    assert case.reason == "Q47_CHRONOLOGY_REVIEW" and case.status == "OPEN"
+    path = f"/admin/staff/{person.id}/rehire"
+    body = SOURCE | {
+        "previous_episode_id": str(old.id),
+        "expected_version": revision(db, "employment_episodes", old.id),
+        "department_id": first["dept"],
+        "starts_on": str(day),
+        "is_faculty": True,
+    }
+    assert post(client, path, body, login(client, "principal")).status_code == 403
+    headers = login(client, "admin")
+    assert (
+        post(client, path, body | {"starts_on": str(day - timedelta(days=1))}, headers).status_code
+        == 409
+    )
+    key = uuid4()
+    new = post(client, path, body, headers, key)
+    assert new.status_code == 200, new.text
+    assert post(client, path, body, headers, key).json() == new.json()
+    assert post(client, path, body, headers).status_code == 409
+    assert db.get(EmploymentEpisode, UUID(new.json()["id"])).person_id == person.id
+    client.cookies.clear()
+    client.cookies.set("akus_demo_session", old_cookie)
+    stale = client.get("/api/v1/me")
+    assert (
+        stale.status_code == 401
+        and stale.json()["error"]["code"] == "EMPLOYMENT_SESSION_REAUTHENTICATION_REQUIRED"
+    )
+    client.cookies.clear()
+    returned = login(client, name)
+    stale_claim = post(client, f"/applications/{bid}/enrollment-claims", proof(), returned)
+    assert (
+        stale_claim.status_code == 423
+        and stale_claim.json()["error"]["code"] == "EARLIER_EMPLOYMENT_EPISODE_READ_ONLY"
+    )
+    assert not client.get("/api/v1/applications/" + bid).json()["own_current_episode"]
+    route = f"/api/v1/me/employment-episodes/{old.id}/history"
+    hist = client.get(route).json()
+    assert hist["order"]["effective_on"] == str(day) and hist["frozen_at"]
+    assert {x["id"]: x["closure"] for x in hist["items"]} == {aid: "Q45", bid: None}
+    assert (
+        client.get(f"/api/v1/me/employment-episodes/{new.json()['id']}/history").json()["items"]
+        == []
+    )
+    login(client, "faculty")
+    assert client.get(route).status_code == 404
+    assert_balance(db, second["pool"], 1)
+
+
+def test_historical_register_survives_backdated_staff_corrections(client, db):
+    from akus.compliance.assessment import capture
+    from akus.models import AcademicYear
+
+    _, ep, m = faculty(
+        db, {"dept": str(db.scalar(select(DepartmentAssignment.department_id).limit(1)))}
+    )
+    person = db.get(Person, ep.person_id)
+    person.display_name = "LOCAL_TEST historical " + uuid4().hex
+    db.flush()
+    saved = capture(db, ep)
+    db.commit()
+    cutoff = datetime.now(UTC)
+    params = {
+        "scope": "institution",
+        "kind": "annual",
+        "year_id": str(
+            db.scalar(select(AcademicYear.id).where(AcademicYear.starts_on == date(2026, 7, 1)))
+        ),
+        "search": person.display_name,
+        "as_of": cutoff.isoformat(),
+    }
+    login(client, "principal")
+    path = "/api/v1/compliance/register"
+    before = client.get(path, params=params)
+    assert before.status_code == 200, before.text
+    assert before.json()["items"][0]["snapshot_id"] == str(saved.id)
+    person.display_name = "LOCAL_TEST corrected " + uuid4().hex
+    m.ends_before = date(2026, 5, 1)
+    ep.ends_before = m.ends_before
+    db.commit()
+    assert client.get(path, params=params).json() == before.json()
+    assert (
+        client.get(path, params={k: v for k, v in params.items() if k != "as_of"}).json()["total"]
+        == 0
+    )
+
+
+def test_hr_order_racing_final_approval_preserves_decision_order_and_one_release(
+    client, db, settings
+):
+    from test_admission import actor_token, parallel
+
+    from akus.applications.schemas import Review
+    from akus.applications.workflow_models import ReviewDecision
+    from akus.exceptions.models import CaseEvent
+    from akus.exceptions.schemas import Order
+
+    day = apps.today()
+    s, aid, ep, member, _ = sample(client, db, day - timedelta(days=1))
+    assert (
+        post(
+            client,
+            f"/applications/{aid}/review",
+            SOURCE | {"expected_version": 2, "decision": "APPROVE"},
+            login(client, "drc"),
+        ).status_code
+        == 200
+    )
+
+    def depart(tx, actor):
+        service.exclusive(tx)
+        tx.get(DepartmentAssignment, member.id).ends_before = day
+        tx.flush()
+        tx.get(EmploymentEpisode, ep.id).ends_before = day
+        tx.flush()
+        now = datetime.now(UTC)
+        service.record_order(
+            tx,
+            actor,
+            uuid4(),
+            ep.id,
+            Order.model_validate(
+                SOURCE
+                | {
+                    "document_digest": "a" * 64,
+                    "observed_at": now,
+                    "effective_on": day,
+                    "effective_at": now,
+                    "permanent_order_confirmed": True,
+                }
+            ),
+            settings,
+        )
+
+    def approve(tx, actor):
+        apps.review(
+            tx,
+            actor,
+            uuid4(),
+            UUID(aid),
+            Review.model_validate(SOURCE | {"expected_version": 3, "decision": "APPROVE"}),
+            settings,
+        )
+
+    hr, academic = parallel(
+        client, [(actor_token(client, "admin"), depart), (actor_token(client, "hod"), approve)]
+    )
+    assert hr == "OK"
+    assert_balance(db, s["pool"], 0)
+    closure = db.scalar(
+        select(CaseEvent)
+        .join(Reconciliation)
+        .where(Reconciliation.application_id == UUID(aid), CaseEvent.action == "Q45")
+    )
+    final = db.scalar(
+        select(ReviewDecision).where(
+            ReviewDecision.application_id == UUID(aid), ReviewDecision.stage == "HOD"
+        )
+    )
+    if final:
+        assert (
+            academic == "OK"
+            and closure.facts["previous_state"] == "APPROVED"
+            and final.recorded_at <= closure.recorded_at
+        )
+    else:
+        assert academic != "OK" and closure.facts["previous_state"] == "UNDER_REVIEW"
+    assert db.get(Application, UUID(aid)).state == "SEPARATED"
+    assert (
+        db.scalar(
+            select(func.count())
+            .select_from(Ledger)
+            .where(Ledger.application_id == UUID(aid), Ledger.delta == -1)
+        )
+        == 1
+    )
+
+
+def test_delayed_hr_order_freezes_teaching_revision_known_at_effective_instant(client, db):
+    from akus.models import AcademicYear
+    from akus.sources.models import Subject, TeachingAssignment
+
+    day = apps.today()
+    _, ep, member = faculty(
+        db, {"dept": str(db.scalar(select(DepartmentAssignment.department_id).limit(1)))}
+    )
+    year = db.scalar(
+        select(AcademicYear).where(AcademicYear.starts_on <= day, AcademicYear.ends_on >= day)
+    )
+    subject = Subject(
+        code=uuid4().hex, name="LOCAL_TEST earlier assignment", source_reference="LOCAL_TEST"
+    )
+    db.add(subject)
+    db.flush()
+    first = day - timedelta(days=90)
+    assigned = TeachingAssignment(
+        external_key=uuid4().hex,
+        episode_id=ep.id,
+        subject_id=subject.id,
+        department_id=member.department_id,
+        academic_year_id=year.id,
+        term="Local",
+        starts_on=first,
+        ends_before=day,
+        source_reference="LOCAL_TEST first register",
+    )
+    db.add(assigned)
+    db.commit()
+    cutoff = datetime.now(UTC)
+    assigned.starts_on = first + timedelta(days=15)
+    assigned.version += 1
+    assigned.source_reference = "LOCAL_TEST later correction"
+    db.commit()
+    oid = register(client, db, ep, member, day, cutoff)
+    frozen = db.get_one(SeparationSnapshot, oid).subjects
+    assert len(frozen) == 1 and frozen[0]["first_assignment"] == str(first)
+    assert frozen[0]["deadline"] == str(first.replace(year=first.year + 2))
+    assert (
+        frozen[0]["teaching_revision_id"]
+        and datetime.fromisoformat(frozen[0]["knowledge_cutoff"]) == cutoff
+    )
+    assert db.get_one(TeachingAssignment, assigned.id).starts_on != first

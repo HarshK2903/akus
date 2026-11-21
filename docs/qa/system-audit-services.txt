@@ -1,0 +1,7 @@
+NAME                   IMAGE                COMMAND                  SERVICE   CREATED          STATUS                      PORTS
+akus-local-api-1       akus-local-api       "uvicorn akus.main:c…"   api       10 minutes ago   Up 10 minutes (healthy)     
+akus-local-db-1        postgres:16          "docker-entrypoint.s…"   db        5 days ago       Up 24 hours (healthy)       5432/tcp
+akus-local-migrate-1   akus-local-migrate   "sh -c 'alembic -c a…"   migrate   10 minutes ago   Exited (0) 10 minutes ago   
+akus-local-proxy-1     caddy:2-alpine       "caddy run --config …"   proxy     5 days ago       Up 24 hours                 443/tcp, 2019/tcp, 443/udp, 127.0.0.1:8080->80/tcp
+akus-local-web-1       akus-local-web       "caddy run --config …"   web       10 minutes ago   Up 10 minutes               80/tcp, 443/tcp, 2019/tcp, 443/udp
+akus-local-worker-1    akus-local-worker    "python -m akus.work…"   worker    10 minutes ago   Up 10 minutes               

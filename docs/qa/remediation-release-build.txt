@@ -1,0 +1,245 @@
+ Image akus-local-web Building 
+ Image akus-local-proxy Building 
+ Image akus-local-migrate Building 
+ Image akus-local-api Building 
+ Image akus-local-worker Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.75kB done
+#1 DONE 0.0s
+
+#2 [migrate internal] load build definition from api.Dockerfile
+#2 DONE 0.0s
+
+#3 [proxy internal] load build definition from web.Dockerfile
+#3 transferring dockerfile: 409B done
+#3 DONE 0.0s
+
+#2 [worker internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 629B done
+#2 DONE 0.0s
+
+#4 [api internal] load metadata for docker.io/library/python:3.13-slim
+#4 DONE 0.0s
+
+#5 [web internal] load metadata for docker.io/library/caddy:2-alpine
+#5 DONE 0.0s
+
+#6 [proxy internal] load .dockerignore
+#6 transferring context: 231B done
+#6 DONE 0.0s
+
+#7 [proxy proxy 1/2] FROM docker.io/library/caddy:2-alpine
+#7 DONE 0.0s
+
+#8 [worker 1/7] FROM docker.io/library/python:3.13-slim
+#8 DONE 0.0s
+
+#9 [proxy proxy 2/2] RUN apk add --no-cache --upgrade libcrypto3 libssl3 zlib
+#9 CACHED
+
+#10 [proxy] exporting to image
+#10 exporting layers done
+#10 writing image sha256:832e6a97be440b2dbd008c57813853376de5d8b0d8d5fee2bd4bf71dfa42ddb9 done
+#10 naming to docker.io/library/akus-local-proxy done
+#10 DONE 0.0s
+
+#11 [api internal] load build context
+#11 transferring context: 118.00kB 0.0s done
+#11 DONE 0.0s
+
+#12 [migrate 2/7] RUN apt-get update && apt-get install -y --no-install-recommends --only-upgrade zlib1g && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [migrate 4/7] COPY apps/api/requirements.lock /app/requirements.lock
+#13 CACHED
+
+#14 [migrate 3/7] WORKDIR /app
+#14 CACHED
+
+#15 [migrate 5/7] RUN pip install --no-cache-dir -r requirements.lock
+#15 CACHED
+
+#16 [proxy] resolving provenance for metadata file
+#16 DONE 0.0s
+
+#17 [migrate 6/7] COPY apps/api /app/apps/api
+#17 DONE 0.1s
+
+#18 [worker 7/7] RUN pip install --no-cache-dir --no-deps -e /app/apps/api && python -m pip uninstall -y pip
+#18 0.707 Obtaining file:///app/apps/api
+#18 0.709   Installing build dependencies: started
+#18 ...
+
+#19 [web internal] load metadata for docker.io/library/node:24-slim
+#19 DONE 1.6s
+
+#6 [web internal] load .dockerignore
+#6 transferring context: 231B done
+#6 DONE 0.0s
+
+#20 [web build 1/6] FROM docker.io/library/node:24-slim@sha256:dc26ae92c9fb15cf6b1d63e20f0944b2efe0f115b20e00be48fb23fceb061c54
+#20 DONE 0.0s
+
+#7 [web proxy 1/2] FROM docker.io/library/caddy:2-alpine
+#7 DONE 0.0s
+
+#21 [web internal] load build context
+#21 transferring context: 25.95kB done
+#21 DONE 0.0s
+
+#22 [web build 3/6] COPY apps/web/package*.json ./
+#22 CACHED
+
+#23 [web build 2/6] WORKDIR /web
+#23 CACHED
+
+#24 [web build 4/6] RUN npm ci --no-fund --no-audit
+#24 CACHED
+
+#25 [web build 5/6] COPY apps/web ./
+#25 DONE 0.1s
+
+#18 [worker 7/7] RUN pip install --no-cache-dir --no-deps -e /app/apps/api && python -m pip uninstall -y pip
+#18 1.840   Installing build dependencies: finished with status 'done'
+#18 1.841   Checking if build backend supports build_editable: started
+#18 2.137   Checking if build backend supports build_editable: finished with status 'done'
+#18 2.139   Getting requirements to build editable: started
+#18 2.484   Getting requirements to build editable: finished with status 'done'
+#18 2.485   Preparing editable metadata (pyproject.toml): started
+#18 2.692   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#18 2.698 Building wheels for collected packages: akus-api
+#18 2.699   Building editable for akus-api (pyproject.toml): started
+#18 2.917   Building editable for akus-api (pyproject.toml): finished with status 'done'
+#18 2.918   Created wheel for akus-api: filename=akus_api-0.1.0-0.editable-py3-none-any.whl size=2875 sha256=267487d56ab6786626cdb7215f30916a4d252fd9c0065bd1ac03e5f145d73bda
+#18 2.918   Stored in directory: /tmp/pip-ephem-wheel-cache-h9vlnm9g/wheels/b1/8f/6c/228667c2da5e253868149b5f65557add9c4fbba2f70f6f297e
+#18 2.921 Successfully built akus-api
+#18 2.938 Installing collected packages: akus-api
+#18 2.955 Successfully installed akus-api-0.1.0
+#18 2.955 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#18 2.956 
+#18 2.956 [notice] A new release of pip is available: 26.2.2 -> 26.3
+#18 2.956 [notice] To update, run: pip install --upgrade pip
+#18 3.317 Found existing installation: pip 26.2.2
+#18 3.371 Uninstalling pip-26.2.2:
+#18 3.633   Successfully uninstalled pip-26.2.2
+#18 3.662 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#18 DONE 3.7s
+
+#26 [worker] exporting to image
+#26 exporting layers 0.1s done
+#26 writing image sha256:87f7a1fbcc976b452ab4e7efcbc07cf5affca16079d13075f38649c390248cfe done
+#26 naming to docker.io/library/akus-local-worker 0.0s done
+#26 DONE 0.1s
+
+#27 [migrate] exporting to image
+#27 exporting layers 0.1s done
+#27 writing image sha256:3c57437e5d74eff1b2ba228336fa4ccc270c5e0588a495da9d28e06912beb73f done
+#27 naming to docker.io/library/akus-local-migrate 0.0s done
+#27 DONE 0.1s
+
+#28 [api] exporting to image
+#28 exporting layers 0.1s done
+#28 writing image sha256:80c64ad800d44b022c40f8d436ec55541adfc316eeb53512e165a48187d66029 0.0s done
+#28 naming to docker.io/library/akus-local-api 0.0s done
+#28 DONE 0.1s
+
+#29 [web build 6/6] RUN npm run build
+#29 0.389 
+#29 0.389 > akus-web@0.1.0 build
+#29 0.389 > tsc -b && vite build
+#29 0.389 
+#29 ...
+
+#30 [worker] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#31 [migrate] resolving provenance for metadata file
+#31 DONE 0.0s
+
+#32 [api] resolving provenance for metadata file
+#32 DONE 0.0s
+
+#29 [web build 6/6] RUN npm run build
+#29 5.450 vite v7.3.8 building client environment for production...
+#29 5.520 transforming...
+#29 7.717 ✓ 1734 modules transformed.
+#29 7.833 rendering chunks...
+#29 7.964 computing gzip size...
+#29 7.979 dist/index.html                              0.61 kB │ gzip:   0.41 kB
+#29 7.979 dist/assets/index-C8fU-A54.css              20.09 kB │ gzip:   4.87 kB
+#29 7.979 dist/assets/compliance-D1UeX0M2.js           0.06 kB │ gzip:   0.08 kB
+#29 7.979 dist/assets/pdf-BW3MzTR9.js                  0.48 kB │ gzip:   0.35 kB
+#29 7.979 dist/assets/PeopleUi-Dd9iHPC8.js             0.71 kB │ gzip:   0.43 kB
+#29 7.979 dist/assets/academic-DRoarUda.js             0.82 kB │ gzip:   0.50 kB
+#29 7.979 dist/assets/SourceUi-D_Z9X2da.js             2.06 kB │ gzip:   0.86 kB
+#29 7.979 dist/assets/Shared-D6bYoALW.js               2.53 kB │ gzip:   1.11 kB
+#29 7.979 dist/assets/Appointments-Dl7KTbIO.js         2.58 kB │ gzip:   1.12 kB
+#29 7.979 dist/assets/StaffDirectory-B7tVFCB7.js       2.75 kB │ gzip:   1.31 kB
+#29 7.979 dist/assets/EmploymentHistory-BHF134vy.js    3.21 kB │ gzip:   1.29 kB
+#29 7.979 dist/assets/AppointmentRecord-CSxxdIcF.js    3.42 kB │ gzip:   1.46 kB
+#29 7.979 dist/assets/StaffNew-AYuf3DxV.js             3.78 kB │ gzip:   1.54 kB
+#29 7.980 dist/assets/Accounts-CO270yxm.js             4.05 kB │ gzip:   1.75 kB
+#29 7.980 dist/assets/AppointmentNew-DzVJuOyS.js       5.14 kB │ gzip:   1.91 kB
+#29 7.980 dist/assets/ReferenceSetup-Deb0l3tc.js       5.57 kB │ gzip:   1.95 kB
+#29 7.980 dist/assets/Imports-2KJ5n6DG.js              7.28 kB │ gzip:   2.81 kB
+#29 7.980 dist/assets/Compliance-CnEhJRjk.js           7.47 kB │ gzip:   2.75 kB
+#29 7.980 dist/assets/Outcomes-B-dt0RPX.js             7.59 kB │ gzip:   2.79 kB
+#29 7.980 dist/assets/StaffRecord-qGZXgaC6.js          8.28 kB │ gzip:   2.60 kB
+#29 7.980 dist/assets/Credentials-vBIzVgj2.js          9.14 kB │ gzip:   3.22 kB
+#29 7.980 dist/assets/Dashboards-DBoaU5Hx.js           9.46 kB │ gzip:   2.87 kB
+#29 7.980 dist/assets/Registers-CbEQHXgY.js           10.09 kB │ gzip:   3.56 kB
+#29 7.980 dist/assets/Teaching-NuadQc-z.js            10.62 kB │ gzip:   3.31 kB
+#29 7.980 dist/assets/SourceCorrection-DB79cJai.js    13.48 kB │ gzip:   4.18 kB
+#29 7.980 dist/assets/Exceptions-CiD7DHwn.js          13.53 kB │ gzip:   4.21 kB
+#29 7.980 dist/assets/Catalog-BM8dITPM.js             16.89 kB │ gzip:   4.71 kB
+#29 7.980 dist/assets/Governance-C_wsblEj.js          19.75 kB │ gzip:   5.56 kB
+#29 7.980 dist/assets/Applications-RJokUUaM.js        40.02 kB │ gzip:  10.45 kB
+#29 7.980 dist/assets/index-BgsvI0KG.js              439.24 kB │ gzip: 137.82 kB
+#29 7.980 ✓ built in 2.50s
+#29 DONE 8.1s
+
+#9 [web proxy 2/2] RUN apk add --no-cache --upgrade libcrypto3 libssl3 zlib
+#9 CACHED
+
+#33 [web web 1/2] COPY --from=build /web/dist /srv
+#33 DONE 0.0s
+
+#34 [web web 2/2] COPY infra/Caddy.web /etc/caddy/Caddyfile
+#34 DONE 0.0s
+
+#35 [web] exporting to image
+#35 exporting layers 0.0s done
+#35 writing image sha256:183aed528c5ff6820a38517444c9a55fe17bb021f4165d50431e329b82f37369 done
+#35 naming to docker.io/library/akus-local-web done
+#35 DONE 0.1s
+
+#36 [web] resolving provenance for metadata file
+#36 DONE 0.0s
+ Image akus-local-api Built 
+ Image akus-local-worker Built 
+ Image akus-local-migrate Built 
+ Image akus-local-web Built 
+ Image akus-local-proxy Built 
+ Container akus-local-proxy-1 Running 
+ Container akus-local-worker-1 Recreate 
+ Container akus-local-api-1 Recreate 
+ Container akus-local-web-1 Recreate 
+ Container akus-local-web-1 Recreated 
+ Container akus-local-api-1 Recreated 
+ Container akus-local-worker-1 Recreated 
+ Container akus-local-api-1 Starting 
+ Container akus-local-web-1 Starting 
+ Container akus-local-worker-1 Starting 
+ Container akus-local-api-1 Started 
+ Container akus-local-web-1 Started 
+ Container akus-local-api-1 Waiting 
+ Container akus-local-worker-1 Started 
+ Container akus-local-api-1 Healthy 
+ Container akus-local-proxy-1 Waiting 
+ Container akus-local-api-1 Waiting 
+ Container akus-local-worker-1 Waiting 
+ Container akus-local-web-1 Waiting 
+ Container akus-local-worker-1 Healthy 
+ Container akus-local-api-1 Healthy 
+ Container akus-local-web-1 Healthy 
+ Container akus-local-proxy-1 Healthy 

@@ -52,6 +52,15 @@ test("saved draft resumes, preserves revisions, then enrollment verification and
   await page
     .getByLabel("Academic relevance to your teaching or discipline")
     .fill("LOCAL_E2E initial teaching relevance");
+  await page.getByRole("link", { name: "1. Offering" }).click();
+  const warning = page.getByRole("dialog", {
+    name: "Leave without saving your declarations?",
+  });
+  await expect(warning).toBeVisible();
+  await warning.getByRole("button", { name: "Keep editing" }).click();
+  await expect(
+    page.getByLabel("Academic relevance to your teaching or discipline"),
+  ).toHaveValue("LOCAL_E2E initial teaching relevance");
   await page.getByLabel("I will select Yes for NPTEL score sharing.").check();
   await page
     .getByLabel("I have not already enrolled externally in this offering.")

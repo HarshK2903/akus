@@ -25,7 +25,7 @@ export function Overview() {
     <>
       <PageHeader
         title="System connections & academic calendar"
-        description={`Welcome, ${person.name}. Your ${roleLabels[person.role]} workspace is taking shape.`}
+        description={`Welcome, ${person.name}. Current access · ${roleLabels[person.role]}.`}
         action={
           <button
             onClick={() => {
@@ -41,12 +41,11 @@ export function Overview() {
       />
       <section className="intro-panel">
         <div>
-          <div className="eyebrow">A CONNECTED FOUNDATION</div>
-          <h2>Ready for the next chapter.</h2>
+          <h2>Employment and office authority</h2>
           <p>
             Your access is resolved from current employment and office records.
-            Review your profile and authority below. Academic workflows remain
-            scheduled for later verified slices.
+            Open your profile to inspect your current department and effective
+            appointments.
           </p>
           <Link className="text-link" to="/app/profile">
             View your profile & access <ArrowRight size={15} />

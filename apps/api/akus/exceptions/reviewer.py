@@ -149,5 +149,10 @@ def notify_changes(db: Session) -> None:
             and facts["deadline_status"] not in {"DUE_TODAY", "PASSED"}
         ):
             continue
-        if not prev or prev.facts != facts:
+        # Older deliveries appended routing metadata to the domain observation.
+        # Only the underlying office and deadline facts establish a transition.
+        previous = (
+            {k: v for k, v in prev.facts.items() if k != "recipient_office_id"} if prev else None
+        )
+        if previous != facts:
             apps.notice(db, app, "REVIEW_OFFICE_ALERT", facts)

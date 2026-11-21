@@ -1,0 +1,154 @@
+ Image akus-local-db Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 523B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from postgres.Dockerfile
+#2 transferring dockerfile: 900B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/postgres:16@sha256:3950ad7c3148ca2175ef1b6c36c9efbf78957ae8fbe8b3a5d7c35af50500382f
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#4 DONE 2.8s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 231B done
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/library/postgres:16@sha256:3950ad7c3148ca2175ef1b6c36c9efbf78957ae8fbe8b3a5d7c35af50500382f
+#6 CACHED
+
+#7 [helper 1/4] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#7 resolve docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 0.0s done
+#7 sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91 0B / 126B 0.1s
+#7 sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280 10.29kB / 10.29kB done
+#7 sha256:ea30e25680a5470bac02b08bb0e0a735fb75bd0ab7d431b9b95ee0abef362586 1.92kB / 1.92kB done
+#7 sha256:3f9f7b68d2300deb4acba48650f28dec9098ead84cd167a56c0e2bf361f24592 2.19kB / 2.19kB done
+#7 sha256:1d88fd0fb393f123f061aada1719163fe157015d4f15ab0a77954f6b499de6de 0B / 244.47kB 0.1s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 0B / 71.22MB 0.1s
+#7 ...
+
+#8 [helper 3/4] ADD --checksum=sha256:207a2045e890d3ca3326027c5f585733085960b401a49dbc00e3bb628c054cf8 https://codeload.github.com/tianon/gosu/tar.gz/refs/tags/1.20 /tmp/gosu.tar.gz
+#8 DONE 0.5s
+
+#7 [helper 1/4] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#7 extracting sha256:1d88fd0fb393f123f061aada1719163fe157015d4f15ab0a77954f6b499de6de
+#7 sha256:1d88fd0fb393f123f061aada1719163fe157015d4f15ab0a77954f6b499de6de 244.47kB / 244.47kB 0.4s done
+#7 extracting sha256:1d88fd0fb393f123f061aada1719163fe157015d4f15ab0a77954f6b499de6de 0.1s done
+#7 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0B / 32B 0.6s
+#7 sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91 126B / 126B 0.9s done
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 4.19MB / 71.22MB 1.1s
+#7 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 0.9s done
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 9.44MB / 71.22MB 1.7s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 14.68MB / 71.22MB 2.2s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 19.92MB / 71.22MB 2.8s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 24.12MB / 71.22MB 3.3s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 28.31MB / 71.22MB 3.7s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 32.51MB / 71.22MB 4.1s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 37.75MB / 71.22MB 4.6s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 41.94MB / 71.22MB 5.0s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 47.19MB / 71.22MB 5.6s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 51.38MB / 71.22MB 6.0s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 55.57MB / 71.22MB 6.4s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 60.82MB / 71.22MB 6.8s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 65.01MB / 71.22MB 7.3s
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 69.21MB / 71.22MB 7.8s
+#7 extracting sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f
+#7 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 71.22MB / 71.22MB 8.0s done
+#7 ...
+
+#9 [stage-1 2/4] RUN apt-get update && apt-get install -y --no-install-recommends --only-upgrade zlib1g libxml2 && rm -rf /var/lib/apt/lists/*
+#9 0.423 Get:1 http://deb.debian.org/debian trixie InRelease [140 kB]
+#9 0.470 Get:2 http://apt.postgresql.org/pub/repos/apt trixie-pgdg InRelease [241 kB]
+#9 0.523 Get:3 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+#9 0.548 Get:4 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+#9 0.581 Get:5 http://deb.debian.org/debian trixie/main amd64 Packages [9,679 kB]
+#9 0.618 Get:6 http://apt.postgresql.org/pub/repos/apt trixie-pgdg/16 amd64 Packages [7,396 B]
+#9 0.680 Get:7 http://apt.postgresql.org/pub/repos/apt trixie-pgdg/main amd64 Packages [1,194 kB]
+#9 8.151 Get:8 http://deb.debian.org/debian trixie-updates/main amd64 Packages [1,108 B]
+#9 8.200 Get:9 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [308 kB]
+#9 8.846 Fetched 11.7 MB in 9s (1,367 kB/s)
+#9 8.846 Reading package lists...
+#9 9.481 Reading package lists...
+#9 10.08 Building dependency tree...
+#9 ...
+
+#7 [helper 1/4] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#7 ...
+
+#9 [stage-1 2/4] RUN apt-get update && apt-get install -y --no-install-recommends --only-upgrade zlib1g libxml2 && rm -rf /var/lib/apt/lists/*
+#9 10.08 Building dependency tree...
+#9 10.25 Reading state information...
+#9 10.56 libxml2 is already the newest version (2.12.7+dfsg+really2.9.14-2.1+deb13u3).
+#9 10.56 The following packages will be upgraded:
+#9 10.56   zlib1g
+#9 10.70 1 upgraded, 0 newly installed, 0 to remove and 11 not upgraded.
+#9 10.70 Need to get 88.7 kB of archives.
+#9 10.70 After this operation, 1,024 B disk space will be freed.
+#9 10.70 Get:1 http://deb.debian.org/debian trixie/main amd64 zlib1g amd64 1:1.3.dfsg+really1.3.1-1+deb13u1 [88.7 kB]
+#9 11.09 debconf: unable to initialize frontend: Dialog
+#9 11.09 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#9 11.09 debconf: falling back to frontend: Readline
+#9 11.10 debconf: unable to initialize frontend: Readline
+#9 11.10 debconf: (This frontend requires a controlling tty.)
+#9 11.10 debconf: falling back to frontend: Teletype
+#9 11.11 debconf: unable to initialize frontend: Teletype
+#9 11.11 debconf: (This frontend requires a controlling tty.)
+#9 11.11 debconf: falling back to frontend: Noninteractive
+#9 11.76 Fetched 88.7 kB in 0s (757 kB/s)
+#9 11.80 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 12389 files and directories currently installed.)
+#9 11.83 Preparing to unpack .../zlib1g_1%3a1.3.dfsg+really1.3.1-1+deb13u1_amd64.deb ...
+#9 11.86 Unpacking zlib1g:amd64 (1:1.3.dfsg+really1.3.1-1+deb13u1) over (1:1.3.dfsg+really1.3.1-1+b1) ...
+#9 11.94 Setting up zlib1g:amd64 (1:1.3.dfsg+really1.3.1-1+deb13u1) ...
+#9 11.98 Processing triggers for libc-bin (2.41-12+deb13u4) ...
+#9 DONE 12.7s
+
+#7 [helper 1/4] FROM docker.io/library/golang:1.27.4-alpine@sha256:70bd7ddea8b6cbe5d6943cde279d6b67feb10cc924fb9100d1d8757c1575b280
+#7 extracting sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 5.1s
+#7 extracting sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 5.7s done
+#7 extracting sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91
+#7 extracting sha256:c050182f513fb753ca709ec66cab639c3c37a5356e5d597ca81bcddcf2aaee91 done
+#7 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 done
+#7 DONE 14.3s
+
+#10 [helper 2/4] WORKDIR /src
+#10 DONE 0.4s
+
+#11 [helper 3/4] ADD --checksum=sha256:207a2045e890d3ca3326027c5f585733085960b401a49dbc00e3bb628c054cf8 https://codeload.github.com/tianon/gosu/tar.gz/refs/tags/1.20 /tmp/gosu.tar.gz
+#11 DONE 0.1s
+
+#12 [helper 4/4] RUN tar xzf /tmp/gosu.tar.gz --strip-components=1 && go mod download && go mod verify && CGO_ENABLED=0 go build -mod=readonly -trimpath -o /out/gosu . && go version -m /out/gosu
+#12 1.720 all modules verified
+#12 28.34 /out/gosu: go1.27.4
+#12 28.34 	path	github.com/tianon/gosu
+#12 28.34 	mod	github.com/tianon/gosu	(devel)	
+#12 28.34 	dep	github.com/moby/sys/user	v0.4.1	h1:RgjRlaDKi/Xmyrz4t8lyzXT6v2ooFeO/7xtchmhVWE0=
+#12 28.34 	dep	golang.org/x/sys	v0.1.0	h1:kunALQeHf1/185U1i0GOB/fy1IPRDDpuoOOqRReG57U=
+#12 28.34 	build	-buildmode=exe
+#12 28.34 	build	-compiler=gc
+#12 28.34 	build	-trimpath=true
+#12 28.34 	build	DefaultGODEBUG=containermaxprocs=0,cryptocustomrand=1,decoratemappings=0,gotestjsonbuildtext=1,httpcookiemaxnum=0,httplaxcontentlength=1,httpmuxgo121=1,httpservecontentkeepheaders=1,httpservecontentmaxranges=1,multipathtcp=0,panicnil=1,randseednop=0,rsa1024min=0,tlsmlkem=0,tlssecpmlkem=0,tlssha1=1,tracebacklabels=0,updatemaxprocs=0,urlmaxqueryparams=0,urlstrictcolons=0,winreadlinkvolume=0,winsymlink=0,x509negativeserial=1,x509rsacrt=0,x509sha256skid=0,x509sslcertoverrideplatform=0,x509usepolicies=0
+#12 28.34 	build	CGO_ENABLED=0
+#12 28.34 	build	GOARCH=amd64
+#12 28.34 	build	GOOS=linux
+#12 28.34 	build	GOAMD64=v1
+#12 DONE 29.1s
+
+#13 [stage-1 3/4] COPY --from=helper /out/gosu /usr/local/bin/gosu
+#13 DONE 0.1s
+
+#14 [stage-1 4/4] RUN gosu --version && test "$(gosu postgres id -u)" = "$(id -u postgres)"
+#14 0.200 1.20 (go1.27.4 on linux/amd64; gc)
+#14 DONE 0.2s
+
+#15 exporting to image
+#15 exporting layers 0.1s done
+#15 writing image sha256:ac95673db6d9bc41e9b1d3add97b14a9fdeda950a0c0ceebcb6338f8f0653d00 done
+#15 naming to docker.io/library/akus-local-db done
+#15 DONE 0.1s
+
+#16 resolving provenance for metadata file
+#16 DONE 0.0s
+ Image akus-local-db Built 

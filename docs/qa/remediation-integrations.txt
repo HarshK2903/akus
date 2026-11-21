@@ -1,0 +1,5 @@
+2026-11-21T14:36:03.487186+00:00 http://127.0.0.1:8080 demo True google_configured False secure_cookies False
+Public config: {'demo_enabled': True, 'google_enabled': False, 'institution_label': 'Local demonstration institution'}
+Google discovery issuer https://accounts.google.com current public signing keys 2
+Catalog preview https://onlinecourses.nptel.ac.in/e-learning/api/coursepreview?course_id=noc26_cs98 2026-11-21T14:36:03.874481+00:00 6f0b93fe2e1db35e07f7a1d57d16923c3e479cb16284e9f277837a03a606b896
+Personal records accessed: 0; Google sign-ins performed: 0

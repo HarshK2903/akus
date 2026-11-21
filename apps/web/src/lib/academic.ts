@@ -177,6 +177,7 @@ export function useCommand(onSuccess?: (id: string) => void) {
       return command(path, body, retry.current.key);
     },
     onSuccess: (data) => {
+      retry.current = null;
       void cache.invalidateQueries();
       onSuccess?.(data.id);
     },
@@ -221,6 +222,7 @@ export type ApplicationRecord = {
   enrollment_deadline_passed: boolean;
   can_review: boolean;
   own: boolean;
+  own_current_episode: boolean;
   source_eligible: boolean;
   personal_schedule: {
     id: string;

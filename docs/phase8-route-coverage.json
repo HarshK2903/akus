@@ -1,0 +1,147 @@
+{
+  "SHR-01": [
+    "pages/Registers.tsx",
+    "registers/tasks",
+    "Saved drafts, open reviews and scoped reconciliation work link to the next action. Current office and self-review rules apply."
+  ],
+  "SHR-02": [
+    "pages/Registers.tsx",
+    "registers/notifications",
+    "Person-specific notices, persisted read receipts and inbox preference. Repeat vacancy scans preserve one transition per office change."
+  ],
+  "SHR-05": [
+    "pages/Registers.tsx",
+    "registers/search",
+    "Search includes current permitted private application filenames. Removal, supersession and scope are applied before returning a match."
+  ],
+  "DRC-03": [
+    "pages/Registers.tsx",
+    "registers/drc-history",
+    "Current DRC holder can inspect their own recorded review decisions and open the application history."
+  ],
+  "HOD-23": [
+    "pages/Registers.tsx",
+    "registers/department-applications",
+    "Scoped departmental application report with status, review stage, allocation and filtered export."
+  ],
+  "HOD-24": [
+    "pages/Registers.tsx",
+    "registers/hod-history",
+    "Scoped review, quota and mapping decisions link to their versioned sources."
+  ],
+  "PRN-02": [
+    "pages/Registers.tsx",
+    "registers/departments",
+    "Institution directory with office coverage, pending reviews and quota counts. Filter and open a department."
+  ],
+  "PRN-03": [
+    "pages/Registers.tsx",
+    "registers/departments, applications",
+    "Read-only department drill-down shares the department filter with linked reports."
+  ],
+  "PRN-04": [
+    "pages/Registers.tsx",
+    "registers/applications",
+    "Institutional application register with linked cases, status and filtered export."
+  ],
+  "PRN-05": [
+    "pages/Registers.tsx",
+    "registers/topics-quotas",
+    "Read-only primary-topic and annual quota register with links to governance records."
+  ],
+  "PRN-08": [
+    "pages/Registers.tsx",
+    "registers/exceptions",
+    "Institutional exception register links to the relevant recorded case and status."
+  ],
+  "PRN-09": [
+    "pages/Registers.tsx",
+    "registers/audit",
+    "Time-filtered institutional audit register; exported filters are audited."
+  ],
+  "ADM-11": [
+    "pages/Registers.tsx",
+    "registers/operations",
+    "Durable job status, attempts and heartbeat; authorized retry is limited to eligible failed jobs."
+  ],
+  "ADM-12": [
+    "pages/Registers.tsx",
+    "admin/notification-settings",
+    "Versioned in-app headings and personal preview delivery. External mail transport requires configuration."
+  ],
+  "ADM-13": [
+    "pages/Registers.tsx",
+    "registers/source-audit",
+    "Source change history with filters and records linked to their sources."
+  ],
+  "ADM-09": [
+    "pages/academic/Catalog.tsx",
+    "admin/nptel/refresh-jobs, admin/nptel/provider-fetches, registers/operations",
+    "Bounded allowlisted public metadata fetch, persisted provenance, retry and worker status."
+  ],
+  "ADM-10": [
+    "pages/academic/Catalog.tsx",
+    "admin/nptel/offerings/{id}/ambiguity and /accept",
+    "Flag an ambiguous offering observation and explicitly accept a checked revision. Admission rechecks the current source."
+  ],
+  "DRC-01": [
+    "pages/academic/Applications.tsx",
+    "applications?review=true",
+    "Ordinary applications at the DRC stage, scoped to current office. No own applications enter the review queue."
+  ],
+  "HOD-02": [
+    "pages/academic/Applications.tsx",
+    "applications?review=true",
+    "HoD stage for DRC-reviewed Faculty applications and direct DRC applicants. Current office checked again when deciding."
+  ],
+  "HOD-12": [
+    "pages/academic/Governance.tsx",
+    "quotas/{id}?as_of=...",
+    "Current pool and immutable ledger balances with a selected historical cutoff."
+  ],
+  "FAC-01": [
+    "pages/Dashboards.tsx",
+    "dashboard, dashboard/academic",
+    "Source and academic counts, current eligibility and links to scoped records."
+  ],
+  "HOD-01": [
+    "pages/Dashboards.tsx",
+    "dashboard, dashboard/academic",
+    "Source and academic counts, current eligibility and links to scoped records."
+  ],
+  "PRN-01": [
+    "pages/Dashboards.tsx",
+    "dashboard, dashboard/academic",
+    "Source and academic counts, current eligibility and links to scoped records."
+  ],
+  "ADM-01": [
+    "pages/Dashboards.tsx",
+    "dashboard, dashboard/academic",
+    "Source and academic counts, current eligibility and links to scoped records."
+  ],
+  "FAC-08": [
+    "pages/academic/Applications.tsx, pages/academic/ApplicationFiles.tsx",
+    "applications/{id}/attachments and versioned content, application submission",
+    "Private PDF revisions, quarantine, draft removal and immutable submission manifest. Covered by test_application_files.py and phase8.spec.ts. See the Phase 8 checklist for execution status."
+  ],
+  "FAC-12": [
+    "pages/academic/Applications.tsx, pages/academic/ApplicationFiles.tsx",
+    "applications/{id}/attachments and versioned content, application submission",
+    "Owner/scoped private PDF history, draft removal, scan status and immutable submission manifest. Authorized search links open the evidence view."
+  ],
+  "FAC-11": [
+    "pages/academic/Applications.tsx",
+    "applications/{id}",
+    "Quota-specific detail shows original and current pool, annual facts and immutable movements. Reopened from its own URL."
+  ],
+  "FAC-13": [
+    "pages/academic/Applications.tsx, pages/academic/Shared.tsx",
+    "applications/{id}",
+    "Dedicated timeline reads the saved submission, revisions, immutable decisions and notices."
+  ],
+  "FAC-14": [
+    "pages/academic/Applications.tsx, pages/academic/Participation.tsx",
+    "applications/{id}, applications/{id}/enrollment-claims",
+    "Dedicated participation page separates enrollment claims and dated findings and links to the credential dossier."
+  ]
+}

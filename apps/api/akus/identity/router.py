@@ -40,10 +40,6 @@ def begin(
         return RedirectResponse("/auth/configuration-required", status_code=303)
     # No open DB transaction while fetching discovery.
     state, browser, nonce, verifier = (token_urlsafe(32) for _ in range(4))
-    try:
-        url = GoogleProvider(cfg).authorization_url(state, nonce, verifier)
-    except Exception:
-        return RedirectResponse("/auth/provider-unavailable", status_code=303)
     service.serialize_links(db)
     peer = digest(request.client.host if request.client else "unknown")
     count = (
@@ -73,6 +69,10 @@ def begin(
         )
     )
     db.commit()
+    try:
+        url = GoogleProvider(cfg).authorization_url(state, nonce, verifier)
+    except Exception:
+        return RedirectResponse("/auth/provider-unavailable", status_code=303)
     response = RedirectResponse(url, status_code=303)
     response.set_cookie(
         "akus_oidc_flow",
